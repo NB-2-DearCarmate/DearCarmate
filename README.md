@@ -16,10 +16,10 @@ Dear Carmate는 차량∙고객∙계약 관리에 특화된 스마트 서비스
 
 ## 팀원 구성
 
-- **송유택** https://github.com/
-- **김승희** https://github.com/
-- **조연정** https://github.com/
-- **노제인** https://github.com/
+- **송유택** https://github.com/songyoutaeck
+- **김승희** https://github.com/seung0321
+- **조연정** https://github.com/hapyvirus
+- **노제인** https://github.com/Zen-nojen
 - **이민호** https://github.com/toomin5
 
 ---
