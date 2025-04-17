@@ -274,7 +274,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/minholee/Desktop/DearCarmate/src/generated/prisma",
+      "value": "C:\\Users\\default.DESKTOP-PI46C4N\\Desktop\\dearcar\\DearCarmate\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -283,16 +283,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/minholee/Desktop/DearCarmate/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\default.DESKTOP-PI46C4N\\Desktop\\dearcar\\DearCarmate\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -302,11 +302,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://minholee:7332@localhost:5432/dearcar?schema=public"
+        "value": null
       }
     }
   },
