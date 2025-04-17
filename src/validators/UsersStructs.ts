@@ -6,7 +6,7 @@ import {
   nonempty,
   pattern,
 } from "superstruct";
-import { CompanyStruct } from "../validators/CompanyStruct";
+import { CompanyStruct } from "./CompanyStructs.js";
 
 const PhoneNumber = pattern(string(), /^01[0|1|6|7|8|9]-\d{3,4}-\d{4}$/);
 
