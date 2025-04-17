@@ -15,47 +15,71 @@ datasource db {
 }
 
 model Car {
-  id              Int      @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   carNumber       String
-  manufacturer    String
-  model           String
+  type            CarType
   mileage         Int
   price           Int
   explanation     String?
   accidentCount   Int?
   accidentDetails String?
-  status          String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status          VehicleStatus
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  modelId         Int
+  model           Models        @relation(fields: [modelId], references: [id])
+  manufacturerId  Int
+  manufacturers   Manufacterers @relation(fields: [manufacturerId], references: [id])
 
   contracts Contract[]
+}
+
+model Manufacterers {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars Car[]
+}
+
+model Models {
+  id        Int      @id @default(autoincrement())
+  year      Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars Car[]
 }
 
 model Customer {
-  id            Int      @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   name          String
   email         String
-  gender        String
+  gender        GenderType
   phoneNumber   String
-  ageGroup      String
-  region        String
+  ageGroup      AgeGroup
+  region        Region
   memo          String?
   contractCount Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   contracts Contract[]
+  Company   Company?   @relation(fields: [companyId], references: [id])
+  companyId Int?
 }
 
 model Contract {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   carId          Int
   customerId     Int
-  status         String
+  status         ContractStatus
   resolutionDate DateTime?
   contractPrice  Int
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   car       Car                @relation(fields: [carId], references: [id])
   customer  Customer           @relation(fields: [customerId], references: [id])
@@ -105,7 +129,8 @@ model Company {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  users User[]
+  customers Customer[]
+  users     User[]
 }
 
 model ContractDocument {

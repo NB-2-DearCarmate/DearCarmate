@@ -19,6 +19,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Car = $Result.DefaultSelection<Prisma.$CarPayload>
 /**
+ * Model Manufacterers
+ * 
+ */
+export type Manufacterers = $Result.DefaultSelection<Prisma.$ManufacterersPayload>
+/**
+ * Model Models
+ * 
+ */
+export type Models = $Result.DefaultSelection<Prisma.$ModelsPayload>
+/**
  * Model Customer
  * 
  */
@@ -313,6 +323,26 @@ export class PrismaClient<
     * ```
     */
   get car(): Prisma.CarDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.manufacterers`: Exposes CRUD operations for the **Manufacterers** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Manufacterers
+    * const manufacterers = await prisma.manufacterers.findMany()
+    * ```
+    */
+  get manufacterers(): Prisma.ManufacterersDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.models`: Exposes CRUD operations for the **Models** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Models
+    * const models = await prisma.models.findMany()
+    * ```
+    */
+  get models(): Prisma.ModelsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.customer`: Exposes CRUD operations for the **Customer** model.
@@ -824,6 +854,8 @@ export namespace Prisma {
 
   export const ModelName: {
     Car: 'Car',
+    Manufacterers: 'Manufacterers',
+    Models: 'Models',
     Customer: 'Customer',
     Contract: 'Contract',
     Meeting: 'Meeting',
@@ -849,7 +881,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "car" | "customer" | "contract" | "meeting" | "alarm" | "user" | "company" | "contractDocument"
+      modelProps: "car" | "manufacterers" | "models" | "customer" | "contract" | "meeting" | "alarm" | "user" | "company" | "contractDocument"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -924,6 +956,154 @@ export namespace Prisma {
           count: {
             args: Prisma.CarCountArgs<ExtArgs>
             result: $Utils.Optional<CarCountAggregateOutputType> | number
+          }
+        }
+      }
+      Manufacterers: {
+        payload: Prisma.$ManufacterersPayload<ExtArgs>
+        fields: Prisma.ManufacterersFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ManufacterersFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ManufacterersFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          findFirst: {
+            args: Prisma.ManufacterersFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ManufacterersFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          findMany: {
+            args: Prisma.ManufacterersFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>[]
+          }
+          create: {
+            args: Prisma.ManufacterersCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          createMany: {
+            args: Prisma.ManufacterersCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ManufacterersCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>[]
+          }
+          delete: {
+            args: Prisma.ManufacterersDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          update: {
+            args: Prisma.ManufacterersUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          deleteMany: {
+            args: Prisma.ManufacterersDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ManufacterersUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ManufacterersUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>[]
+          }
+          upsert: {
+            args: Prisma.ManufacterersUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManufacterersPayload>
+          }
+          aggregate: {
+            args: Prisma.ManufacterersAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateManufacterers>
+          }
+          groupBy: {
+            args: Prisma.ManufacterersGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ManufacterersGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ManufacterersCountArgs<ExtArgs>
+            result: $Utils.Optional<ManufacterersCountAggregateOutputType> | number
+          }
+        }
+      }
+      Models: {
+        payload: Prisma.$ModelsPayload<ExtArgs>
+        fields: Prisma.ModelsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ModelsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ModelsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          findFirst: {
+            args: Prisma.ModelsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ModelsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          findMany: {
+            args: Prisma.ModelsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>[]
+          }
+          create: {
+            args: Prisma.ModelsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          createMany: {
+            args: Prisma.ModelsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ModelsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>[]
+          }
+          delete: {
+            args: Prisma.ModelsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          update: {
+            args: Prisma.ModelsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          deleteMany: {
+            args: Prisma.ModelsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ModelsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ModelsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>[]
+          }
+          upsert: {
+            args: Prisma.ModelsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelsPayload>
+          }
+          aggregate: {
+            args: Prisma.ModelsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateModels>
+          }
+          groupBy: {
+            args: Prisma.ModelsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ModelsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ModelsCountArgs<ExtArgs>
+            result: $Utils.Optional<ModelsCountAggregateOutputType> | number
           }
         }
       }
@@ -1530,6 +1710,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     car?: CarOmit
+    manufacterers?: ManufacterersOmit
+    models?: ModelsOmit
     customer?: CustomerOmit
     contract?: ContractOmit
     meeting?: MeetingOmit
@@ -1658,6 +1840,68 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ManufacterersCountOutputType
+   */
+
+  export type ManufacterersCountOutputType = {
+    cars: number
+  }
+
+  export type ManufacterersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cars?: boolean | ManufacterersCountOutputTypeCountCarsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ManufacterersCountOutputType without action
+   */
+  export type ManufacterersCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManufacterersCountOutputType
+     */
+    select?: ManufacterersCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ManufacterersCountOutputType without action
+   */
+  export type ManufacterersCountOutputTypeCountCarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CarWhereInput
+  }
+
+
+  /**
+   * Count Type ModelsCountOutputType
+   */
+
+  export type ModelsCountOutputType = {
+    cars: number
+  }
+
+  export type ModelsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cars?: boolean | ModelsCountOutputTypeCountCarsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ModelsCountOutputType without action
+   */
+  export type ModelsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelsCountOutputType
+     */
+    select?: ModelsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ModelsCountOutputType without action
+   */
+  export type ModelsCountOutputTypeCountCarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CarWhereInput
+  }
+
+
+  /**
    * Count Type CustomerCountOutputType
    */
 
@@ -1764,10 +2008,12 @@ export namespace Prisma {
    */
 
   export type CompanyCountOutputType = {
+    customers: number
     users: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customers?: boolean | CompanyCountOutputTypeCountCustomersArgs
     users?: boolean | CompanyCountOutputTypeCountUsersArgs
   }
 
@@ -1780,6 +2026,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the CompanyCountOutputType
      */
     select?: CompanyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomerWhereInput
   }
 
   /**
@@ -1811,6 +2064,8 @@ export namespace Prisma {
     mileage: number | null
     price: number | null
     accidentCount: number | null
+    modelId: number | null
+    manufacturerId: number | null
   }
 
   export type CarSumAggregateOutputType = {
@@ -1818,43 +2073,46 @@ export namespace Prisma {
     mileage: number | null
     price: number | null
     accidentCount: number | null
+    modelId: number | null
+    manufacturerId: number | null
   }
 
   export type CarMinAggregateOutputType = {
     id: number | null
     carNumber: string | null
-    manufacturer: string | null
-    model: string | null
+    type: $Enums.CarType | null
     mileage: number | null
     price: number | null
     explanation: string | null
     accidentCount: number | null
     accidentDetails: string | null
-    status: string | null
+    status: $Enums.VehicleStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    modelId: number | null
+    manufacturerId: number | null
   }
 
   export type CarMaxAggregateOutputType = {
     id: number | null
     carNumber: string | null
-    manufacturer: string | null
-    model: string | null
+    type: $Enums.CarType | null
     mileage: number | null
     price: number | null
     explanation: string | null
     accidentCount: number | null
     accidentDetails: string | null
-    status: string | null
+    status: $Enums.VehicleStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    modelId: number | null
+    manufacturerId: number | null
   }
 
   export type CarCountAggregateOutputType = {
     id: number
     carNumber: number
-    manufacturer: number
-    model: number
+    type: number
     mileage: number
     price: number
     explanation: number
@@ -1863,6 +2121,8 @@ export namespace Prisma {
     status: number
     createdAt: number
     updatedAt: number
+    modelId: number
+    manufacturerId: number
     _all: number
   }
 
@@ -1872,6 +2132,8 @@ export namespace Prisma {
     mileage?: true
     price?: true
     accidentCount?: true
+    modelId?: true
+    manufacturerId?: true
   }
 
   export type CarSumAggregateInputType = {
@@ -1879,13 +2141,14 @@ export namespace Prisma {
     mileage?: true
     price?: true
     accidentCount?: true
+    modelId?: true
+    manufacturerId?: true
   }
 
   export type CarMinAggregateInputType = {
     id?: true
     carNumber?: true
-    manufacturer?: true
-    model?: true
+    type?: true
     mileage?: true
     price?: true
     explanation?: true
@@ -1894,13 +2157,14 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    modelId?: true
+    manufacturerId?: true
   }
 
   export type CarMaxAggregateInputType = {
     id?: true
     carNumber?: true
-    manufacturer?: true
-    model?: true
+    type?: true
     mileage?: true
     price?: true
     explanation?: true
@@ -1909,13 +2173,14 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    modelId?: true
+    manufacturerId?: true
   }
 
   export type CarCountAggregateInputType = {
     id?: true
     carNumber?: true
-    manufacturer?: true
-    model?: true
+    type?: true
     mileage?: true
     price?: true
     explanation?: true
@@ -1924,6 +2189,8 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    modelId?: true
+    manufacturerId?: true
     _all?: true
   }
 
@@ -2016,16 +2283,17 @@ export namespace Prisma {
   export type CarGroupByOutputType = {
     id: number
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation: string | null
     accidentCount: number | null
     accidentDetails: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt: Date
     updatedAt: Date
+    modelId: number
+    manufacturerId: number
     _count: CarCountAggregateOutputType | null
     _avg: CarAvgAggregateOutputType | null
     _sum: CarSumAggregateOutputType | null
@@ -2050,8 +2318,7 @@ export namespace Prisma {
   export type CarSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     carNumber?: boolean
-    manufacturer?: boolean
-    model?: boolean
+    type?: boolean
     mileage?: boolean
     price?: boolean
     explanation?: boolean
@@ -2060,6 +2327,10 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    modelId?: boolean
+    manufacturerId?: boolean
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
     contracts?: boolean | Car$contractsArgs<ExtArgs>
     _count?: boolean | CarCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["car"]>
@@ -2067,8 +2338,7 @@ export namespace Prisma {
   export type CarSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     carNumber?: boolean
-    manufacturer?: boolean
-    model?: boolean
+    type?: boolean
     mileage?: boolean
     price?: boolean
     explanation?: boolean
@@ -2077,13 +2347,16 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    modelId?: boolean
+    manufacturerId?: boolean
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["car"]>
 
   export type CarSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     carNumber?: boolean
-    manufacturer?: boolean
-    model?: boolean
+    type?: boolean
     mileage?: boolean
     price?: boolean
     explanation?: boolean
@@ -2092,13 +2365,16 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    modelId?: boolean
+    manufacturerId?: boolean
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["car"]>
 
   export type CarSelectScalar = {
     id?: boolean
     carNumber?: boolean
-    manufacturer?: boolean
-    model?: boolean
+    type?: boolean
     mileage?: boolean
     price?: boolean
     explanation?: boolean
@@ -2107,34 +2383,47 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    modelId?: boolean
+    manufacturerId?: boolean
   }
 
-  export type CarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "carNumber" | "manufacturer" | "model" | "mileage" | "price" | "explanation" | "accidentCount" | "accidentDetails" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["car"]>
+  export type CarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "carNumber" | "type" | "mileage" | "price" | "explanation" | "accidentCount" | "accidentDetails" | "status" | "createdAt" | "updatedAt" | "modelId" | "manufacturerId", ExtArgs["result"]["car"]>
   export type CarInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
     contracts?: boolean | Car$contractsArgs<ExtArgs>
     _count?: boolean | CarCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CarIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CarIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CarIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
+  }
+  export type CarIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    model?: boolean | ModelsDefaultArgs<ExtArgs>
+    manufacturers?: boolean | ManufacterersDefaultArgs<ExtArgs>
+  }
 
   export type $CarPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Car"
     objects: {
+      model: Prisma.$ModelsPayload<ExtArgs>
+      manufacturers: Prisma.$ManufacterersPayload<ExtArgs>
       contracts: Prisma.$ContractPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       carNumber: string
-      manufacturer: string
-      model: string
+      type: $Enums.CarType
       mileage: number
       price: number
       explanation: string | null
       accidentCount: number | null
       accidentDetails: string | null
-      status: string
+      status: $Enums.VehicleStatus
       createdAt: Date
       updatedAt: Date
+      modelId: number
+      manufacturerId: number
     }, ExtArgs["result"]["car"]>
     composites: {}
   }
@@ -2529,6 +2818,8 @@ export namespace Prisma {
    */
   export interface Prisma__CarClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    model<T extends ModelsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ModelsDefaultArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    manufacturers<T extends ManufacterersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ManufacterersDefaultArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     contracts<T extends Car$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Car$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2561,16 +2852,17 @@ export namespace Prisma {
   interface CarFieldRefs {
     readonly id: FieldRef<"Car", 'Int'>
     readonly carNumber: FieldRef<"Car", 'String'>
-    readonly manufacturer: FieldRef<"Car", 'String'>
-    readonly model: FieldRef<"Car", 'String'>
+    readonly type: FieldRef<"Car", 'CarType'>
     readonly mileage: FieldRef<"Car", 'Int'>
     readonly price: FieldRef<"Car", 'Int'>
     readonly explanation: FieldRef<"Car", 'String'>
     readonly accidentCount: FieldRef<"Car", 'Int'>
     readonly accidentDetails: FieldRef<"Car", 'String'>
-    readonly status: FieldRef<"Car", 'String'>
+    readonly status: FieldRef<"Car", 'VehicleStatus'>
     readonly createdAt: FieldRef<"Car", 'DateTime'>
     readonly updatedAt: FieldRef<"Car", 'DateTime'>
+    readonly modelId: FieldRef<"Car", 'Int'>
+    readonly manufacturerId: FieldRef<"Car", 'Int'>
   }
     
 
@@ -2820,6 +3112,10 @@ export namespace Prisma {
      */
     data: CarCreateManyInput | CarCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2890,6 +3186,10 @@ export namespace Prisma {
      * Limit how many Cars to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3002,6 +3302,2205 @@ export namespace Prisma {
 
 
   /**
+   * Model Manufacterers
+   */
+
+  export type AggregateManufacterers = {
+    _count: ManufacterersCountAggregateOutputType | null
+    _avg: ManufacterersAvgAggregateOutputType | null
+    _sum: ManufacterersSumAggregateOutputType | null
+    _min: ManufacterersMinAggregateOutputType | null
+    _max: ManufacterersMaxAggregateOutputType | null
+  }
+
+  export type ManufacterersAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ManufacterersSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ManufacterersMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ManufacterersMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ManufacterersCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ManufacterersAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ManufacterersSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ManufacterersMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ManufacterersMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ManufacterersCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ManufacterersAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Manufacterers to aggregate.
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manufacterers to fetch.
+     */
+    orderBy?: ManufacterersOrderByWithRelationInput | ManufacterersOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ManufacterersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manufacterers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manufacterers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Manufacterers
+    **/
+    _count?: true | ManufacterersCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ManufacterersAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ManufacterersSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ManufacterersMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ManufacterersMaxAggregateInputType
+  }
+
+  export type GetManufacterersAggregateType<T extends ManufacterersAggregateArgs> = {
+        [P in keyof T & keyof AggregateManufacterers]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateManufacterers[P]>
+      : GetScalarType<T[P], AggregateManufacterers[P]>
+  }
+
+
+
+
+  export type ManufacterersGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManufacterersWhereInput
+    orderBy?: ManufacterersOrderByWithAggregationInput | ManufacterersOrderByWithAggregationInput[]
+    by: ManufacterersScalarFieldEnum[] | ManufacterersScalarFieldEnum
+    having?: ManufacterersScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ManufacterersCountAggregateInputType | true
+    _avg?: ManufacterersAvgAggregateInputType
+    _sum?: ManufacterersSumAggregateInputType
+    _min?: ManufacterersMinAggregateInputType
+    _max?: ManufacterersMaxAggregateInputType
+  }
+
+  export type ManufacterersGroupByOutputType = {
+    id: number
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ManufacterersCountAggregateOutputType | null
+    _avg: ManufacterersAvgAggregateOutputType | null
+    _sum: ManufacterersSumAggregateOutputType | null
+    _min: ManufacterersMinAggregateOutputType | null
+    _max: ManufacterersMaxAggregateOutputType | null
+  }
+
+  type GetManufacterersGroupByPayload<T extends ManufacterersGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ManufacterersGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ManufacterersGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ManufacterersGroupByOutputType[P]>
+            : GetScalarType<T[P], ManufacterersGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ManufacterersSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cars?: boolean | Manufacterers$carsArgs<ExtArgs>
+    _count?: boolean | ManufacterersCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["manufacterers"]>
+
+  export type ManufacterersSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["manufacterers"]>
+
+  export type ManufacterersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["manufacterers"]>
+
+  export type ManufacterersSelectScalar = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ManufacterersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["manufacterers"]>
+  export type ManufacterersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cars?: boolean | Manufacterers$carsArgs<ExtArgs>
+    _count?: boolean | ManufacterersCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ManufacterersIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ManufacterersIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ManufacterersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Manufacterers"
+    objects: {
+      cars: Prisma.$CarPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["manufacterers"]>
+    composites: {}
+  }
+
+  type ManufacterersGetPayload<S extends boolean | null | undefined | ManufacterersDefaultArgs> = $Result.GetResult<Prisma.$ManufacterersPayload, S>
+
+  type ManufacterersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ManufacterersFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ManufacterersCountAggregateInputType | true
+    }
+
+  export interface ManufacterersDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Manufacterers'], meta: { name: 'Manufacterers' } }
+    /**
+     * Find zero or one Manufacterers that matches the filter.
+     * @param {ManufacterersFindUniqueArgs} args - Arguments to find a Manufacterers
+     * @example
+     * // Get one Manufacterers
+     * const manufacterers = await prisma.manufacterers.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ManufacterersFindUniqueArgs>(args: SelectSubset<T, ManufacterersFindUniqueArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Manufacterers that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ManufacterersFindUniqueOrThrowArgs} args - Arguments to find a Manufacterers
+     * @example
+     * // Get one Manufacterers
+     * const manufacterers = await prisma.manufacterers.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ManufacterersFindUniqueOrThrowArgs>(args: SelectSubset<T, ManufacterersFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Manufacterers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersFindFirstArgs} args - Arguments to find a Manufacterers
+     * @example
+     * // Get one Manufacterers
+     * const manufacterers = await prisma.manufacterers.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ManufacterersFindFirstArgs>(args?: SelectSubset<T, ManufacterersFindFirstArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Manufacterers that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersFindFirstOrThrowArgs} args - Arguments to find a Manufacterers
+     * @example
+     * // Get one Manufacterers
+     * const manufacterers = await prisma.manufacterers.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ManufacterersFindFirstOrThrowArgs>(args?: SelectSubset<T, ManufacterersFindFirstOrThrowArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Manufacterers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Manufacterers
+     * const manufacterers = await prisma.manufacterers.findMany()
+     * 
+     * // Get first 10 Manufacterers
+     * const manufacterers = await prisma.manufacterers.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const manufacterersWithIdOnly = await prisma.manufacterers.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ManufacterersFindManyArgs>(args?: SelectSubset<T, ManufacterersFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Manufacterers.
+     * @param {ManufacterersCreateArgs} args - Arguments to create a Manufacterers.
+     * @example
+     * // Create one Manufacterers
+     * const Manufacterers = await prisma.manufacterers.create({
+     *   data: {
+     *     // ... data to create a Manufacterers
+     *   }
+     * })
+     * 
+     */
+    create<T extends ManufacterersCreateArgs>(args: SelectSubset<T, ManufacterersCreateArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Manufacterers.
+     * @param {ManufacterersCreateManyArgs} args - Arguments to create many Manufacterers.
+     * @example
+     * // Create many Manufacterers
+     * const manufacterers = await prisma.manufacterers.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ManufacterersCreateManyArgs>(args?: SelectSubset<T, ManufacterersCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Manufacterers and returns the data saved in the database.
+     * @param {ManufacterersCreateManyAndReturnArgs} args - Arguments to create many Manufacterers.
+     * @example
+     * // Create many Manufacterers
+     * const manufacterers = await prisma.manufacterers.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Manufacterers and only return the `id`
+     * const manufacterersWithIdOnly = await prisma.manufacterers.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ManufacterersCreateManyAndReturnArgs>(args?: SelectSubset<T, ManufacterersCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Manufacterers.
+     * @param {ManufacterersDeleteArgs} args - Arguments to delete one Manufacterers.
+     * @example
+     * // Delete one Manufacterers
+     * const Manufacterers = await prisma.manufacterers.delete({
+     *   where: {
+     *     // ... filter to delete one Manufacterers
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ManufacterersDeleteArgs>(args: SelectSubset<T, ManufacterersDeleteArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Manufacterers.
+     * @param {ManufacterersUpdateArgs} args - Arguments to update one Manufacterers.
+     * @example
+     * // Update one Manufacterers
+     * const manufacterers = await prisma.manufacterers.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ManufacterersUpdateArgs>(args: SelectSubset<T, ManufacterersUpdateArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Manufacterers.
+     * @param {ManufacterersDeleteManyArgs} args - Arguments to filter Manufacterers to delete.
+     * @example
+     * // Delete a few Manufacterers
+     * const { count } = await prisma.manufacterers.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ManufacterersDeleteManyArgs>(args?: SelectSubset<T, ManufacterersDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Manufacterers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Manufacterers
+     * const manufacterers = await prisma.manufacterers.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ManufacterersUpdateManyArgs>(args: SelectSubset<T, ManufacterersUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Manufacterers and returns the data updated in the database.
+     * @param {ManufacterersUpdateManyAndReturnArgs} args - Arguments to update many Manufacterers.
+     * @example
+     * // Update many Manufacterers
+     * const manufacterers = await prisma.manufacterers.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Manufacterers and only return the `id`
+     * const manufacterersWithIdOnly = await prisma.manufacterers.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ManufacterersUpdateManyAndReturnArgs>(args: SelectSubset<T, ManufacterersUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Manufacterers.
+     * @param {ManufacterersUpsertArgs} args - Arguments to update or create a Manufacterers.
+     * @example
+     * // Update or create a Manufacterers
+     * const manufacterers = await prisma.manufacterers.upsert({
+     *   create: {
+     *     // ... data to create a Manufacterers
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Manufacterers we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ManufacterersUpsertArgs>(args: SelectSubset<T, ManufacterersUpsertArgs<ExtArgs>>): Prisma__ManufacterersClient<$Result.GetResult<Prisma.$ManufacterersPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Manufacterers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersCountArgs} args - Arguments to filter Manufacterers to count.
+     * @example
+     * // Count the number of Manufacterers
+     * const count = await prisma.manufacterers.count({
+     *   where: {
+     *     // ... the filter for the Manufacterers we want to count
+     *   }
+     * })
+    **/
+    count<T extends ManufacterersCountArgs>(
+      args?: Subset<T, ManufacterersCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ManufacterersCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Manufacterers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ManufacterersAggregateArgs>(args: Subset<T, ManufacterersAggregateArgs>): Prisma.PrismaPromise<GetManufacterersAggregateType<T>>
+
+    /**
+     * Group by Manufacterers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManufacterersGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ManufacterersGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ManufacterersGroupByArgs['orderBy'] }
+        : { orderBy?: ManufacterersGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ManufacterersGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetManufacterersGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Manufacterers model
+   */
+  readonly fields: ManufacterersFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Manufacterers.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ManufacterersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    cars<T extends Manufacterers$carsArgs<ExtArgs> = {}>(args?: Subset<T, Manufacterers$carsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Manufacterers model
+   */
+  interface ManufacterersFieldRefs {
+    readonly id: FieldRef<"Manufacterers", 'Int'>
+    readonly name: FieldRef<"Manufacterers", 'String'>
+    readonly createdAt: FieldRef<"Manufacterers", 'DateTime'>
+    readonly updatedAt: FieldRef<"Manufacterers", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Manufacterers findUnique
+   */
+  export type ManufacterersFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter, which Manufacterers to fetch.
+     */
+    where: ManufacterersWhereUniqueInput
+  }
+
+  /**
+   * Manufacterers findUniqueOrThrow
+   */
+  export type ManufacterersFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter, which Manufacterers to fetch.
+     */
+    where: ManufacterersWhereUniqueInput
+  }
+
+  /**
+   * Manufacterers findFirst
+   */
+  export type ManufacterersFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter, which Manufacterers to fetch.
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manufacterers to fetch.
+     */
+    orderBy?: ManufacterersOrderByWithRelationInput | ManufacterersOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Manufacterers.
+     */
+    cursor?: ManufacterersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manufacterers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manufacterers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Manufacterers.
+     */
+    distinct?: ManufacterersScalarFieldEnum | ManufacterersScalarFieldEnum[]
+  }
+
+  /**
+   * Manufacterers findFirstOrThrow
+   */
+  export type ManufacterersFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter, which Manufacterers to fetch.
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manufacterers to fetch.
+     */
+    orderBy?: ManufacterersOrderByWithRelationInput | ManufacterersOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Manufacterers.
+     */
+    cursor?: ManufacterersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manufacterers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manufacterers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Manufacterers.
+     */
+    distinct?: ManufacterersScalarFieldEnum | ManufacterersScalarFieldEnum[]
+  }
+
+  /**
+   * Manufacterers findMany
+   */
+  export type ManufacterersFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter, which Manufacterers to fetch.
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manufacterers to fetch.
+     */
+    orderBy?: ManufacterersOrderByWithRelationInput | ManufacterersOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Manufacterers.
+     */
+    cursor?: ManufacterersWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manufacterers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manufacterers.
+     */
+    skip?: number
+    distinct?: ManufacterersScalarFieldEnum | ManufacterersScalarFieldEnum[]
+  }
+
+  /**
+   * Manufacterers create
+   */
+  export type ManufacterersCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Manufacterers.
+     */
+    data: XOR<ManufacterersCreateInput, ManufacterersUncheckedCreateInput>
+  }
+
+  /**
+   * Manufacterers createMany
+   */
+  export type ManufacterersCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Manufacterers.
+     */
+    data: ManufacterersCreateManyInput | ManufacterersCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Manufacterers createManyAndReturn
+   */
+  export type ManufacterersCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * The data used to create many Manufacterers.
+     */
+    data: ManufacterersCreateManyInput | ManufacterersCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Manufacterers update
+   */
+  export type ManufacterersUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Manufacterers.
+     */
+    data: XOR<ManufacterersUpdateInput, ManufacterersUncheckedUpdateInput>
+    /**
+     * Choose, which Manufacterers to update.
+     */
+    where: ManufacterersWhereUniqueInput
+  }
+
+  /**
+   * Manufacterers updateMany
+   */
+  export type ManufacterersUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Manufacterers.
+     */
+    data: XOR<ManufacterersUpdateManyMutationInput, ManufacterersUncheckedUpdateManyInput>
+    /**
+     * Filter which Manufacterers to update
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * Limit how many Manufacterers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Manufacterers updateManyAndReturn
+   */
+  export type ManufacterersUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * The data used to update Manufacterers.
+     */
+    data: XOR<ManufacterersUpdateManyMutationInput, ManufacterersUncheckedUpdateManyInput>
+    /**
+     * Filter which Manufacterers to update
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * Limit how many Manufacterers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Manufacterers upsert
+   */
+  export type ManufacterersUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Manufacterers to update in case it exists.
+     */
+    where: ManufacterersWhereUniqueInput
+    /**
+     * In case the Manufacterers found by the `where` argument doesn't exist, create a new Manufacterers with this data.
+     */
+    create: XOR<ManufacterersCreateInput, ManufacterersUncheckedCreateInput>
+    /**
+     * In case the Manufacterers was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ManufacterersUpdateInput, ManufacterersUncheckedUpdateInput>
+  }
+
+  /**
+   * Manufacterers delete
+   */
+  export type ManufacterersDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+    /**
+     * Filter which Manufacterers to delete.
+     */
+    where: ManufacterersWhereUniqueInput
+  }
+
+  /**
+   * Manufacterers deleteMany
+   */
+  export type ManufacterersDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Manufacterers to delete
+     */
+    where?: ManufacterersWhereInput
+    /**
+     * Limit how many Manufacterers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Manufacterers.cars
+   */
+  export type Manufacterers$carsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Car
+     */
+    select?: CarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Car
+     */
+    omit?: CarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarInclude<ExtArgs> | null
+    where?: CarWhereInput
+    orderBy?: CarOrderByWithRelationInput | CarOrderByWithRelationInput[]
+    cursor?: CarWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CarScalarFieldEnum | CarScalarFieldEnum[]
+  }
+
+  /**
+   * Manufacterers without action
+   */
+  export type ManufacterersDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manufacterers
+     */
+    select?: ManufacterersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manufacterers
+     */
+    omit?: ManufacterersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManufacterersInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Models
+   */
+
+  export type AggregateModels = {
+    _count: ModelsCountAggregateOutputType | null
+    _avg: ModelsAvgAggregateOutputType | null
+    _sum: ModelsSumAggregateOutputType | null
+    _min: ModelsMinAggregateOutputType | null
+    _max: ModelsMaxAggregateOutputType | null
+  }
+
+  export type ModelsAvgAggregateOutputType = {
+    id: number | null
+    year: number | null
+  }
+
+  export type ModelsSumAggregateOutputType = {
+    id: number | null
+    year: number | null
+  }
+
+  export type ModelsMinAggregateOutputType = {
+    id: number | null
+    year: number | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ModelsMaxAggregateOutputType = {
+    id: number | null
+    year: number | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ModelsCountAggregateOutputType = {
+    id: number
+    year: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ModelsAvgAggregateInputType = {
+    id?: true
+    year?: true
+  }
+
+  export type ModelsSumAggregateInputType = {
+    id?: true
+    year?: true
+  }
+
+  export type ModelsMinAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ModelsMaxAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ModelsCountAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ModelsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Models to aggregate.
+     */
+    where?: ModelsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Models to fetch.
+     */
+    orderBy?: ModelsOrderByWithRelationInput | ModelsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ModelsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Models from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Models.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Models
+    **/
+    _count?: true | ModelsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ModelsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ModelsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModelsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModelsMaxAggregateInputType
+  }
+
+  export type GetModelsAggregateType<T extends ModelsAggregateArgs> = {
+        [P in keyof T & keyof AggregateModels]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModels[P]>
+      : GetScalarType<T[P], AggregateModels[P]>
+  }
+
+
+
+
+  export type ModelsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModelsWhereInput
+    orderBy?: ModelsOrderByWithAggregationInput | ModelsOrderByWithAggregationInput[]
+    by: ModelsScalarFieldEnum[] | ModelsScalarFieldEnum
+    having?: ModelsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModelsCountAggregateInputType | true
+    _avg?: ModelsAvgAggregateInputType
+    _sum?: ModelsSumAggregateInputType
+    _min?: ModelsMinAggregateInputType
+    _max?: ModelsMaxAggregateInputType
+  }
+
+  export type ModelsGroupByOutputType = {
+    id: number
+    year: number
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ModelsCountAggregateOutputType | null
+    _avg: ModelsAvgAggregateOutputType | null
+    _sum: ModelsSumAggregateOutputType | null
+    _min: ModelsMinAggregateOutputType | null
+    _max: ModelsMaxAggregateOutputType | null
+  }
+
+  type GetModelsGroupByPayload<T extends ModelsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ModelsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModelsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModelsGroupByOutputType[P]>
+            : GetScalarType<T[P], ModelsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModelsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cars?: boolean | Models$carsArgs<ExtArgs>
+    _count?: boolean | ModelsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["models"]>
+
+  export type ModelsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["models"]>
+
+  export type ModelsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["models"]>
+
+  export type ModelsSelectScalar = {
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ModelsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["models"]>
+  export type ModelsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cars?: boolean | Models$carsArgs<ExtArgs>
+    _count?: boolean | ModelsCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ModelsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ModelsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ModelsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Models"
+    objects: {
+      cars: Prisma.$CarPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      year: number
+      name: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["models"]>
+    composites: {}
+  }
+
+  type ModelsGetPayload<S extends boolean | null | undefined | ModelsDefaultArgs> = $Result.GetResult<Prisma.$ModelsPayload, S>
+
+  type ModelsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ModelsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ModelsCountAggregateInputType | true
+    }
+
+  export interface ModelsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Models'], meta: { name: 'Models' } }
+    /**
+     * Find zero or one Models that matches the filter.
+     * @param {ModelsFindUniqueArgs} args - Arguments to find a Models
+     * @example
+     * // Get one Models
+     * const models = await prisma.models.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ModelsFindUniqueArgs>(args: SelectSubset<T, ModelsFindUniqueArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Models that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ModelsFindUniqueOrThrowArgs} args - Arguments to find a Models
+     * @example
+     * // Get one Models
+     * const models = await prisma.models.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ModelsFindUniqueOrThrowArgs>(args: SelectSubset<T, ModelsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Models that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsFindFirstArgs} args - Arguments to find a Models
+     * @example
+     * // Get one Models
+     * const models = await prisma.models.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ModelsFindFirstArgs>(args?: SelectSubset<T, ModelsFindFirstArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Models that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsFindFirstOrThrowArgs} args - Arguments to find a Models
+     * @example
+     * // Get one Models
+     * const models = await prisma.models.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ModelsFindFirstOrThrowArgs>(args?: SelectSubset<T, ModelsFindFirstOrThrowArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Models that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Models
+     * const models = await prisma.models.findMany()
+     * 
+     * // Get first 10 Models
+     * const models = await prisma.models.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const modelsWithIdOnly = await prisma.models.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ModelsFindManyArgs>(args?: SelectSubset<T, ModelsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Models.
+     * @param {ModelsCreateArgs} args - Arguments to create a Models.
+     * @example
+     * // Create one Models
+     * const Models = await prisma.models.create({
+     *   data: {
+     *     // ... data to create a Models
+     *   }
+     * })
+     * 
+     */
+    create<T extends ModelsCreateArgs>(args: SelectSubset<T, ModelsCreateArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Models.
+     * @param {ModelsCreateManyArgs} args - Arguments to create many Models.
+     * @example
+     * // Create many Models
+     * const models = await prisma.models.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ModelsCreateManyArgs>(args?: SelectSubset<T, ModelsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Models and returns the data saved in the database.
+     * @param {ModelsCreateManyAndReturnArgs} args - Arguments to create many Models.
+     * @example
+     * // Create many Models
+     * const models = await prisma.models.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Models and only return the `id`
+     * const modelsWithIdOnly = await prisma.models.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ModelsCreateManyAndReturnArgs>(args?: SelectSubset<T, ModelsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Models.
+     * @param {ModelsDeleteArgs} args - Arguments to delete one Models.
+     * @example
+     * // Delete one Models
+     * const Models = await prisma.models.delete({
+     *   where: {
+     *     // ... filter to delete one Models
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ModelsDeleteArgs>(args: SelectSubset<T, ModelsDeleteArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Models.
+     * @param {ModelsUpdateArgs} args - Arguments to update one Models.
+     * @example
+     * // Update one Models
+     * const models = await prisma.models.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ModelsUpdateArgs>(args: SelectSubset<T, ModelsUpdateArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Models.
+     * @param {ModelsDeleteManyArgs} args - Arguments to filter Models to delete.
+     * @example
+     * // Delete a few Models
+     * const { count } = await prisma.models.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ModelsDeleteManyArgs>(args?: SelectSubset<T, ModelsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Models.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Models
+     * const models = await prisma.models.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ModelsUpdateManyArgs>(args: SelectSubset<T, ModelsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Models and returns the data updated in the database.
+     * @param {ModelsUpdateManyAndReturnArgs} args - Arguments to update many Models.
+     * @example
+     * // Update many Models
+     * const models = await prisma.models.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Models and only return the `id`
+     * const modelsWithIdOnly = await prisma.models.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ModelsUpdateManyAndReturnArgs>(args: SelectSubset<T, ModelsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Models.
+     * @param {ModelsUpsertArgs} args - Arguments to update or create a Models.
+     * @example
+     * // Update or create a Models
+     * const models = await prisma.models.upsert({
+     *   create: {
+     *     // ... data to create a Models
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Models we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ModelsUpsertArgs>(args: SelectSubset<T, ModelsUpsertArgs<ExtArgs>>): Prisma__ModelsClient<$Result.GetResult<Prisma.$ModelsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Models.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsCountArgs} args - Arguments to filter Models to count.
+     * @example
+     * // Count the number of Models
+     * const count = await prisma.models.count({
+     *   where: {
+     *     // ... the filter for the Models we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModelsCountArgs>(
+      args?: Subset<T, ModelsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModelsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Models.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModelsAggregateArgs>(args: Subset<T, ModelsAggregateArgs>): Prisma.PrismaPromise<GetModelsAggregateType<T>>
+
+    /**
+     * Group by Models.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModelsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModelsGroupByArgs['orderBy'] }
+        : { orderBy?: ModelsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModelsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModelsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Models model
+   */
+  readonly fields: ModelsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Models.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ModelsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    cars<T extends Models$carsArgs<ExtArgs> = {}>(args?: Subset<T, Models$carsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Models model
+   */
+  interface ModelsFieldRefs {
+    readonly id: FieldRef<"Models", 'Int'>
+    readonly year: FieldRef<"Models", 'Int'>
+    readonly name: FieldRef<"Models", 'String'>
+    readonly createdAt: FieldRef<"Models", 'DateTime'>
+    readonly updatedAt: FieldRef<"Models", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Models findUnique
+   */
+  export type ModelsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter, which Models to fetch.
+     */
+    where: ModelsWhereUniqueInput
+  }
+
+  /**
+   * Models findUniqueOrThrow
+   */
+  export type ModelsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter, which Models to fetch.
+     */
+    where: ModelsWhereUniqueInput
+  }
+
+  /**
+   * Models findFirst
+   */
+  export type ModelsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter, which Models to fetch.
+     */
+    where?: ModelsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Models to fetch.
+     */
+    orderBy?: ModelsOrderByWithRelationInput | ModelsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Models.
+     */
+    cursor?: ModelsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Models from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Models.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Models.
+     */
+    distinct?: ModelsScalarFieldEnum | ModelsScalarFieldEnum[]
+  }
+
+  /**
+   * Models findFirstOrThrow
+   */
+  export type ModelsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter, which Models to fetch.
+     */
+    where?: ModelsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Models to fetch.
+     */
+    orderBy?: ModelsOrderByWithRelationInput | ModelsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Models.
+     */
+    cursor?: ModelsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Models from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Models.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Models.
+     */
+    distinct?: ModelsScalarFieldEnum | ModelsScalarFieldEnum[]
+  }
+
+  /**
+   * Models findMany
+   */
+  export type ModelsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter, which Models to fetch.
+     */
+    where?: ModelsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Models to fetch.
+     */
+    orderBy?: ModelsOrderByWithRelationInput | ModelsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Models.
+     */
+    cursor?: ModelsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Models from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Models.
+     */
+    skip?: number
+    distinct?: ModelsScalarFieldEnum | ModelsScalarFieldEnum[]
+  }
+
+  /**
+   * Models create
+   */
+  export type ModelsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Models.
+     */
+    data: XOR<ModelsCreateInput, ModelsUncheckedCreateInput>
+  }
+
+  /**
+   * Models createMany
+   */
+  export type ModelsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Models.
+     */
+    data: ModelsCreateManyInput | ModelsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Models createManyAndReturn
+   */
+  export type ModelsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * The data used to create many Models.
+     */
+    data: ModelsCreateManyInput | ModelsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Models update
+   */
+  export type ModelsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Models.
+     */
+    data: XOR<ModelsUpdateInput, ModelsUncheckedUpdateInput>
+    /**
+     * Choose, which Models to update.
+     */
+    where: ModelsWhereUniqueInput
+  }
+
+  /**
+   * Models updateMany
+   */
+  export type ModelsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Models.
+     */
+    data: XOR<ModelsUpdateManyMutationInput, ModelsUncheckedUpdateManyInput>
+    /**
+     * Filter which Models to update
+     */
+    where?: ModelsWhereInput
+    /**
+     * Limit how many Models to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Models updateManyAndReturn
+   */
+  export type ModelsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * The data used to update Models.
+     */
+    data: XOR<ModelsUpdateManyMutationInput, ModelsUncheckedUpdateManyInput>
+    /**
+     * Filter which Models to update
+     */
+    where?: ModelsWhereInput
+    /**
+     * Limit how many Models to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Models upsert
+   */
+  export type ModelsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Models to update in case it exists.
+     */
+    where: ModelsWhereUniqueInput
+    /**
+     * In case the Models found by the `where` argument doesn't exist, create a new Models with this data.
+     */
+    create: XOR<ModelsCreateInput, ModelsUncheckedCreateInput>
+    /**
+     * In case the Models was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ModelsUpdateInput, ModelsUncheckedUpdateInput>
+  }
+
+  /**
+   * Models delete
+   */
+  export type ModelsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+    /**
+     * Filter which Models to delete.
+     */
+    where: ModelsWhereUniqueInput
+  }
+
+  /**
+   * Models deleteMany
+   */
+  export type ModelsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Models to delete
+     */
+    where?: ModelsWhereInput
+    /**
+     * Limit how many Models to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Models.cars
+   */
+  export type Models$carsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Car
+     */
+    select?: CarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Car
+     */
+    omit?: CarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CarInclude<ExtArgs> | null
+    where?: CarWhereInput
+    orderBy?: CarOrderByWithRelationInput | CarOrderByWithRelationInput[]
+    cursor?: CarWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CarScalarFieldEnum | CarScalarFieldEnum[]
+  }
+
+  /**
+   * Models without action
+   */
+  export type ModelsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Models
+     */
+    select?: ModelsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Models
+     */
+    omit?: ModelsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModelsInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Customer
    */
 
@@ -3016,39 +5515,43 @@ export namespace Prisma {
   export type CustomerAvgAggregateOutputType = {
     id: number | null
     contractCount: number | null
+    companyId: number | null
   }
 
   export type CustomerSumAggregateOutputType = {
     id: number | null
     contractCount: number | null
+    companyId: number | null
   }
 
   export type CustomerMinAggregateOutputType = {
     id: number | null
     name: string | null
     email: string | null
-    gender: string | null
+    gender: $Enums.GenderType | null
     phoneNumber: string | null
-    ageGroup: string | null
-    region: string | null
+    ageGroup: $Enums.AgeGroup | null
+    region: $Enums.Region | null
     memo: string | null
     contractCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    companyId: number | null
   }
 
   export type CustomerMaxAggregateOutputType = {
     id: number | null
     name: string | null
     email: string | null
-    gender: string | null
+    gender: $Enums.GenderType | null
     phoneNumber: string | null
-    ageGroup: string | null
-    region: string | null
+    ageGroup: $Enums.AgeGroup | null
+    region: $Enums.Region | null
     memo: string | null
     contractCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    companyId: number | null
   }
 
   export type CustomerCountAggregateOutputType = {
@@ -3063,6 +5566,7 @@ export namespace Prisma {
     contractCount: number
     createdAt: number
     updatedAt: number
+    companyId: number
     _all: number
   }
 
@@ -3070,11 +5574,13 @@ export namespace Prisma {
   export type CustomerAvgAggregateInputType = {
     id?: true
     contractCount?: true
+    companyId?: true
   }
 
   export type CustomerSumAggregateInputType = {
     id?: true
     contractCount?: true
+    companyId?: true
   }
 
   export type CustomerMinAggregateInputType = {
@@ -3089,6 +5595,7 @@ export namespace Prisma {
     contractCount?: true
     createdAt?: true
     updatedAt?: true
+    companyId?: true
   }
 
   export type CustomerMaxAggregateInputType = {
@@ -3103,6 +5610,7 @@ export namespace Prisma {
     contractCount?: true
     createdAt?: true
     updatedAt?: true
+    companyId?: true
   }
 
   export type CustomerCountAggregateInputType = {
@@ -3117,6 +5625,7 @@ export namespace Prisma {
     contractCount?: true
     createdAt?: true
     updatedAt?: true
+    companyId?: true
     _all?: true
   }
 
@@ -3210,14 +5719,15 @@ export namespace Prisma {
     id: number
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo: string | null
     contractCount: number
     createdAt: Date
     updatedAt: Date
+    companyId: number | null
     _count: CustomerCountAggregateOutputType | null
     _avg: CustomerAvgAggregateOutputType | null
     _sum: CustomerSumAggregateOutputType | null
@@ -3251,7 +5761,9 @@ export namespace Prisma {
     contractCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    companyId?: boolean
     contracts?: boolean | Customer$contractsArgs<ExtArgs>
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
@@ -3267,6 +5779,8 @@ export namespace Prisma {
     contractCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    companyId?: boolean
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
   export type CustomerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3281,6 +5795,8 @@ export namespace Prisma {
     contractCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    companyId?: boolean
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
   export type CustomerSelectScalar = {
@@ -3295,33 +5811,41 @@ export namespace Prisma {
     contractCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    companyId?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "gender" | "phoneNumber" | "ageGroup" | "region" | "memo" | "contractCount" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "gender" | "phoneNumber" | "ageGroup" | "region" | "memo" | "contractCount" | "createdAt" | "updatedAt" | "companyId", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contracts?: boolean | Customer$contractsArgs<ExtArgs>
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CustomerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CustomerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
+  }
+  export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Company?: boolean | Customer$CompanyArgs<ExtArgs>
+  }
 
   export type $CustomerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Customer"
     objects: {
       contracts: Prisma.$ContractPayload<ExtArgs>[]
+      Company: Prisma.$CompanyPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       email: string
-      gender: string
+      gender: $Enums.GenderType
       phoneNumber: string
-      ageGroup: string
-      region: string
+      ageGroup: $Enums.AgeGroup
+      region: $Enums.Region
       memo: string | null
       contractCount: number
       createdAt: Date
       updatedAt: Date
+      companyId: number | null
     }, ExtArgs["result"]["customer"]>
     composites: {}
   }
@@ -3717,6 +6241,7 @@ export namespace Prisma {
   export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     contracts<T extends Customer$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Customer$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Company<T extends Customer$CompanyArgs<ExtArgs> = {}>(args?: Subset<T, Customer$CompanyArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3749,14 +6274,15 @@ export namespace Prisma {
     readonly id: FieldRef<"Customer", 'Int'>
     readonly name: FieldRef<"Customer", 'String'>
     readonly email: FieldRef<"Customer", 'String'>
-    readonly gender: FieldRef<"Customer", 'String'>
+    readonly gender: FieldRef<"Customer", 'GenderType'>
     readonly phoneNumber: FieldRef<"Customer", 'String'>
-    readonly ageGroup: FieldRef<"Customer", 'String'>
-    readonly region: FieldRef<"Customer", 'String'>
+    readonly ageGroup: FieldRef<"Customer", 'AgeGroup'>
+    readonly region: FieldRef<"Customer", 'Region'>
     readonly memo: FieldRef<"Customer", 'String'>
     readonly contractCount: FieldRef<"Customer", 'Int'>
     readonly createdAt: FieldRef<"Customer", 'DateTime'>
     readonly updatedAt: FieldRef<"Customer", 'DateTime'>
+    readonly companyId: FieldRef<"Customer", 'Int'>
   }
     
 
@@ -4006,6 +6532,10 @@ export namespace Prisma {
      */
     data: CustomerCreateManyInput | CustomerCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4076,6 +6606,10 @@ export namespace Prisma {
      * Limit how many Customers to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4169,6 +6703,25 @@ export namespace Prisma {
   }
 
   /**
+   * Customer.Company
+   */
+  export type Customer$CompanyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    where?: CompanyWhereInput
+  }
+
+  /**
    * Customer without action
    */
   export type CustomerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4217,7 +6770,7 @@ export namespace Prisma {
     id: number | null
     carId: number | null
     customerId: number | null
-    status: string | null
+    status: $Enums.ContractStatus | null
     resolutionDate: Date | null
     contractPrice: number | null
     createdAt: Date | null
@@ -4228,7 +6781,7 @@ export namespace Prisma {
     id: number | null
     carId: number | null
     customerId: number | null
-    status: string | null
+    status: $Enums.ContractStatus | null
     resolutionDate: Date | null
     contractPrice: number | null
     createdAt: Date | null
@@ -4386,7 +6939,7 @@ export namespace Prisma {
     id: number
     carId: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate: Date | null
     contractPrice: number
     createdAt: Date
@@ -4494,7 +7047,7 @@ export namespace Prisma {
       id: number
       carId: number
       customerId: number
-      status: string
+      status: $Enums.ContractStatus
       resolutionDate: Date | null
       contractPrice: number
       createdAt: Date
@@ -4929,7 +7482,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Contract", 'Int'>
     readonly carId: FieldRef<"Contract", 'Int'>
     readonly customerId: FieldRef<"Contract", 'Int'>
-    readonly status: FieldRef<"Contract", 'String'>
+    readonly status: FieldRef<"Contract", 'ContractStatus'>
     readonly resolutionDate: FieldRef<"Contract", 'DateTime'>
     readonly contractPrice: FieldRef<"Contract", 'Int'>
     readonly createdAt: FieldRef<"Contract", 'DateTime'>
@@ -8964,6 +11517,7 @@ export namespace Prisma {
     companyCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    customers?: boolean | Company$customersArgs<ExtArgs>
     users?: boolean | Company$usersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
@@ -8994,6 +11548,7 @@ export namespace Prisma {
 
   export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "companyCode" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customers?: boolean | Company$customersArgs<ExtArgs>
     users?: boolean | Company$usersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -9003,6 +11558,7 @@ export namespace Prisma {
   export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Company"
     objects: {
+      customers: Prisma.$CustomerPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -9405,6 +11961,7 @@ export namespace Prisma {
    */
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    customers<T extends Company$customersArgs<ExtArgs> = {}>(args?: Subset<T, Company$customersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Company$usersArgs<ExtArgs> = {}>(args?: Subset<T, Company$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9825,6 +12382,30 @@ export namespace Prisma {
      * Limit how many Companies to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Company.customers
+   */
+  export type Company$customersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    where?: CustomerWhereInput
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    cursor?: CustomerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
   }
 
   /**
@@ -11013,8 +13594,7 @@ export namespace Prisma {
   export const CarScalarFieldEnum: {
     id: 'id',
     carNumber: 'carNumber',
-    manufacturer: 'manufacturer',
-    model: 'model',
+    type: 'type',
     mileage: 'mileage',
     price: 'price',
     explanation: 'explanation',
@@ -11022,10 +13602,33 @@ export namespace Prisma {
     accidentDetails: 'accidentDetails',
     status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    modelId: 'modelId',
+    manufacturerId: 'manufacturerId'
   };
 
   export type CarScalarFieldEnum = (typeof CarScalarFieldEnum)[keyof typeof CarScalarFieldEnum]
+
+
+  export const ManufacterersScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ManufacterersScalarFieldEnum = (typeof ManufacterersScalarFieldEnum)[keyof typeof ManufacterersScalarFieldEnum]
+
+
+  export const ModelsScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ModelsScalarFieldEnum = (typeof ModelsScalarFieldEnum)[keyof typeof ModelsScalarFieldEnum]
 
 
   export const CustomerScalarFieldEnum: {
@@ -11039,7 +13642,8 @@ export namespace Prisma {
     memo: 'memo',
     contractCount: 'contractCount',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    companyId: 'companyId'
   };
 
   export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -11178,6 +13782,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CarType'
+   */
+  export type EnumCarTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CarType[]'
+   */
+  export type ListEnumCarTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleStatus'
+   */
+  export type EnumVehicleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleStatus[]'
+   */
+  export type ListEnumVehicleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -11188,6 +13820,62 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'GenderType'
+   */
+  export type EnumGenderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GenderType'>
+    
+
+
+  /**
+   * Reference to a field of type 'GenderType[]'
+   */
+  export type ListEnumGenderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GenderType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AgeGroup'
+   */
+  export type EnumAgeGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgeGroup'>
+    
+
+
+  /**
+   * Reference to a field of type 'AgeGroup[]'
+   */
+  export type ListEnumAgeGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgeGroup[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Region'
+   */
+  export type EnumRegionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Region'>
+    
+
+
+  /**
+   * Reference to a field of type 'Region[]'
+   */
+  export type ListEnumRegionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Region[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractStatus'
+   */
+  export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractStatus[]'
+   */
+  export type ListEnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus[]'>
     
 
 
@@ -11221,24 +13909,26 @@ export namespace Prisma {
     NOT?: CarWhereInput | CarWhereInput[]
     id?: IntFilter<"Car"> | number
     carNumber?: StringFilter<"Car"> | string
-    manufacturer?: StringFilter<"Car"> | string
-    model?: StringFilter<"Car"> | string
+    type?: EnumCarTypeFilter<"Car"> | $Enums.CarType
     mileage?: IntFilter<"Car"> | number
     price?: IntFilter<"Car"> | number
     explanation?: StringNullableFilter<"Car"> | string | null
     accidentCount?: IntNullableFilter<"Car"> | number | null
     accidentDetails?: StringNullableFilter<"Car"> | string | null
-    status?: StringFilter<"Car"> | string
+    status?: EnumVehicleStatusFilter<"Car"> | $Enums.VehicleStatus
     createdAt?: DateTimeFilter<"Car"> | Date | string
     updatedAt?: DateTimeFilter<"Car"> | Date | string
+    modelId?: IntFilter<"Car"> | number
+    manufacturerId?: IntFilter<"Car"> | number
+    model?: XOR<ModelsScalarRelationFilter, ModelsWhereInput>
+    manufacturers?: XOR<ManufacterersScalarRelationFilter, ManufacterersWhereInput>
     contracts?: ContractListRelationFilter
   }
 
   export type CarOrderByWithRelationInput = {
     id?: SortOrder
     carNumber?: SortOrder
-    manufacturer?: SortOrder
-    model?: SortOrder
+    type?: SortOrder
     mileage?: SortOrder
     price?: SortOrder
     explanation?: SortOrderInput | SortOrder
@@ -11247,6 +13937,10 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
+    model?: ModelsOrderByWithRelationInput
+    manufacturers?: ManufacterersOrderByWithRelationInput
     contracts?: ContractOrderByRelationAggregateInput
   }
 
@@ -11256,24 +13950,26 @@ export namespace Prisma {
     OR?: CarWhereInput[]
     NOT?: CarWhereInput | CarWhereInput[]
     carNumber?: StringFilter<"Car"> | string
-    manufacturer?: StringFilter<"Car"> | string
-    model?: StringFilter<"Car"> | string
+    type?: EnumCarTypeFilter<"Car"> | $Enums.CarType
     mileage?: IntFilter<"Car"> | number
     price?: IntFilter<"Car"> | number
     explanation?: StringNullableFilter<"Car"> | string | null
     accidentCount?: IntNullableFilter<"Car"> | number | null
     accidentDetails?: StringNullableFilter<"Car"> | string | null
-    status?: StringFilter<"Car"> | string
+    status?: EnumVehicleStatusFilter<"Car"> | $Enums.VehicleStatus
     createdAt?: DateTimeFilter<"Car"> | Date | string
     updatedAt?: DateTimeFilter<"Car"> | Date | string
+    modelId?: IntFilter<"Car"> | number
+    manufacturerId?: IntFilter<"Car"> | number
+    model?: XOR<ModelsScalarRelationFilter, ModelsWhereInput>
+    manufacturers?: XOR<ManufacterersScalarRelationFilter, ManufacterersWhereInput>
     contracts?: ContractListRelationFilter
   }, "id">
 
   export type CarOrderByWithAggregationInput = {
     id?: SortOrder
     carNumber?: SortOrder
-    manufacturer?: SortOrder
-    model?: SortOrder
+    type?: SortOrder
     mileage?: SortOrder
     price?: SortOrder
     explanation?: SortOrderInput | SortOrder
@@ -11282,6 +13978,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
     _count?: CarCountOrderByAggregateInput
     _avg?: CarAvgOrderByAggregateInput
     _max?: CarMaxOrderByAggregateInput
@@ -11295,16 +13993,126 @@ export namespace Prisma {
     NOT?: CarScalarWhereWithAggregatesInput | CarScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Car"> | number
     carNumber?: StringWithAggregatesFilter<"Car"> | string
-    manufacturer?: StringWithAggregatesFilter<"Car"> | string
-    model?: StringWithAggregatesFilter<"Car"> | string
+    type?: EnumCarTypeWithAggregatesFilter<"Car"> | $Enums.CarType
     mileage?: IntWithAggregatesFilter<"Car"> | number
     price?: IntWithAggregatesFilter<"Car"> | number
     explanation?: StringNullableWithAggregatesFilter<"Car"> | string | null
     accidentCount?: IntNullableWithAggregatesFilter<"Car"> | number | null
     accidentDetails?: StringNullableWithAggregatesFilter<"Car"> | string | null
-    status?: StringWithAggregatesFilter<"Car"> | string
+    status?: EnumVehicleStatusWithAggregatesFilter<"Car"> | $Enums.VehicleStatus
     createdAt?: DateTimeWithAggregatesFilter<"Car"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Car"> | Date | string
+    modelId?: IntWithAggregatesFilter<"Car"> | number
+    manufacturerId?: IntWithAggregatesFilter<"Car"> | number
+  }
+
+  export type ManufacterersWhereInput = {
+    AND?: ManufacterersWhereInput | ManufacterersWhereInput[]
+    OR?: ManufacterersWhereInput[]
+    NOT?: ManufacterersWhereInput | ManufacterersWhereInput[]
+    id?: IntFilter<"Manufacterers"> | number
+    name?: StringFilter<"Manufacterers"> | string
+    createdAt?: DateTimeFilter<"Manufacterers"> | Date | string
+    updatedAt?: DateTimeFilter<"Manufacterers"> | Date | string
+    cars?: CarListRelationFilter
+  }
+
+  export type ManufacterersOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    cars?: CarOrderByRelationAggregateInput
+  }
+
+  export type ManufacterersWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ManufacterersWhereInput | ManufacterersWhereInput[]
+    OR?: ManufacterersWhereInput[]
+    NOT?: ManufacterersWhereInput | ManufacterersWhereInput[]
+    name?: StringFilter<"Manufacterers"> | string
+    createdAt?: DateTimeFilter<"Manufacterers"> | Date | string
+    updatedAt?: DateTimeFilter<"Manufacterers"> | Date | string
+    cars?: CarListRelationFilter
+  }, "id">
+
+  export type ManufacterersOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ManufacterersCountOrderByAggregateInput
+    _avg?: ManufacterersAvgOrderByAggregateInput
+    _max?: ManufacterersMaxOrderByAggregateInput
+    _min?: ManufacterersMinOrderByAggregateInput
+    _sum?: ManufacterersSumOrderByAggregateInput
+  }
+
+  export type ManufacterersScalarWhereWithAggregatesInput = {
+    AND?: ManufacterersScalarWhereWithAggregatesInput | ManufacterersScalarWhereWithAggregatesInput[]
+    OR?: ManufacterersScalarWhereWithAggregatesInput[]
+    NOT?: ManufacterersScalarWhereWithAggregatesInput | ManufacterersScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Manufacterers"> | number
+    name?: StringWithAggregatesFilter<"Manufacterers"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Manufacterers"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Manufacterers"> | Date | string
+  }
+
+  export type ModelsWhereInput = {
+    AND?: ModelsWhereInput | ModelsWhereInput[]
+    OR?: ModelsWhereInput[]
+    NOT?: ModelsWhereInput | ModelsWhereInput[]
+    id?: IntFilter<"Models"> | number
+    year?: IntFilter<"Models"> | number
+    name?: StringFilter<"Models"> | string
+    createdAt?: DateTimeFilter<"Models"> | Date | string
+    updatedAt?: DateTimeFilter<"Models"> | Date | string
+    cars?: CarListRelationFilter
+  }
+
+  export type ModelsOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    cars?: CarOrderByRelationAggregateInput
+  }
+
+  export type ModelsWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ModelsWhereInput | ModelsWhereInput[]
+    OR?: ModelsWhereInput[]
+    NOT?: ModelsWhereInput | ModelsWhereInput[]
+    year?: IntFilter<"Models"> | number
+    name?: StringFilter<"Models"> | string
+    createdAt?: DateTimeFilter<"Models"> | Date | string
+    updatedAt?: DateTimeFilter<"Models"> | Date | string
+    cars?: CarListRelationFilter
+  }, "id">
+
+  export type ModelsOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ModelsCountOrderByAggregateInput
+    _avg?: ModelsAvgOrderByAggregateInput
+    _max?: ModelsMaxOrderByAggregateInput
+    _min?: ModelsMinOrderByAggregateInput
+    _sum?: ModelsSumOrderByAggregateInput
+  }
+
+  export type ModelsScalarWhereWithAggregatesInput = {
+    AND?: ModelsScalarWhereWithAggregatesInput | ModelsScalarWhereWithAggregatesInput[]
+    OR?: ModelsScalarWhereWithAggregatesInput[]
+    NOT?: ModelsScalarWhereWithAggregatesInput | ModelsScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Models"> | number
+    year?: IntWithAggregatesFilter<"Models"> | number
+    name?: StringWithAggregatesFilter<"Models"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Models"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Models"> | Date | string
   }
 
   export type CustomerWhereInput = {
@@ -11314,15 +14122,17 @@ export namespace Prisma {
     id?: IntFilter<"Customer"> | number
     name?: StringFilter<"Customer"> | string
     email?: StringFilter<"Customer"> | string
-    gender?: StringFilter<"Customer"> | string
+    gender?: EnumGenderTypeFilter<"Customer"> | $Enums.GenderType
     phoneNumber?: StringFilter<"Customer"> | string
-    ageGroup?: StringFilter<"Customer"> | string
-    region?: StringFilter<"Customer"> | string
+    ageGroup?: EnumAgeGroupFilter<"Customer"> | $Enums.AgeGroup
+    region?: EnumRegionFilter<"Customer"> | $Enums.Region
     memo?: StringNullableFilter<"Customer"> | string | null
     contractCount?: IntFilter<"Customer"> | number
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    companyId?: IntNullableFilter<"Customer"> | number | null
     contracts?: ContractListRelationFilter
+    Company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
   }
 
   export type CustomerOrderByWithRelationInput = {
@@ -11337,7 +14147,9 @@ export namespace Prisma {
     contractCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    companyId?: SortOrderInput | SortOrder
     contracts?: ContractOrderByRelationAggregateInput
+    Company?: CompanyOrderByWithRelationInput
   }
 
   export type CustomerWhereUniqueInput = Prisma.AtLeast<{
@@ -11347,15 +14159,17 @@ export namespace Prisma {
     NOT?: CustomerWhereInput | CustomerWhereInput[]
     name?: StringFilter<"Customer"> | string
     email?: StringFilter<"Customer"> | string
-    gender?: StringFilter<"Customer"> | string
+    gender?: EnumGenderTypeFilter<"Customer"> | $Enums.GenderType
     phoneNumber?: StringFilter<"Customer"> | string
-    ageGroup?: StringFilter<"Customer"> | string
-    region?: StringFilter<"Customer"> | string
+    ageGroup?: EnumAgeGroupFilter<"Customer"> | $Enums.AgeGroup
+    region?: EnumRegionFilter<"Customer"> | $Enums.Region
     memo?: StringNullableFilter<"Customer"> | string | null
     contractCount?: IntFilter<"Customer"> | number
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    companyId?: IntNullableFilter<"Customer"> | number | null
     contracts?: ContractListRelationFilter
+    Company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
   }, "id">
 
   export type CustomerOrderByWithAggregationInput = {
@@ -11370,6 +14184,7 @@ export namespace Prisma {
     contractCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    companyId?: SortOrderInput | SortOrder
     _count?: CustomerCountOrderByAggregateInput
     _avg?: CustomerAvgOrderByAggregateInput
     _max?: CustomerMaxOrderByAggregateInput
@@ -11384,14 +14199,15 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Customer"> | number
     name?: StringWithAggregatesFilter<"Customer"> | string
     email?: StringWithAggregatesFilter<"Customer"> | string
-    gender?: StringWithAggregatesFilter<"Customer"> | string
+    gender?: EnumGenderTypeWithAggregatesFilter<"Customer"> | $Enums.GenderType
     phoneNumber?: StringWithAggregatesFilter<"Customer"> | string
-    ageGroup?: StringWithAggregatesFilter<"Customer"> | string
-    region?: StringWithAggregatesFilter<"Customer"> | string
+    ageGroup?: EnumAgeGroupWithAggregatesFilter<"Customer"> | $Enums.AgeGroup
+    region?: EnumRegionWithAggregatesFilter<"Customer"> | $Enums.Region
     memo?: StringNullableWithAggregatesFilter<"Customer"> | string | null
     contractCount?: IntWithAggregatesFilter<"Customer"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+    companyId?: IntNullableWithAggregatesFilter<"Customer"> | number | null
   }
 
   export type ContractWhereInput = {
@@ -11401,7 +14217,7 @@ export namespace Prisma {
     id?: IntFilter<"Contract"> | number
     carId?: IntFilter<"Contract"> | number
     customerId?: IntFilter<"Contract"> | number
-    status?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     resolutionDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     contractPrice?: IntFilter<"Contract"> | number
     createdAt?: DateTimeFilter<"Contract"> | Date | string
@@ -11434,7 +14250,7 @@ export namespace Prisma {
     NOT?: ContractWhereInput | ContractWhereInput[]
     carId?: IntFilter<"Contract"> | number
     customerId?: IntFilter<"Contract"> | number
-    status?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     resolutionDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     contractPrice?: IntFilter<"Contract"> | number
     createdAt?: DateTimeFilter<"Contract"> | Date | string
@@ -11468,7 +14284,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Contract"> | number
     carId?: IntWithAggregatesFilter<"Contract"> | number
     customerId?: IntWithAggregatesFilter<"Contract"> | number
-    status?: StringWithAggregatesFilter<"Contract"> | string
+    status?: EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
     resolutionDate?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
     contractPrice?: IntWithAggregatesFilter<"Contract"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
@@ -11678,6 +14494,7 @@ export namespace Prisma {
     companyCode?: StringFilter<"Company"> | string
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
+    customers?: CustomerListRelationFilter
     users?: UserListRelationFilter
   }
 
@@ -11687,6 +14504,7 @@ export namespace Prisma {
     companyCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    customers?: CustomerOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
   }
 
@@ -11699,6 +14517,7 @@ export namespace Prisma {
     name?: StringFilter<"Company"> | string
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
+    customers?: CustomerListRelationFilter
     users?: UserListRelationFilter
   }, "id" | "companyCode">
 
@@ -11795,91 +14614,95 @@ export namespace Prisma {
 
   export type CarCreateInput = {
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation?: string | null
     accidentCount?: number | null
     accidentDetails?: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    model: ModelsCreateNestedOneWithoutCarsInput
+    manufacturers: ManufacterersCreateNestedOneWithoutCarsInput
     contracts?: ContractCreateNestedManyWithoutCarInput
   }
 
   export type CarUncheckedCreateInput = {
     id?: number
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation?: string | null
     accidentCount?: number | null
     accidentDetails?: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    modelId: number
+    manufacturerId: number
     contracts?: ContractUncheckedCreateNestedManyWithoutCarInput
   }
 
   export type CarUpdateInput = {
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    model?: ModelsUpdateOneRequiredWithoutCarsNestedInput
+    manufacturers?: ManufacterersUpdateOneRequiredWithoutCarsNestedInput
     contracts?: ContractUpdateManyWithoutCarNestedInput
   }
 
   export type CarUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelId?: IntFieldUpdateOperationsInput | number
+    manufacturerId?: IntFieldUpdateOperationsInput | number
     contracts?: ContractUncheckedUpdateManyWithoutCarNestedInput
   }
 
   export type CarCreateManyInput = {
     id?: number
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation?: string | null
     accidentCount?: number | null
     accidentDetails?: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    modelId: number
+    manufacturerId: number
   }
 
   export type CarUpdateManyMutationInput = {
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11887,14 +14710,122 @@ export namespace Prisma {
   export type CarUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelId?: IntFieldUpdateOperationsInput | number
+    manufacturerId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ManufacterersCreateInput = {
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cars?: CarCreateNestedManyWithoutManufacturersInput
+  }
+
+  export type ManufacterersUncheckedCreateInput = {
+    id?: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cars?: CarUncheckedCreateNestedManyWithoutManufacturersInput
+  }
+
+  export type ManufacterersUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cars?: CarUpdateManyWithoutManufacturersNestedInput
+  }
+
+  export type ManufacterersUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cars?: CarUncheckedUpdateManyWithoutManufacturersNestedInput
+  }
+
+  export type ManufacterersCreateManyInput = {
+    id?: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManufacterersUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManufacterersUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelsCreateInput = {
+    year: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cars?: CarCreateNestedManyWithoutModelInput
+  }
+
+  export type ModelsUncheckedCreateInput = {
+    id?: number
+    year: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cars?: CarUncheckedCreateNestedManyWithoutModelInput
+  }
+
+  export type ModelsUpdateInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cars?: CarUpdateManyWithoutModelNestedInput
+  }
+
+  export type ModelsUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cars?: CarUncheckedUpdateManyWithoutModelNestedInput
+  }
+
+  export type ModelsCreateManyInput = {
+    id?: number
+    year: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelsUpdateManyMutationInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelsUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11902,58 +14833,62 @@ export namespace Prisma {
   export type CustomerCreateInput = {
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo?: string | null
     contractCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
     contracts?: ContractCreateNestedManyWithoutCustomerInput
+    Company?: CompanyCreateNestedOneWithoutCustomersInput
   }
 
   export type CustomerUncheckedCreateInput = {
     id?: number
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo?: string | null
     contractCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    companyId?: number | null
     contracts?: ContractUncheckedCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     contracts?: ContractUpdateManyWithoutCustomerNestedInput
+    Company?: CompanyUpdateOneWithoutCustomersNestedInput
   }
 
   export type CustomerUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companyId?: NullableIntFieldUpdateOperationsInput | number | null
     contracts?: ContractUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
@@ -11961,23 +14896,24 @@ export namespace Prisma {
     id?: number
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo?: string | null
     contractCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    companyId?: number | null
   }
 
   export type CustomerUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11988,18 +14924,19 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companyId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ContractCreateInput = {
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -12014,7 +14951,7 @@ export namespace Prisma {
     id?: number
     carId: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -12024,7 +14961,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12039,7 +14976,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12052,7 +14989,7 @@ export namespace Prisma {
     id?: number
     carId: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -12060,7 +14997,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateManyMutationInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12071,7 +15008,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12271,6 +15208,7 @@ export namespace Prisma {
     companyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCompanyInput
     users?: UserCreateNestedManyWithoutCompanyInput
   }
 
@@ -12280,6 +15218,7 @@ export namespace Prisma {
     companyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserUncheckedCreateNestedManyWithoutCompanyInput
   }
 
@@ -12288,6 +15227,7 @@ export namespace Prisma {
     companyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCompanyNestedInput
     users?: UserUpdateManyWithoutCompanyNestedInput
   }
 
@@ -12297,6 +15237,7 @@ export namespace Prisma {
     companyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
@@ -12415,6 +15356,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumCarTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CarType | EnumCarTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCarTypeFilter<$PrismaModel> | $Enums.CarType
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -12441,6 +15389,13 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type EnumVehicleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusFilter<$PrismaModel> | $Enums.VehicleStatus
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -12450,6 +15405,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type ModelsScalarRelationFilter = {
+    is?: ModelsWhereInput
+    isNot?: ModelsWhereInput
+  }
+
+  export type ManufacterersScalarRelationFilter = {
+    is?: ManufacterersWhereInput
+    isNot?: ManufacterersWhereInput
   }
 
   export type ContractListRelationFilter = {
@@ -12470,8 +15435,7 @@ export namespace Prisma {
   export type CarCountOrderByAggregateInput = {
     id?: SortOrder
     carNumber?: SortOrder
-    manufacturer?: SortOrder
-    model?: SortOrder
+    type?: SortOrder
     mileage?: SortOrder
     price?: SortOrder
     explanation?: SortOrder
@@ -12480,6 +15444,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
   }
 
   export type CarAvgOrderByAggregateInput = {
@@ -12487,13 +15453,14 @@ export namespace Prisma {
     mileage?: SortOrder
     price?: SortOrder
     accidentCount?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
   }
 
   export type CarMaxOrderByAggregateInput = {
     id?: SortOrder
     carNumber?: SortOrder
-    manufacturer?: SortOrder
-    model?: SortOrder
+    type?: SortOrder
     mileage?: SortOrder
     price?: SortOrder
     explanation?: SortOrder
@@ -12502,13 +15469,14 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
   }
 
   export type CarMinOrderByAggregateInput = {
     id?: SortOrder
     carNumber?: SortOrder
-    manufacturer?: SortOrder
-    model?: SortOrder
+    type?: SortOrder
     mileage?: SortOrder
     price?: SortOrder
     explanation?: SortOrder
@@ -12517,6 +15485,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
   }
 
   export type CarSumOrderByAggregateInput = {
@@ -12524,6 +15494,8 @@ export namespace Prisma {
     mileage?: SortOrder
     price?: SortOrder
     accidentCount?: SortOrder
+    modelId?: SortOrder
+    manufacturerId?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12560,6 +15532,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumCarTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CarType | EnumCarTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCarTypeWithAggregatesFilter<$PrismaModel> | $Enums.CarType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCarTypeFilter<$PrismaModel>
+    _max?: NestedEnumCarTypeFilter<$PrismaModel>
+  }
+
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -12594,6 +15576,16 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type EnumVehicleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel> | $Enums.VehicleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleStatusFilter<$PrismaModel>
+    _max?: NestedEnumVehicleStatusFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -12608,6 +15600,105 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type CarListRelationFilter = {
+    every?: CarWhereInput
+    some?: CarWhereInput
+    none?: CarWhereInput
+  }
+
+  export type CarOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ManufacterersCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ManufacterersAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ManufacterersMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ManufacterersMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ManufacterersSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ModelsCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ModelsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+  }
+
+  export type ModelsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ModelsMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ModelsSumOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+  }
+
+  export type EnumGenderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenderType | EnumGenderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderTypeFilter<$PrismaModel> | $Enums.GenderType
+  }
+
+  export type EnumAgeGroupFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgeGroup | EnumAgeGroupFieldRefInput<$PrismaModel>
+    in?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgeGroupFilter<$PrismaModel> | $Enums.AgeGroup
+  }
+
+  export type EnumRegionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Region | EnumRegionFieldRefInput<$PrismaModel>
+    in?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    not?: NestedEnumRegionFilter<$PrismaModel> | $Enums.Region
+  }
+
+  export type CompanyNullableScalarRelationFilter = {
+    is?: CompanyWhereInput | null
+    isNot?: CompanyWhereInput | null
+  }
+
   export type CustomerCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -12620,11 +15711,13 @@ export namespace Prisma {
     contractCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    companyId?: SortOrder
   }
 
   export type CustomerAvgOrderByAggregateInput = {
     id?: SortOrder
     contractCount?: SortOrder
+    companyId?: SortOrder
   }
 
   export type CustomerMaxOrderByAggregateInput = {
@@ -12639,6 +15732,7 @@ export namespace Prisma {
     contractCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    companyId?: SortOrder
   }
 
   export type CustomerMinOrderByAggregateInput = {
@@ -12653,11 +15747,50 @@ export namespace Prisma {
     contractCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    companyId?: SortOrder
   }
 
   export type CustomerSumOrderByAggregateInput = {
     id?: SortOrder
     contractCount?: SortOrder
+    companyId?: SortOrder
+  }
+
+  export type EnumGenderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenderType | EnumGenderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderTypeWithAggregatesFilter<$PrismaModel> | $Enums.GenderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenderTypeFilter<$PrismaModel>
+    _max?: NestedEnumGenderTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAgeGroupWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgeGroup | EnumAgeGroupFieldRefInput<$PrismaModel>
+    in?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgeGroupWithAggregatesFilter<$PrismaModel> | $Enums.AgeGroup
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAgeGroupFilter<$PrismaModel>
+    _max?: NestedEnumAgeGroupFilter<$PrismaModel>
+  }
+
+  export type EnumRegionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Region | EnumRegionFieldRefInput<$PrismaModel>
+    in?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    not?: NestedEnumRegionWithAggregatesFilter<$PrismaModel> | $Enums.Region
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRegionFilter<$PrismaModel>
+    _max?: NestedEnumRegionFilter<$PrismaModel>
+  }
+
+  export type EnumContractStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -12746,6 +15879,16 @@ export namespace Prisma {
     carId?: SortOrder
     customerId?: SortOrder
     contractPrice?: SortOrder
+  }
+
+  export type EnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractStatusFilter<$PrismaModel>
+    _max?: NestedEnumContractStatusFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12914,10 +16057,20 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type CustomerListRelationFilter = {
+    every?: CustomerWhereInput
+    some?: CustomerWhereInput
+    none?: CustomerWhereInput
+  }
+
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
     none?: UserWhereInput
+  }
+
+  export type CustomerOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserOrderByRelationAggregateInput = {
@@ -12998,6 +16151,18 @@ export namespace Prisma {
     fileSize?: SortOrder
   }
 
+  export type ModelsCreateNestedOneWithoutCarsInput = {
+    create?: XOR<ModelsCreateWithoutCarsInput, ModelsUncheckedCreateWithoutCarsInput>
+    connectOrCreate?: ModelsCreateOrConnectWithoutCarsInput
+    connect?: ModelsWhereUniqueInput
+  }
+
+  export type ManufacterersCreateNestedOneWithoutCarsInput = {
+    create?: XOR<ManufacterersCreateWithoutCarsInput, ManufacterersUncheckedCreateWithoutCarsInput>
+    connectOrCreate?: ManufacterersCreateOrConnectWithoutCarsInput
+    connect?: ManufacterersWhereUniqueInput
+  }
+
   export type ContractCreateNestedManyWithoutCarInput = {
     create?: XOR<ContractCreateWithoutCarInput, ContractUncheckedCreateWithoutCarInput> | ContractCreateWithoutCarInput[] | ContractUncheckedCreateWithoutCarInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutCarInput | ContractCreateOrConnectWithoutCarInput[]
@@ -13014,6 +16179,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type EnumCarTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CarType
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13036,8 +16205,28 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type EnumVehicleStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VehicleStatus
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type ModelsUpdateOneRequiredWithoutCarsNestedInput = {
+    create?: XOR<ModelsCreateWithoutCarsInput, ModelsUncheckedCreateWithoutCarsInput>
+    connectOrCreate?: ModelsCreateOrConnectWithoutCarsInput
+    upsert?: ModelsUpsertWithoutCarsInput
+    connect?: ModelsWhereUniqueInput
+    update?: XOR<XOR<ModelsUpdateToOneWithWhereWithoutCarsInput, ModelsUpdateWithoutCarsInput>, ModelsUncheckedUpdateWithoutCarsInput>
+  }
+
+  export type ManufacterersUpdateOneRequiredWithoutCarsNestedInput = {
+    create?: XOR<ManufacterersCreateWithoutCarsInput, ManufacterersUncheckedCreateWithoutCarsInput>
+    connectOrCreate?: ManufacterersCreateOrConnectWithoutCarsInput
+    upsert?: ManufacterersUpsertWithoutCarsInput
+    connect?: ManufacterersWhereUniqueInput
+    update?: XOR<XOR<ManufacterersUpdateToOneWithWhereWithoutCarsInput, ManufacterersUpdateWithoutCarsInput>, ManufacterersUncheckedUpdateWithoutCarsInput>
   }
 
   export type ContractUpdateManyWithoutCarNestedInput = {
@@ -13068,6 +16257,90 @@ export namespace Prisma {
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
   }
 
+  export type CarCreateNestedManyWithoutManufacturersInput = {
+    create?: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput> | CarCreateWithoutManufacturersInput[] | CarUncheckedCreateWithoutManufacturersInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutManufacturersInput | CarCreateOrConnectWithoutManufacturersInput[]
+    createMany?: CarCreateManyManufacturersInputEnvelope
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+  }
+
+  export type CarUncheckedCreateNestedManyWithoutManufacturersInput = {
+    create?: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput> | CarCreateWithoutManufacturersInput[] | CarUncheckedCreateWithoutManufacturersInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutManufacturersInput | CarCreateOrConnectWithoutManufacturersInput[]
+    createMany?: CarCreateManyManufacturersInputEnvelope
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+  }
+
+  export type CarUpdateManyWithoutManufacturersNestedInput = {
+    create?: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput> | CarCreateWithoutManufacturersInput[] | CarUncheckedCreateWithoutManufacturersInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutManufacturersInput | CarCreateOrConnectWithoutManufacturersInput[]
+    upsert?: CarUpsertWithWhereUniqueWithoutManufacturersInput | CarUpsertWithWhereUniqueWithoutManufacturersInput[]
+    createMany?: CarCreateManyManufacturersInputEnvelope
+    set?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    disconnect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    delete?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    update?: CarUpdateWithWhereUniqueWithoutManufacturersInput | CarUpdateWithWhereUniqueWithoutManufacturersInput[]
+    updateMany?: CarUpdateManyWithWhereWithoutManufacturersInput | CarUpdateManyWithWhereWithoutManufacturersInput[]
+    deleteMany?: CarScalarWhereInput | CarScalarWhereInput[]
+  }
+
+  export type CarUncheckedUpdateManyWithoutManufacturersNestedInput = {
+    create?: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput> | CarCreateWithoutManufacturersInput[] | CarUncheckedCreateWithoutManufacturersInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutManufacturersInput | CarCreateOrConnectWithoutManufacturersInput[]
+    upsert?: CarUpsertWithWhereUniqueWithoutManufacturersInput | CarUpsertWithWhereUniqueWithoutManufacturersInput[]
+    createMany?: CarCreateManyManufacturersInputEnvelope
+    set?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    disconnect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    delete?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    update?: CarUpdateWithWhereUniqueWithoutManufacturersInput | CarUpdateWithWhereUniqueWithoutManufacturersInput[]
+    updateMany?: CarUpdateManyWithWhereWithoutManufacturersInput | CarUpdateManyWithWhereWithoutManufacturersInput[]
+    deleteMany?: CarScalarWhereInput | CarScalarWhereInput[]
+  }
+
+  export type CarCreateNestedManyWithoutModelInput = {
+    create?: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput> | CarCreateWithoutModelInput[] | CarUncheckedCreateWithoutModelInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutModelInput | CarCreateOrConnectWithoutModelInput[]
+    createMany?: CarCreateManyModelInputEnvelope
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+  }
+
+  export type CarUncheckedCreateNestedManyWithoutModelInput = {
+    create?: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput> | CarCreateWithoutModelInput[] | CarUncheckedCreateWithoutModelInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutModelInput | CarCreateOrConnectWithoutModelInput[]
+    createMany?: CarCreateManyModelInputEnvelope
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+  }
+
+  export type CarUpdateManyWithoutModelNestedInput = {
+    create?: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput> | CarCreateWithoutModelInput[] | CarUncheckedCreateWithoutModelInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutModelInput | CarCreateOrConnectWithoutModelInput[]
+    upsert?: CarUpsertWithWhereUniqueWithoutModelInput | CarUpsertWithWhereUniqueWithoutModelInput[]
+    createMany?: CarCreateManyModelInputEnvelope
+    set?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    disconnect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    delete?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    update?: CarUpdateWithWhereUniqueWithoutModelInput | CarUpdateWithWhereUniqueWithoutModelInput[]
+    updateMany?: CarUpdateManyWithWhereWithoutModelInput | CarUpdateManyWithWhereWithoutModelInput[]
+    deleteMany?: CarScalarWhereInput | CarScalarWhereInput[]
+  }
+
+  export type CarUncheckedUpdateManyWithoutModelNestedInput = {
+    create?: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput> | CarCreateWithoutModelInput[] | CarUncheckedCreateWithoutModelInput[]
+    connectOrCreate?: CarCreateOrConnectWithoutModelInput | CarCreateOrConnectWithoutModelInput[]
+    upsert?: CarUpsertWithWhereUniqueWithoutModelInput | CarUpsertWithWhereUniqueWithoutModelInput[]
+    createMany?: CarCreateManyModelInputEnvelope
+    set?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    disconnect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    delete?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    connect?: CarWhereUniqueInput | CarWhereUniqueInput[]
+    update?: CarUpdateWithWhereUniqueWithoutModelInput | CarUpdateWithWhereUniqueWithoutModelInput[]
+    updateMany?: CarUpdateManyWithWhereWithoutModelInput | CarUpdateManyWithWhereWithoutModelInput[]
+    deleteMany?: CarScalarWhereInput | CarScalarWhereInput[]
+  }
+
   export type ContractCreateNestedManyWithoutCustomerInput = {
     create?: XOR<ContractCreateWithoutCustomerInput, ContractUncheckedCreateWithoutCustomerInput> | ContractCreateWithoutCustomerInput[] | ContractUncheckedCreateWithoutCustomerInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutCustomerInput | ContractCreateOrConnectWithoutCustomerInput[]
@@ -13075,11 +16348,29 @@ export namespace Prisma {
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
+  export type CompanyCreateNestedOneWithoutCustomersInput = {
+    create?: XOR<CompanyCreateWithoutCustomersInput, CompanyUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutCustomersInput
+    connect?: CompanyWhereUniqueInput
+  }
+
   export type ContractUncheckedCreateNestedManyWithoutCustomerInput = {
     create?: XOR<ContractCreateWithoutCustomerInput, ContractUncheckedCreateWithoutCustomerInput> | ContractCreateWithoutCustomerInput[] | ContractUncheckedCreateWithoutCustomerInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutCustomerInput | ContractCreateOrConnectWithoutCustomerInput[]
     createMany?: ContractCreateManyCustomerInputEnvelope
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type EnumGenderTypeFieldUpdateOperationsInput = {
+    set?: $Enums.GenderType
+  }
+
+  export type EnumAgeGroupFieldUpdateOperationsInput = {
+    set?: $Enums.AgeGroup
+  }
+
+  export type EnumRegionFieldUpdateOperationsInput = {
+    set?: $Enums.Region
   }
 
   export type ContractUpdateManyWithoutCustomerNestedInput = {
@@ -13094,6 +16385,16 @@ export namespace Prisma {
     update?: ContractUpdateWithWhereUniqueWithoutCustomerInput | ContractUpdateWithWhereUniqueWithoutCustomerInput[]
     updateMany?: ContractUpdateManyWithWhereWithoutCustomerInput | ContractUpdateManyWithWhereWithoutCustomerInput[]
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type CompanyUpdateOneWithoutCustomersNestedInput = {
+    create?: XOR<CompanyCreateWithoutCustomersInput, CompanyUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutCustomersInput
+    upsert?: CompanyUpsertWithoutCustomersInput
+    disconnect?: CompanyWhereInput | boolean
+    delete?: CompanyWhereInput | boolean
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutCustomersInput, CompanyUpdateWithoutCustomersInput>, CompanyUncheckedUpdateWithoutCustomersInput>
   }
 
   export type ContractUncheckedUpdateManyWithoutCustomerNestedInput = {
@@ -13148,6 +16449,10 @@ export namespace Prisma {
     connectOrCreate?: ContractDocumentCreateOrConnectWithoutContractInput | ContractDocumentCreateOrConnectWithoutContractInput[]
     createMany?: ContractDocumentCreateManyContractInputEnvelope
     connect?: ContractDocumentWhereUniqueInput | ContractDocumentWhereUniqueInput[]
+  }
+
+  export type EnumContractStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ContractStatus
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -13314,6 +16619,13 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutUsersInput, CompanyUpdateWithoutUsersInput>, CompanyUncheckedUpdateWithoutUsersInput>
   }
 
+  export type CustomerCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput> | CustomerCreateWithoutCompanyInput[] | CustomerUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutCompanyInput | CustomerCreateOrConnectWithoutCompanyInput[]
+    createMany?: CustomerCreateManyCompanyInputEnvelope
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+  }
+
   export type UserCreateNestedManyWithoutCompanyInput = {
     create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
@@ -13321,11 +16633,32 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type CustomerUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput> | CustomerCreateWithoutCompanyInput[] | CustomerUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutCompanyInput | CustomerCreateOrConnectWithoutCompanyInput[]
+    createMany?: CustomerCreateManyCompanyInputEnvelope
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<UserCreateWithoutCompanyInput, UserUncheckedCreateWithoutCompanyInput> | UserCreateWithoutCompanyInput[] | UserUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCompanyInput | UserCreateOrConnectWithoutCompanyInput[]
     createMany?: UserCreateManyCompanyInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type CustomerUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput> | CustomerCreateWithoutCompanyInput[] | CustomerUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutCompanyInput | CustomerCreateOrConnectWithoutCompanyInput[]
+    upsert?: CustomerUpsertWithWhereUniqueWithoutCompanyInput | CustomerUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CustomerCreateManyCompanyInputEnvelope
+    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    update?: CustomerUpdateWithWhereUniqueWithoutCompanyInput | CustomerUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CustomerUpdateManyWithWhereWithoutCompanyInput | CustomerUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
   }
 
   export type UserUpdateManyWithoutCompanyNestedInput = {
@@ -13340,6 +16673,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutCompanyInput | UserUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: UserUpdateManyWithWhereWithoutCompanyInput | UserUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type CustomerUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput> | CustomerCreateWithoutCompanyInput[] | CustomerUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutCompanyInput | CustomerCreateOrConnectWithoutCompanyInput[]
+    upsert?: CustomerUpsertWithWhereUniqueWithoutCompanyInput | CustomerUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CustomerCreateManyCompanyInputEnvelope
+    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    update?: CustomerUpdateWithWhereUniqueWithoutCompanyInput | CustomerUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CustomerUpdateManyWithWhereWithoutCompanyInput | CustomerUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -13395,6 +16742,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedEnumCarTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CarType | EnumCarTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCarTypeFilter<$PrismaModel> | $Enums.CarType
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -13418,6 +16772,13 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumVehicleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusFilter<$PrismaModel> | $Enums.VehicleStatus
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -13475,6 +16836,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedEnumCarTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CarType | EnumCarTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CarType[] | ListEnumCarTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCarTypeWithAggregatesFilter<$PrismaModel> | $Enums.CarType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCarTypeFilter<$PrismaModel>
+    _max?: NestedEnumCarTypeFilter<$PrismaModel>
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -13519,6 +16890,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel> | $Enums.VehicleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleStatusFilter<$PrismaModel>
+    _max?: NestedEnumVehicleStatusFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -13533,6 +16914,64 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumGenderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenderType | EnumGenderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderTypeFilter<$PrismaModel> | $Enums.GenderType
+  }
+
+  export type NestedEnumAgeGroupFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgeGroup | EnumAgeGroupFieldRefInput<$PrismaModel>
+    in?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgeGroupFilter<$PrismaModel> | $Enums.AgeGroup
+  }
+
+  export type NestedEnumRegionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Region | EnumRegionFieldRefInput<$PrismaModel>
+    in?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    not?: NestedEnumRegionFilter<$PrismaModel> | $Enums.Region
+  }
+
+  export type NestedEnumGenderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GenderType | EnumGenderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GenderType[] | ListEnumGenderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderTypeWithAggregatesFilter<$PrismaModel> | $Enums.GenderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenderTypeFilter<$PrismaModel>
+    _max?: NestedEnumGenderTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAgeGroupWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgeGroup | EnumAgeGroupFieldRefInput<$PrismaModel>
+    in?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgeGroup[] | ListEnumAgeGroupFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgeGroupWithAggregatesFilter<$PrismaModel> | $Enums.AgeGroup
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAgeGroupFilter<$PrismaModel>
+    _max?: NestedEnumAgeGroupFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRegionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Region | EnumRegionFieldRefInput<$PrismaModel>
+    in?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Region[] | ListEnumRegionFieldRefInput<$PrismaModel>
+    not?: NestedEnumRegionWithAggregatesFilter<$PrismaModel> | $Enums.Region
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRegionFilter<$PrismaModel>
+    _max?: NestedEnumRegionFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -13542,6 +16981,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractStatusFilter<$PrismaModel>
+    _max?: NestedEnumContractStatusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13571,8 +17020,46 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type ModelsCreateWithoutCarsInput = {
+    year: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelsUncheckedCreateWithoutCarsInput = {
+    id?: number
+    year: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelsCreateOrConnectWithoutCarsInput = {
+    where: ModelsWhereUniqueInput
+    create: XOR<ModelsCreateWithoutCarsInput, ModelsUncheckedCreateWithoutCarsInput>
+  }
+
+  export type ManufacterersCreateWithoutCarsInput = {
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManufacterersUncheckedCreateWithoutCarsInput = {
+    id?: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManufacterersCreateOrConnectWithoutCarsInput = {
+    where: ManufacterersWhereUniqueInput
+    create: XOR<ManufacterersCreateWithoutCarsInput, ManufacterersUncheckedCreateWithoutCarsInput>
+  }
+
   export type ContractCreateWithoutCarInput = {
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13585,7 +17072,7 @@ export namespace Prisma {
   export type ContractUncheckedCreateWithoutCarInput = {
     id?: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13602,6 +17089,56 @@ export namespace Prisma {
   export type ContractCreateManyCarInputEnvelope = {
     data: ContractCreateManyCarInput | ContractCreateManyCarInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ModelsUpsertWithoutCarsInput = {
+    update: XOR<ModelsUpdateWithoutCarsInput, ModelsUncheckedUpdateWithoutCarsInput>
+    create: XOR<ModelsCreateWithoutCarsInput, ModelsUncheckedCreateWithoutCarsInput>
+    where?: ModelsWhereInput
+  }
+
+  export type ModelsUpdateToOneWithWhereWithoutCarsInput = {
+    where?: ModelsWhereInput
+    data: XOR<ModelsUpdateWithoutCarsInput, ModelsUncheckedUpdateWithoutCarsInput>
+  }
+
+  export type ModelsUpdateWithoutCarsInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelsUncheckedUpdateWithoutCarsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManufacterersUpsertWithoutCarsInput = {
+    update: XOR<ManufacterersUpdateWithoutCarsInput, ManufacterersUncheckedUpdateWithoutCarsInput>
+    create: XOR<ManufacterersCreateWithoutCarsInput, ManufacterersUncheckedCreateWithoutCarsInput>
+    where?: ManufacterersWhereInput
+  }
+
+  export type ManufacterersUpdateToOneWithWhereWithoutCarsInput = {
+    where?: ManufacterersWhereInput
+    data: XOR<ManufacterersUpdateWithoutCarsInput, ManufacterersUncheckedUpdateWithoutCarsInput>
+  }
+
+  export type ManufacterersUpdateWithoutCarsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManufacterersUncheckedUpdateWithoutCarsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractUpsertWithWhereUniqueWithoutCarInput = {
@@ -13627,15 +17164,148 @@ export namespace Prisma {
     id?: IntFilter<"Contract"> | number
     carId?: IntFilter<"Contract"> | number
     customerId?: IntFilter<"Contract"> | number
-    status?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     resolutionDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     contractPrice?: IntFilter<"Contract"> | number
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
   }
 
+  export type CarCreateWithoutManufacturersInput = {
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    model: ModelsCreateNestedOneWithoutCarsInput
+    contracts?: ContractCreateNestedManyWithoutCarInput
+  }
+
+  export type CarUncheckedCreateWithoutManufacturersInput = {
+    id?: number
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modelId: number
+    contracts?: ContractUncheckedCreateNestedManyWithoutCarInput
+  }
+
+  export type CarCreateOrConnectWithoutManufacturersInput = {
+    where: CarWhereUniqueInput
+    create: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput>
+  }
+
+  export type CarCreateManyManufacturersInputEnvelope = {
+    data: CarCreateManyManufacturersInput | CarCreateManyManufacturersInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CarUpsertWithWhereUniqueWithoutManufacturersInput = {
+    where: CarWhereUniqueInput
+    update: XOR<CarUpdateWithoutManufacturersInput, CarUncheckedUpdateWithoutManufacturersInput>
+    create: XOR<CarCreateWithoutManufacturersInput, CarUncheckedCreateWithoutManufacturersInput>
+  }
+
+  export type CarUpdateWithWhereUniqueWithoutManufacturersInput = {
+    where: CarWhereUniqueInput
+    data: XOR<CarUpdateWithoutManufacturersInput, CarUncheckedUpdateWithoutManufacturersInput>
+  }
+
+  export type CarUpdateManyWithWhereWithoutManufacturersInput = {
+    where: CarScalarWhereInput
+    data: XOR<CarUpdateManyMutationInput, CarUncheckedUpdateManyWithoutManufacturersInput>
+  }
+
+  export type CarScalarWhereInput = {
+    AND?: CarScalarWhereInput | CarScalarWhereInput[]
+    OR?: CarScalarWhereInput[]
+    NOT?: CarScalarWhereInput | CarScalarWhereInput[]
+    id?: IntFilter<"Car"> | number
+    carNumber?: StringFilter<"Car"> | string
+    type?: EnumCarTypeFilter<"Car"> | $Enums.CarType
+    mileage?: IntFilter<"Car"> | number
+    price?: IntFilter<"Car"> | number
+    explanation?: StringNullableFilter<"Car"> | string | null
+    accidentCount?: IntNullableFilter<"Car"> | number | null
+    accidentDetails?: StringNullableFilter<"Car"> | string | null
+    status?: EnumVehicleStatusFilter<"Car"> | $Enums.VehicleStatus
+    createdAt?: DateTimeFilter<"Car"> | Date | string
+    updatedAt?: DateTimeFilter<"Car"> | Date | string
+    modelId?: IntFilter<"Car"> | number
+    manufacturerId?: IntFilter<"Car"> | number
+  }
+
+  export type CarCreateWithoutModelInput = {
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    manufacturers: ManufacterersCreateNestedOneWithoutCarsInput
+    contracts?: ContractCreateNestedManyWithoutCarInput
+  }
+
+  export type CarUncheckedCreateWithoutModelInput = {
+    id?: number
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    manufacturerId: number
+    contracts?: ContractUncheckedCreateNestedManyWithoutCarInput
+  }
+
+  export type CarCreateOrConnectWithoutModelInput = {
+    where: CarWhereUniqueInput
+    create: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput>
+  }
+
+  export type CarCreateManyModelInputEnvelope = {
+    data: CarCreateManyModelInput | CarCreateManyModelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CarUpsertWithWhereUniqueWithoutModelInput = {
+    where: CarWhereUniqueInput
+    update: XOR<CarUpdateWithoutModelInput, CarUncheckedUpdateWithoutModelInput>
+    create: XOR<CarCreateWithoutModelInput, CarUncheckedCreateWithoutModelInput>
+  }
+
+  export type CarUpdateWithWhereUniqueWithoutModelInput = {
+    where: CarWhereUniqueInput
+    data: XOR<CarUpdateWithoutModelInput, CarUncheckedUpdateWithoutModelInput>
+  }
+
+  export type CarUpdateManyWithWhereWithoutModelInput = {
+    where: CarScalarWhereInput
+    data: XOR<CarUpdateManyMutationInput, CarUncheckedUpdateManyWithoutModelInput>
+  }
+
   export type ContractCreateWithoutCustomerInput = {
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13648,7 +17318,7 @@ export namespace Prisma {
   export type ContractUncheckedCreateWithoutCustomerInput = {
     id?: number
     carId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13667,6 +17337,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CompanyCreateWithoutCustomersInput = {
+    name: string
+    companyCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutCustomersInput = {
+    id?: number
+    name: string
+    companyCode: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutCustomersInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutCustomersInput, CompanyUncheckedCreateWithoutCustomersInput>
+  }
+
   export type ContractUpsertWithWhereUniqueWithoutCustomerInput = {
     where: ContractWhereUniqueInput
     update: XOR<ContractUpdateWithoutCustomerInput, ContractUncheckedUpdateWithoutCustomerInput>
@@ -13683,33 +17375,63 @@ export namespace Prisma {
     data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutCustomerInput>
   }
 
+  export type CompanyUpsertWithoutCustomersInput = {
+    update: XOR<CompanyUpdateWithoutCustomersInput, CompanyUncheckedUpdateWithoutCustomersInput>
+    create: XOR<CompanyCreateWithoutCustomersInput, CompanyUncheckedCreateWithoutCustomersInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutCustomersInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutCustomersInput, CompanyUncheckedUpdateWithoutCustomersInput>
+  }
+
+  export type CompanyUpdateWithoutCustomersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    companyCode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutCustomersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    companyCode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
   export type CarCreateWithoutContractsInput = {
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation?: string | null
     accidentCount?: number | null
     accidentDetails?: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    model: ModelsCreateNestedOneWithoutCarsInput
+    manufacturers: ManufacterersCreateNestedOneWithoutCarsInput
   }
 
   export type CarUncheckedCreateWithoutContractsInput = {
     id?: number
     carNumber: string
-    manufacturer: string
-    model: string
+    type: $Enums.CarType
     mileage: number
     price: number
     explanation?: string | null
     accidentCount?: number | null
     accidentDetails?: string | null
-    status: string
+    status: $Enums.VehicleStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    modelId: number
+    manufacturerId: number
   }
 
   export type CarCreateOrConnectWithoutContractsInput = {
@@ -13720,28 +17442,30 @@ export namespace Prisma {
   export type CustomerCreateWithoutContractsInput = {
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo?: string | null
     contractCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    Company?: CompanyCreateNestedOneWithoutCustomersInput
   }
 
   export type CustomerUncheckedCreateWithoutContractsInput = {
     id?: number
     name: string
     email: string
-    gender: string
+    gender: $Enums.GenderType
     phoneNumber: string
-    ageGroup: string
-    region: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
     memo?: string | null
     contractCount: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    companyId?: number | null
   }
 
   export type CustomerCreateOrConnectWithoutContractsInput = {
@@ -13814,31 +17538,33 @@ export namespace Prisma {
 
   export type CarUpdateWithoutContractsInput = {
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    model?: ModelsUpdateOneRequiredWithoutCarsNestedInput
+    manufacturers?: ManufacterersUpdateOneRequiredWithoutCarsNestedInput
   }
 
   export type CarUncheckedUpdateWithoutContractsInput = {
     id?: IntFieldUpdateOperationsInput | number
     carNumber?: StringFieldUpdateOperationsInput | string
-    manufacturer?: StringFieldUpdateOperationsInput | string
-    model?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
     mileage?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     explanation?: NullableStringFieldUpdateOperationsInput | string | null
     accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
     accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelId?: IntFieldUpdateOperationsInput | number
+    manufacturerId?: IntFieldUpdateOperationsInput | number
   }
 
   export type CustomerUpsertWithoutContractsInput = {
@@ -13855,28 +17581,30 @@ export namespace Prisma {
   export type CustomerUpdateWithoutContractsInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Company?: CompanyUpdateOneWithoutCustomersNestedInput
   }
 
   export type CustomerUncheckedUpdateWithoutContractsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    ageGroup?: StringFieldUpdateOperationsInput | string
-    region?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
     memo?: NullableStringFieldUpdateOperationsInput | string | null
     contractCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companyId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MeetingUpsertWithWhereUniqueWithoutContractInput = {
@@ -13936,7 +17664,7 @@ export namespace Prisma {
   }
 
   export type ContractCreateWithoutMeetingsInput = {
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13950,7 +17678,7 @@ export namespace Prisma {
     id?: number
     carId: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -13998,7 +17726,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateWithoutMeetingsInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14012,7 +17740,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14098,6 +17826,7 @@ export namespace Prisma {
     companyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutUsersInput = {
@@ -14106,6 +17835,7 @@ export namespace Prisma {
     companyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutUsersInput = {
@@ -14129,6 +17859,7 @@ export namespace Prisma {
     companyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutUsersInput = {
@@ -14137,6 +17868,46 @@ export namespace Prisma {
     companyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CustomerCreateWithoutCompanyInput = {
+    name: string
+    email: string
+    gender: $Enums.GenderType
+    phoneNumber: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
+    memo?: string | null
+    contractCount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contracts?: ContractCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    name: string
+    email: string
+    gender: $Enums.GenderType
+    phoneNumber: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
+    memo?: string | null
+    contractCount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerCreateOrConnectWithoutCompanyInput = {
+    where: CustomerWhereUniqueInput
+    create: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CustomerCreateManyCompanyInputEnvelope = {
+    data: CustomerCreateManyCompanyInput | CustomerCreateManyCompanyInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutCompanyInput = {
@@ -14168,6 +17939,40 @@ export namespace Prisma {
   export type UserCreateManyCompanyInputEnvelope = {
     data: UserCreateManyCompanyInput | UserCreateManyCompanyInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CustomerUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CustomerWhereUniqueInput
+    update: XOR<CustomerUpdateWithoutCompanyInput, CustomerUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CustomerCreateWithoutCompanyInput, CustomerUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CustomerUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CustomerWhereUniqueInput
+    data: XOR<CustomerUpdateWithoutCompanyInput, CustomerUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CustomerUpdateManyWithWhereWithoutCompanyInput = {
+    where: CustomerScalarWhereInput
+    data: XOR<CustomerUpdateManyMutationInput, CustomerUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CustomerScalarWhereInput = {
+    AND?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+    OR?: CustomerScalarWhereInput[]
+    NOT?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+    id?: IntFilter<"Customer"> | number
+    name?: StringFilter<"Customer"> | string
+    email?: StringFilter<"Customer"> | string
+    gender?: EnumGenderTypeFilter<"Customer"> | $Enums.GenderType
+    phoneNumber?: StringFilter<"Customer"> | string
+    ageGroup?: EnumAgeGroupFilter<"Customer"> | $Enums.AgeGroup
+    region?: EnumRegionFilter<"Customer"> | $Enums.Region
+    memo?: StringNullableFilter<"Customer"> | string | null
+    contractCount?: IntFilter<"Customer"> | number
+    createdAt?: DateTimeFilter<"Customer"> | Date | string
+    updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    companyId?: IntNullableFilter<"Customer"> | number | null
   }
 
   export type UserUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -14202,7 +18007,7 @@ export namespace Prisma {
   }
 
   export type ContractCreateWithoutDocumentsInput = {
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -14216,7 +18021,7 @@ export namespace Prisma {
     id?: number
     carId: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -14241,7 +18046,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateWithoutDocumentsInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14255,7 +18060,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14266,7 +18071,7 @@ export namespace Prisma {
   export type ContractCreateManyCarInput = {
     id?: number
     customerId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -14274,7 +18079,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateWithoutCarInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14287,7 +18092,7 @@ export namespace Prisma {
   export type ContractUncheckedUpdateWithoutCarInput = {
     id?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14299,17 +18104,139 @@ export namespace Prisma {
   export type ContractUncheckedUpdateManyWithoutCarInput = {
     id?: IntFieldUpdateOperationsInput | number
     customerId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CarCreateManyManufacturersInput = {
+    id?: number
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modelId: number
+  }
+
+  export type CarUpdateWithoutManufacturersInput = {
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    model?: ModelsUpdateOneRequiredWithoutCarsNestedInput
+    contracts?: ContractUpdateManyWithoutCarNestedInput
+  }
+
+  export type CarUncheckedUpdateWithoutManufacturersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelId?: IntFieldUpdateOperationsInput | number
+    contracts?: ContractUncheckedUpdateManyWithoutCarNestedInput
+  }
+
+  export type CarUncheckedUpdateManyWithoutManufacturersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CarCreateManyModelInput = {
+    id?: number
+    carNumber: string
+    type: $Enums.CarType
+    mileage: number
+    price: number
+    explanation?: string | null
+    accidentCount?: number | null
+    accidentDetails?: string | null
+    status: $Enums.VehicleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    manufacturerId: number
+  }
+
+  export type CarUpdateWithoutModelInput = {
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    manufacturers?: ManufacterersUpdateOneRequiredWithoutCarsNestedInput
+    contracts?: ContractUpdateManyWithoutCarNestedInput
+  }
+
+  export type CarUncheckedUpdateWithoutModelInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    manufacturerId?: IntFieldUpdateOperationsInput | number
+    contracts?: ContractUncheckedUpdateManyWithoutCarNestedInput
+  }
+
+  export type CarUncheckedUpdateManyWithoutModelInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    carNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumCarTypeFieldUpdateOperationsInput | $Enums.CarType
+    mileage?: IntFieldUpdateOperationsInput | number
+    price?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    accidentCount?: NullableIntFieldUpdateOperationsInput | number | null
+    accidentDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    manufacturerId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type ContractCreateManyCustomerInput = {
     id?: number
     carId: number
-    status: string
+    status: $Enums.ContractStatus
     resolutionDate?: Date | string | null
     contractPrice: number
     createdAt?: Date | string
@@ -14317,7 +18244,7 @@ export namespace Prisma {
   }
 
   export type ContractUpdateWithoutCustomerInput = {
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14330,7 +18257,7 @@ export namespace Prisma {
   export type ContractUncheckedUpdateWithoutCustomerInput = {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14342,7 +18269,7 @@ export namespace Prisma {
   export type ContractUncheckedUpdateManyWithoutCustomerInput = {
     id?: IntFieldUpdateOperationsInput | number
     carId?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contractPrice?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14440,6 +18367,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CustomerCreateManyCompanyInput = {
+    id?: number
+    name: string
+    email: string
+    gender: $Enums.GenderType
+    phoneNumber: string
+    ageGroup: $Enums.AgeGroup
+    region: $Enums.Region
+    memo?: string | null
+    contractCount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserCreateManyCompanyInput = {
     id?: number
     name: string
@@ -14449,6 +18390,49 @@ export namespace Prisma {
     isAdmin: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type CustomerUpdateWithoutCompanyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
+    memo?: NullableStringFieldUpdateOperationsInput | string | null
+    contractCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
+    memo?: NullableStringFieldUpdateOperationsInput | string | null
+    contractCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    gender?: EnumGenderTypeFieldUpdateOperationsInput | $Enums.GenderType
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    ageGroup?: EnumAgeGroupFieldUpdateOperationsInput | $Enums.AgeGroup
+    region?: EnumRegionFieldUpdateOperationsInput | $Enums.Region
+    memo?: NullableStringFieldUpdateOperationsInput | string | null
+    contractCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpdateWithoutCompanyInput = {

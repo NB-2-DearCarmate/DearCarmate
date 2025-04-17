@@ -120,14 +120,30 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.CarScalarFieldEnum = {
   id: 'id',
   carNumber: 'carNumber',
-  manufacturer: 'manufacturer',
-  model: 'model',
+  type: 'type',
   mileage: 'mileage',
   price: 'price',
   explanation: 'explanation',
   accidentCount: 'accidentCount',
   accidentDetails: 'accidentDetails',
   status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  modelId: 'modelId',
+  manufacturerId: 'manufacturerId'
+};
+
+exports.Prisma.ManufacterersScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ModelsScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -143,7 +159,8 @@ exports.Prisma.CustomerScalarFieldEnum = {
   memo: 'memo',
   contractCount: 'contractCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  companyId: 'companyId'
 };
 
 exports.Prisma.ContractScalarFieldEnum = {
@@ -217,10 +234,64 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.CarType = exports.$Enums.CarType = {
+  SEDAN: 'SEDAN',
+  COMPACT: 'COMPACT',
+  SUV: 'SUV'
+};
 
+exports.VehicleStatus = exports.$Enums.VehicleStatus = {
+  POSSESSION: 'POSSESSION',
+  FOR_SALE: 'FOR_SALE'
+};
+
+exports.GenderType = exports.$Enums.GenderType = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE'
+};
+
+exports.AgeGroup = exports.$Enums.AgeGroup = {
+  AGE_10: 'AGE_10',
+  AGE_20: 'AGE_20',
+  AGE_30: 'AGE_30',
+  AGE_40: 'AGE_40',
+  AGE_50: 'AGE_50',
+  AGE_60: 'AGE_60',
+  AGE_70: 'AGE_70',
+  AGE_80: 'AGE_80'
+};
+
+exports.Region = exports.$Enums.Region = {
+  SEOUL: 'SEOUL',
+  GYEONGGI: 'GYEONGGI',
+  INCHEON: 'INCHEON',
+  GANGWON: 'GANGWON',
+  CHUNGBUK: 'CHUNGBUK',
+  CHUNGNAM: 'CHUNGNAM',
+  SEJONG: 'SEJONG',
+  DAEJEON: 'DAEJEON',
+  JEONBUK: 'JEONBUK',
+  JEONNAM: 'JEONNAM',
+  GWANGJU: 'GWANGJU',
+  GYEONGBUK: 'GYEONGBUK',
+  GYEONGNAM: 'GYEONGNAM',
+  DAEGU: 'DAEGU',
+  ULSAN: 'ULSAN',
+  BUSAN: 'BUSAN',
+  JEJU: 'JEJU'
+};
+
+exports.ContractStatus = exports.$Enums.ContractStatus = {
+  VEHICLE_CHECK: 'VEHICLE_CHECK',
+  PRICE_NEGOTIATION: 'PRICE_NEGOTIATION',
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL'
+};
 
 exports.Prisma.ModelName = {
   Car: 'Car',
+  Manufacterers: 'Manufacterers',
+  Models: 'Models',
   Customer: 'Customer',
   Contract: 'Contract',
   Meeting: 'Meeting',
