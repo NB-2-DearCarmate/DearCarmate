@@ -1,0 +1,185 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Car {
+  id              Int      @id @default(autoincrement())
+  carNumber       String
+  manufacturer    String
+  model           String
+  mileage         Int
+  price           Int
+  explanation     String?
+  accidentCount   Int?
+  accidentDetails String?
+  status          String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  contracts Contract[]
+}
+
+model Customer {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String
+  gender        String
+  phoneNumber   String
+  ageGroup      String
+  region        String
+  memo          String?
+  contractCount Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  contracts Contract[]
+}
+
+model Contract {
+  id             Int       @id @default(autoincrement())
+  carId          Int
+  customerId     Int
+  status         String
+  resolutionDate DateTime?
+  contractPrice  Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  car       Car                @relation(fields: [carId], references: [id])
+  customer  Customer           @relation(fields: [customerId], references: [id])
+  meetings  Meeting[]
+  documents ContractDocument[]
+}
+
+model Meeting {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  contractId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id])
+  alarms   Alarm[]
+}
+
+model Alarm {
+  id        Int      @id @default(autoincrement())
+  meetingId Int
+  alarmAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  password       String
+  employeeNumber String
+  companyId      Int
+  isAdmin        Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  companyCode String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+}
+
+model ContractDocument {
+  id         Int      @id @default(autoincrement())
+  contractId Int
+  fileName   String
+  filePath   String
+  fileSize   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id])
+}
+
+enum Manufacturer {
+  KIA
+  CHEVROLET
+}
+
+enum CarModel {
+  K5
+  SPARK
+}
+
+enum CarType {
+  SEDAN
+  COMPACT
+  SUV
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+}
+
+enum AgeGroup {
+  AGE_10
+  AGE_20
+  AGE_30
+  AGE_40
+  AGE_50
+  AGE_60
+  AGE_70
+  AGE_80
+}
+
+enum Region {
+  SEOUL
+  GYEONGGI
+  INCHEON
+  GANGWON
+  CHUNGBUK
+  CHUNGNAM
+  SEJONG
+  DAEJEON
+  JEONBUK
+  JEONNAM
+  GWANGJU
+  GYEONGBUK
+  GYEONGNAM
+  DAEGU
+  ULSAN
+  BUSAN
+  JEJU
+}
+
+enum VehicleStatus {
+  POSSESSION
+  FOR_SALE
+}
+
+enum ContractStatus {
+  VEHICLE_CHECK
+  PRICE_NEGOTIATION
+  SUCCESS
+  FAIL
+}
