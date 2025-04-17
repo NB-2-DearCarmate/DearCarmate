@@ -1,5 +1,5 @@
 import { object, string, number, nonempty, min, partial } from "superstruct";
-import { PageParamsStruct } from "./CommonStruct";
+import { CarPageParamsStruct } from "./CommonStruct";
 
 export const CarStruct = object({
   carNumber: nonempty(string()),
@@ -13,5 +13,5 @@ export const CarStruct = object({
   accidentDetails: nonempty(string()),
 });
 
-export const GetCarListParamsStruct = PageParamsStruct;
+export const GetCarListParamsStruct = CarPageParamsStruct;
 export const UpdateCarStruct = partial(CarStruct);

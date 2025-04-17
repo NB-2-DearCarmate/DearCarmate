@@ -7,7 +7,6 @@ import {
   pattern,
 } from "superstruct";
 import { CompanyStruct } from "../validators/CompanyStruct";
-import { PageParamsStruct } from "../validators/CommonStruct";
 
 const PhoneNumber = pattern(string(), /^01[0|1|6|7|8|9]-\d{3,4}-\d{4}$/);
 
@@ -35,5 +34,3 @@ export const UpdateUserStruct = partial(
     imageUrl: string(),
   })
 );
-
-export const GetUserListParamsStruct = PageParamsStruct;
