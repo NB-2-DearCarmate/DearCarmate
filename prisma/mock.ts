@@ -1,17 +1,57 @@
+ 
+import { PrismaClient, CarType, VehicleStatus , GenderType, AgeGroup, Region, ContractStatus} from '@prisma/client';
+
+export const manufacturers = [
+  {
+    name: "기아",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    name: "현대",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    name: "BMW",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    name: "벤츠",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    name: "쉐보레",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    name: "르노코리아자동차",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
 export const companies = [
   {
-    id: 1,
-    companyName: "코드잇 A",
-    companyCode: "CAR-A-2023",
+    companyName: "ABC 자동차",
+    companyCode: "ABC001", 
     createdAt: new Date("2023-01-01"),
     updatedAt: new Date("2023-01-01"),
   },
+  { 
+    companyName: "XYZ 모터스",
+    companyCode: "XYZ001",
+    createdAt: new Date("2022-03-15"),
+    updatedAt: new Date("2023-01-15"),
+  },
   {
-    id: 2,
-    companyName: "코드잇 B",
-    companyCode: "CAR-B-2023",
-    createdAt: new Date("2023-02-15"),
-    updatedAt: new Date("2023-02-15"),
+    companyName: "자동차와 사람",
+    companyCode: "CARPEOPLE001",
+    createdAt: new Date("2021-07-20"),
+    updatedAt: new Date("2023-04-01"), 
   },
 ];
 
@@ -22,7 +62,8 @@ export const users = [
     email: "admin@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-001",
-    isAdmin: true,
+    isAdmin: true, 
+    companyId: 1, 
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
   },
@@ -32,7 +73,8 @@ export const users = [
     email: "sales@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-002",
-    isAdmin: false,
+    isAdmin: false, 
+    companyId: 2, 
     createdAt: new Date("2023-03-05"),
     updatedAt: new Date("2023-03-05"),
   },
@@ -41,234 +83,174 @@ export const users = [
     name: "박지현",
     email: "consultant@carsales.com",
     password: "12341234",
-    employeeNumber: "EMP-2023-005",
-    companyId: 2,
+    employeeNumber: "EMP-2023-005", 
+    companyId: 3, 
     isAdmin: false,
     createdAt: new Date("2023-03-10"),
     updatedAt: new Date("2023-03-10"),
+  },
+]; 
+export const models = [
+  {
+    year: 2023,
+    name: "K5",
+    manufacturerId: 1, // 기아
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    year: 2022,
+    name: "쏘나타",
+    manufacturerId: 2, // 현대
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    year: 2024,
+    name: "X5",
+    manufacturerId: 3, // BMW
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    year: 2023,
+    name: "C-클래스",
+    manufacturerId: 4, // 벤츠
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    year: 2024,
+    name: "그랜저",
+    manufacturerId: 2, // 현대
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    year: 2022,
+    name: "모닝",
+    manufacturerId: 1, // 기아
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 
 export const cars = [
   {
-    id: 1,
     carNumber: "111루 3456",
-    manufacturer: 1,
-    model: 2,
+    type: CarType.SEDAN,  // CarType Enum 값을 사용해야 합니다. 
     mileage: 35000,
     price: 22000000,
     explanation: "깨끗한 K5, 무사고 차량입니다.",
     accidentCount: 0,
-    accidentDetails: null,
-    status: "FOR_SALE",
+    accidentDetails: null, 
+    status: VehicleStatus.FOR_SALE, // VehicleStatus Enum 값을 사용해야 합니다.
     createdAt: new Date("2023-04-01"),
     updatedAt: new Date("2023-04-01"),
+    modelId: 1,  // 모델 ID는 실제 데이터베이스에서 참조해야 할 값입니다.
+    manufacturerId: 1  // 제조사 ID는 실제 데이터베이스에서 참조해야 할 값입니다.
   },
   {
-    id: 2,
-    carNumber: "344구 5678",
-    manufacturer: "2",
-    model: "7",
-    mileage: 45000,
-    price: 12000000,
-    explanation: "경제적인 아반떼, 도시 주행에 최적화된 차량입니다.",
-    accidentCount: 1,
-    accidentDetails: "경미한 범퍼 교체 이력 있음",
-    status: "FOR_SALE",
-    createdAt: new Date("2023-04-05"),
-    updatedAt: new Date("2023-04-05"),
-  },
-  {
-    id: 3,
-    carNumber: "135보 7890",
-    manufacturer: 2,
-    model: 10,
-    mileage: 15000,
+    carNumber: "222가 4567",
+    type: CarType.SUV,  // CarType Enum 값을 사용해야 합니다.
+    mileage: 50000,
     price: 27000000,
-    explanation: "최신형 베뉴, 풀옵션 차량입니다.",
-    accidentCount: 0,
-    accidentDetails: null,
-    status: "POSSESSION",
-    createdAt: new Date("2023-04-10"),
-    updatedAt: new Date("2023-04-10"),
+    explanation: "견고하고 넓은 SUV, 가족용으로 적합합니다.",
+    accidentCount: 1,
+    accidentDetails: "후방 사고 있음",
+    status: VehicleStatus.FOR_SALE, // VehicleStatus Enum 값을 사용해야 합니다.
+    createdAt: new Date("2023-05-15"),
+    updatedAt: new Date("2023-05-15"),
+    modelId: 2,
+    manufacturerId: 2
+  },
+  {
+    carNumber: "222가 4567",
+    type: CarType.COMPACT,  // CarType Enum 값을 사용해야 합니다.
+    mileage: 50000,
+    price: 27000000,
+    explanation: "견고하고 넓은 SUV, 가족용으로 적합합니다.",
+    accidentCount: 1,
+    accidentDetails: "후방 사고 있음",
+    status: VehicleStatus.FOR_SALE, // VehicleStatus Enum 값을 사용해야 합니다.
+    createdAt: new Date("2023-05-15"),
+    updatedAt: new Date("2023-05-15"),
+    modelId: 3,
+    manufacturerId: 3
   },
 ];
-
-export const manufacturer = [
-  {
-    id: 1,
-    name: "기아",
-    createdAt: new Date("2023-04-10"),
-    updatedAt: new Date("2023-04-10"),
-  },
-  {
-    id: 2,
-    name: "현대",
-    createdAt: new Date("2023-04-10"),
-    updatedAt: new Date("2023-04-10"),
-  },
-];
-
-//차량 모델 10개
-export const model = [
-  {
-    id: 1,
-    name: "K3",
-    year: 2020,
-    manufacturerId: 1,
-    createdAt: new Date("2020-04-10"),
-    updatedAt: new Date("2021-04-10"),
-  },
-  {
-    id: 2,
-    name: "K5",
-    year: 2020,
-    manufacturerId: 1,
-    createdAt: new Date("2020-04-10"),
-    updatedAt: new Date("2021-04-10"),
-  },
-  {
-    id: 3,
-    name: "K7",
-    year: 2021,
-    manufacturerId: 1,
-    createdAt: new Date("2021-03-15"),
-    updatedAt: new Date("2022-03-15"),
-  },
-  {
-    id: 4,
-    name: "K9",
-    year: 2022,
-    manufacturerId: 1,
-    createdAt: new Date("2022-05-20"),
-    updatedAt: new Date("2023-05-20"),
-  },
-  {
-    id: 5,
-    name: "K8",
-    year: 2023,
-    manufacturerId: 1,
-    createdAt: new Date("2023-06-01"),
-    updatedAt: new Date("2024-06-01"),
-  },
-  {
-    id: 6,
-    name: "그랜저",
-    year: 2020,
-    manufacturerId: 2,
-    createdAt: new Date("2020-07-10"),
-    updatedAt: new Date("2021-07-10"),
-  },
-  {
-    id: 7,
-    name: "아반떼",
-    year: 2021,
-    manufacturerId: 2,
-    createdAt: new Date("2021-08-12"),
-    updatedAt: new Date("2022-08-12"),
-  },
-  {
-    id: 8,
-    name: "소나타",
-    year: 2022,
-    manufacturerId: 2,
-    createdAt: new Date("2022-09-20"),
-    updatedAt: new Date("2023-09-20"),
-  },
-  {
-    id: 9,
-    name: "투싼",
-    year: 2023,
-    manufacturerId: 2,
-    createdAt: new Date("2023-10-05"),
-    updatedAt: new Date("2024-10-05"),
-  },
-  {
-    id: 10,
-    name: "베뉴",
-    year: 2023,
-    manufacturerId: 2,
-    createdAt: new Date("2023-11-01"),
-    updatedAt: new Date("2024-11-01"),
-  },
-];
-
 export const customers = [
   {
-    id: 1,
     name: "홍길동",
     email: "hong@example.com",
-    gender: "MALE",
+    gender: GenderType.MALE, // Enum 값 사용
     phoneNumber: "010-1234-5678",
-    ageGroup: "AGE_30",
-    region: "SEOUL",
-    memo: "신차 구매 희망",
-    contractCount: 1,
-    companyId: 1,
-    createdAt: new Date("2023-05-01"),
-    updatedAt: new Date("2023-05-01"),
+    ageGroup: AgeGroup.AGE_10, // Enum 값 사용
+    region: Region.SEOUL, // Enum 값 사용
+    memo: "VIP 고객",
+    contractCount: 2,
+    createdAt: new Date("2023-01-01"),
+    updatedAt: new Date("2023-01-01"),
+    companyId: 1, // 실제 존재하는 회사 ID
   },
   {
-    id: 2,
     name: "김영희",
     email: "kim@example.com",
-    gender: "FEMALE",
-    phoneNumber: "010-2345-6789",
-    ageGroup: "AGE_40",
-    region: "GYEONGGI",
-    memo: "중고차 구매 문의",
-    contractCount: 0,
-    companyId: 2,
-    createdAt: new Date("2023-05-05"),
-    updatedAt: new Date("2023-05-05"),
+    gender: GenderType.FEMALE, // Enum 값 사용
+    phoneNumber: "010-9876-5432",
+    ageGroup: AgeGroup.AGE_20, // Enum 값 사용
+    region: Region.BUSAN, // Enum 값 사용
+    memo: "첫 차 구매 고객",
+    contractCount: 1,
+    createdAt: new Date("2023-02-15"),
+    updatedAt: new Date("2023-02-15"),
+    companyId: 2, // 실제 존재하는 회사 ID
   },
   {
-    id: 3,
-    name: "이철수",
+    name: "이순신",
     email: "lee@example.com",
-    gender: "MALE",
-    phoneNumber: "010-3456-7890",
-    ageGroup: "AGE_50",
-    region: "BUSAN",
-    memo: "K5 관심 있음",
-    contractCount: 2,
-    companyId: 1,
-    createdAt: new Date("2023-05-10"),
-    updatedAt: new Date("2023-05-10"),
+    gender: GenderType.MALE, // Enum 값 사용
+    phoneNumber: "010-1111-2222",
+    ageGroup: AgeGroup.AGE_40, // Enum 값 사용
+    region: Region.INCHEON, // Enum 값 사용
+    memo: "오래된 고객",
+    contractCount: 5,
+    createdAt: new Date("2020-05-10"),
+    updatedAt: new Date("2023-03-10"),
+    companyId: null, // 회사 미참여 고객
   },
 ];
+
+
 
 export const contracts = [
   {
-    id: 1,
-    carId: 1,
-    customerId: 1,
-    status: "SUCCESS",
-    resolutionDate: new Date("2023-06-15"),
-    contractPrice: 21500000,
-    createdAt: new Date("2023-06-01"),
-    updatedAt: new Date("2023-06-15"),
-  },
-  {
-    id: 2,
-    carId: 2,
-    customerId: 3,
-    status: "PRICE_NEGOTIATION",
+    carId: 1, // 차 ID
+    customerId: 1, // 고객 ID
+    status: ContractStatus.VEHICLE_CHECK, // Enum 값 사용
     resolutionDate: null,
-    contractPrice: 11500000,
-    createdAt: new Date("2023-06-10"),
-    updatedAt: new Date("2023-06-10"),
+    contractPrice: 20000000,
+    createdAt: new Date("2023-01-15"),
+    updatedAt: new Date("2023-01-15"),
   },
   {
-    id: 3,
+    carId: 2,
+    customerId: 2,
+    status: ContractStatus.PRICE_NEGOTIATION, // Enum 값 사용
+    resolutionDate: new Date("2023-02-15"),
+    contractPrice: 15000000,
+    createdAt: new Date("2023-01-20"),
+    updatedAt: new Date("2023-02-20"),
+  },
+  {
     carId: 3,
     customerId: 3,
-    status: "VEHICLE_CHECK",
+    status: ContractStatus.SUCCESS, // Enum 값 사용
     resolutionDate: null,
-    contractPrice: 26500000,
-    createdAt: new Date("2023-06-20"),
-    updatedAt: new Date("2023-06-20"),
-  },
+    contractPrice: 25000000,
+    createdAt: new Date("2023-03-01"),
+    updatedAt: new Date("2023-03-01"),
+  },  
 ];
 
 export const meetings = [
@@ -338,8 +320,8 @@ export const contractDocuments = [
     id: 1,
     contractId: 1,
     fileName: "홍길동_구매계약서.pdf",
-    filePath: "/documents/contracts/1/contract.pdf",
-    fileSize: 1024 * 1024 * 2,
+    filePath: "/documents/contracts/1/contract.pdf", 
+    fileSize: 2097152, // 2MB 
     createdAt: new Date("2023-06-15"),
     updatedAt: new Date("2023-06-15"),
   },
@@ -347,8 +329,8 @@ export const contractDocuments = [
     id: 2,
     contractId: 1,
     fileName: "홍길동_차량점검표.pdf",
-    filePath: "/documents/contracts/1/inspection.pdf",
-    fileSize: 1024 * 1024 * 1.5,
+    filePath: "/documents/contracts/1/inspection.pdf", 
+    fileSize: 1572864, // 1.5MB 
     createdAt: new Date("2023-06-15"),
     updatedAt: new Date("2023-06-15"),
   },
@@ -356,9 +338,9 @@ export const contractDocuments = [
     id: 3,
     contractId: 2,
     fileName: "이철수_견적서.pdf",
-    filePath: "/documents/contracts/2/quote.pdf",
-    fileSize: 1024 * 1024 * 1,
+    filePath: "/documents/contracts/2/quote.pdf", 
+    fileSize: 1048576, // 1MB
     createdAt: new Date("2023-06-10"),
     updatedAt: new Date("2023-06-10"),
   },
-];
+]; 
