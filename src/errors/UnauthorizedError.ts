@@ -4,3 +4,5 @@ class UnauthorizedError extends Error {
     this.name = "UnauthorizedError";
   }
 }
+
+export default UnauthorizedError;
