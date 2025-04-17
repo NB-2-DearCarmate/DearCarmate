@@ -1,3 +1,4 @@
+ 
 import { PrismaClient, CarType, VehicleStatus , GenderType, AgeGroup, Region, ContractStatus} from '@prisma/client';
 
 export const manufacturers = [
@@ -36,11 +37,11 @@ export const manufacturers = [
 export const companies = [
   {
     companyName: "ABC 자동차",
-    companyCode: "ABC001",
+    companyCode: "ABC001", 
     createdAt: new Date("2023-01-01"),
     updatedAt: new Date("2023-01-01"),
   },
-  {
+  { 
     companyName: "XYZ 모터스",
     companyCode: "XYZ001",
     createdAt: new Date("2022-03-15"),
@@ -50,7 +51,7 @@ export const companies = [
     companyName: "자동차와 사람",
     companyCode: "CARPEOPLE001",
     createdAt: new Date("2021-07-20"),
-    updatedAt: new Date("2023-04-01"),
+    updatedAt: new Date("2023-04-01"), 
   },
 ];
 
@@ -61,8 +62,8 @@ export const users = [
     email: "admin@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-001",
-    isAdmin: true,
-    companyId: 1,
+    isAdmin: true, 
+    companyId: 1, 
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
   },
@@ -72,8 +73,8 @@ export const users = [
     email: "sales@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-002",
-    isAdmin: false,
-    companyId: 2,
+    isAdmin: false, 
+    companyId: 2, 
     createdAt: new Date("2023-03-05"),
     updatedAt: new Date("2023-03-05"),
   },
@@ -82,14 +83,13 @@ export const users = [
     name: "박지현",
     email: "consultant@carsales.com",
     password: "12341234",
-    employeeNumber: "EMP-2023-005",
-    companyId: 3,
+    employeeNumber: "EMP-2023-005", 
+    companyId: 3, 
     isAdmin: false,
     createdAt: new Date("2023-03-10"),
     updatedAt: new Date("2023-03-10"),
   },
-];
-
+]; 
 export const models = [
   {
     year: 2023,
@@ -138,12 +138,12 @@ export const models = [
 export const cars = [
   {
     carNumber: "111루 3456",
-    type: CarType.SEDAN,  // CarType Enum 값을 사용해야 합니다.
+    type: CarType.SEDAN,  // CarType Enum 값을 사용해야 합니다. 
     mileage: 35000,
     price: 22000000,
     explanation: "깨끗한 K5, 무사고 차량입니다.",
     accidentCount: 0,
-    accidentDetails: null,
+    accidentDetails: null, 
     status: VehicleStatus.FOR_SALE, // VehicleStatus Enum 값을 사용해야 합니다.
     createdAt: new Date("2023-04-01"),
     updatedAt: new Date("2023-04-01"),
@@ -250,7 +250,7 @@ export const contracts = [
     contractPrice: 25000000,
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
-  }, 
+  },  
 ];
 
 export const meetings = [
@@ -320,8 +320,8 @@ export const contractDocuments = [
     id: 1,
     contractId: 1,
     fileName: "홍길동_구매계약서.pdf",
-    filePath: "/documents/contracts/1/contract.pdf",
-    fileSize: 2097152, // 2MB
+    filePath: "/documents/contracts/1/contract.pdf", 
+    fileSize: 2097152, // 2MB 
     createdAt: new Date("2023-06-15"),
     updatedAt: new Date("2023-06-15"),
   },
@@ -329,8 +329,8 @@ export const contractDocuments = [
     id: 2,
     contractId: 1,
     fileName: "홍길동_차량점검표.pdf",
-    filePath: "/documents/contracts/1/inspection.pdf",
-    fileSize: 1572864, // 1.5MB
+    filePath: "/documents/contracts/1/inspection.pdf", 
+    fileSize: 1572864, // 1.5MB 
     createdAt: new Date("2023-06-15"),
     updatedAt: new Date("2023-06-15"),
   },
@@ -338,9 +338,9 @@ export const contractDocuments = [
     id: 3,
     contractId: 2,
     fileName: "이철수_견적서.pdf",
-    filePath: "/documents/contracts/2/quote.pdf",
+    filePath: "/documents/contracts/2/quote.pdf", 
     fileSize: 1048576, // 1MB
     createdAt: new Date("2023-06-10"),
     updatedAt: new Date("2023-06-10"),
   },
-];
+]; 

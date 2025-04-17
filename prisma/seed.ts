@@ -43,11 +43,7 @@ async function main() {
     });
     console.log("Companies seeded.");
 
-    await prisma.user.createMany({
-      data: users,
-      skipDuplicates: true,
-    });
-    console.log("Users seeded."); 
+ 
 
     await prisma.models.createMany({
       data: models,
@@ -55,7 +51,12 @@ async function main() {
     });
     console.log("Cars seeded.");
     
-
+    await prisma.user.createMany({
+      data: users,
+      skipDuplicates: true,
+    });
+    console.log("Users seeded."); 
+    
     await prisma.car.createMany({
       data: cars,
       skipDuplicates: true,

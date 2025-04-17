@@ -1,10 +1,4 @@
 -- CreateEnum
-CREATE TYPE "Manufacturer" AS ENUM ('KIA', 'CHEVROLET');
-
--- CreateEnum
-CREATE TYPE "CarModel" AS ENUM ('K5', 'SPARK');
-
--- CreateEnum
 CREATE TYPE "CarType" AS ENUM ('SEDAN', 'COMPACT', 'SUV');
 
 -- CreateEnum
@@ -26,18 +20,41 @@ CREATE TYPE "ContractStatus" AS ENUM ('VEHICLE_CHECK', 'PRICE_NEGOTIATION', 'SUC
 CREATE TABLE "Car" (
     "id" SERIAL NOT NULL,
     "carNumber" TEXT NOT NULL,
-    "manufacturer" TEXT NOT NULL,
-    "model" TEXT NOT NULL,
+    "type" "CarType" NOT NULL,
     "mileage" INTEGER NOT NULL,
     "price" INTEGER NOT NULL,
     "explanation" TEXT,
     "accidentCount" INTEGER,
     "accidentDetails" TEXT,
-    "status" TEXT NOT NULL,
+    "status" "VehicleStatus" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "modelId" INTEGER NOT NULL,
+    "manufacturerId" INTEGER NOT NULL,
+
+    CONSTRAINT "Car_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Manufacturers" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Car_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Manufacturers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Models" (
+    "id" SERIAL NOT NULL,
+    "year" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "manufacturerId" INTEGER NOT NULL,
+
+    CONSTRAINT "Models_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -45,14 +62,15 @@ CREATE TABLE "Customer" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "gender" TEXT NOT NULL,
+    "gender" "GenderType" NOT NULL,
     "phoneNumber" TEXT NOT NULL,
-    "ageGroup" TEXT NOT NULL,
-    "region" TEXT NOT NULL,
+    "ageGroup" "AgeGroup" NOT NULL,
+    "region" "Region" NOT NULL,
     "memo" TEXT,
     "contractCount" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "companyId" INTEGER,
 
     CONSTRAINT "Customer_pkey" PRIMARY KEY ("id")
 );
@@ -62,7 +80,7 @@ CREATE TABLE "Contract" (
     "id" SERIAL NOT NULL,
     "carId" INTEGER NOT NULL,
     "customerId" INTEGER NOT NULL,
-    "status" TEXT NOT NULL,
+    "status" "ContractStatus" NOT NULL,
     "resolutionDate" TIMESTAMP(3),
     "contractPrice" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -111,7 +129,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Company" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "companyName" TEXT NOT NULL,
     "companyCode" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -137,6 +155,18 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Company_companyCode_key" ON "Company"("companyCode");
+
+-- AddForeignKey
+ALTER TABLE "Car" ADD CONSTRAINT "Car_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Models"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Car" ADD CONSTRAINT "Car_manufacturerId_fkey" FOREIGN KEY ("manufacturerId") REFERENCES "Manufacturers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Models" ADD CONSTRAINT "Models_manufacturerId_fkey" FOREIGN KEY ("manufacturerId") REFERENCES "Manufacturers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Customer" ADD CONSTRAINT "Customer_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Contract" ADD CONSTRAINT "Contract_carId_fkey" FOREIGN KEY ("carId") REFERENCES "Car"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
