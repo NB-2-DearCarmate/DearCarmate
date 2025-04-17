@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -15,47 +14,74 @@ datasource db {
 }
 
 model Car {
-  id              Int      @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   carNumber       String
-  manufacturer    String
-  model           String
+  type            CarType
   mileage         Int
   price           Int
   explanation     String?
   accidentCount   Int?
   accidentDetails String?
-  status          String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status          VehicleStatus
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  modelId         Int
+  model           Models        @relation(fields: [modelId], references: [id])
+  manufacturerId  Int
+  manufacturers   Manufacturers @relation(fields: [manufacturerId], references: [id])
 
   contracts Contract[]
+}
+
+model Manufacturers {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars   Car[]
+  Models Models[]
+}
+
+model Models {
+  id        Int      @id @default(autoincrement())
+  year      Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  manufacturerId Int
+  manufacturer   Manufacturers @relation(fields: [manufacturerId], references: [id])
+  cars           Car[]
 }
 
 model Customer {
-  id            Int      @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   name          String
   email         String
-  gender        String
+  gender        GenderType
   phoneNumber   String
-  ageGroup      String
-  region        String
+  ageGroup      AgeGroup
+  region        Region
   memo          String?
   contractCount Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   contracts Contract[]
+  Company   Company?   @relation(fields: [companyId], references: [id])
+  companyId Int?
 }
 
 model Contract {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   carId          Int
   customerId     Int
-  status         String
+  status         ContractStatus
   resolutionDate DateTime?
   contractPrice  Int
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   car       Car                @relation(fields: [carId], references: [id])
   customer  Customer           @relation(fields: [customerId], references: [id])
@@ -100,12 +126,13 @@ model User {
 
 model Company {
   id          Int      @id @default(autoincrement())
-  name        String
+  companyName String
   companyCode String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  users User[]
+  customers Customer[]
+  users     User[]
 }
 
 model ContractDocument {
@@ -118,16 +145,6 @@ model ContractDocument {
   updatedAt  DateTime @updatedAt
 
   contract Contract @relation(fields: [contractId], references: [id])
-}
-
-enum Manufacturer {
-  KIA
-  CHEVROLET
-}
-
-enum CarModel {
-  K5
-  SPARK
 }
 
 enum CarType {
