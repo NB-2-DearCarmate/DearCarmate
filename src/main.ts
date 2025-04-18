@@ -4,6 +4,7 @@ import companiesRouter from "./routes/companiesRouter";
 import { PORT } from "./lib/constance";
 import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
+import carsRouter from "./routes/carsRouter";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/companies", companiesRouter);
+app.use("/cars", carsRouter);
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);
 
