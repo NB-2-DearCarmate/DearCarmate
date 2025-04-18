@@ -1,5 +1,4 @@
 import {
-  PrismaClient,
   CarType,
   VehicleStatus,
   GenderType,
@@ -49,6 +48,7 @@ export const users = [
     email: "admin@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-001",
+    phoneNumber: "010-1111-2222",
     isAdmin: true,
     companyId: 1,
     createdAt: new Date("2023-03-01"),
@@ -60,6 +60,7 @@ export const users = [
     email: "sales@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-002",
+    phoneNumber: "010-3333-4444",
     isAdmin: false,
     companyId: 2,
     createdAt: new Date("2023-03-05"),
@@ -71,6 +72,7 @@ export const users = [
     email: "consultant@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-005",
+    phoneNumber: "010-5555-6666",
     companyId: 3,
     isAdmin: false,
     createdAt: new Date("2023-03-10"),
@@ -152,6 +154,7 @@ export const models = [
 
 export const cars = [
   {
+    id: 1,
     carNumber: "111루 3456",
     type: CarType.SEDAN,
     mileage: 35000,
@@ -166,6 +169,7 @@ export const cars = [
     manufacturerId: 1,
   },
   {
+    id: 2,
     carNumber: "222가 4567",
     type: CarType.SUV,
     mileage: 50000,
@@ -180,7 +184,8 @@ export const cars = [
     manufacturerId: 2,
   },
   {
-    carNumber: "222가 4567",
+    id: 3,
+    carNumber: "222가 6457",
     type: CarType.SEDAN,
     mileage: 50000,
     price: 27000000,
@@ -240,8 +245,8 @@ export const contracts = [
   {
     carId: 1,
     customerId: 1,
+    userId: 1,
     status: ContractStatus.VEHICLE_CHECK,
-    resolutionDate: null,
     contractPrice: 20000000,
     createdAt: new Date("2023-01-15"),
     updatedAt: new Date("2023-01-15"),
@@ -249,6 +254,7 @@ export const contracts = [
   {
     carId: 2,
     customerId: 2,
+    userId: 2,
     status: ContractStatus.PRICE_NEGOTIATION,
     resolutionDate: new Date("2023-02-15"),
     contractPrice: 15000000,
@@ -258,6 +264,7 @@ export const contracts = [
   {
     carId: 3,
     customerId: 3,
+    userId: 3,
     status: ContractStatus.SUCCESS,
     resolutionDate: null,
     contractPrice: 25000000,

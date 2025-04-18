@@ -77,6 +77,7 @@ model Contract {
   id             Int                @id @default(autoincrement())
   carId          Int
   customerId     Int
+  userId         Int
   status         ContractStatus
   resolutionDate DateTime?
   contractPrice  Int
@@ -84,6 +85,7 @@ model Contract {
   updatedAt      DateTime           @updatedAt
   car            Car                @relation(fields: [carId], references: [id])
   customer       Customer           @relation(fields: [customerId], references: [id])
+  user           User               @relation(fields: [userId], references: [id])
   meetings       Meeting[]
   documents      ContractDocument[]
 }
@@ -121,7 +123,8 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  company Company @relation(fields: [companyId], references: [id])
+  company  Company    @relation(fields: [companyId], references: [id])
+  Contract Contract[]
 }
 
 model Company {
