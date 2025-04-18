@@ -22,7 +22,7 @@ export const ContractStruct = object({
   meeting: date(),
 });
 
-export const UpdateStruct = partial(ContractStruct);
+export const UpdateContractStruct = partial(ContractStruct);
 
 // 계약 목록 조회용
 export const ContractListStruct = partial(CursorParamsStruct);
