@@ -15,7 +15,7 @@ datasource db {
 
 model Car {
   id              Int           @id @default(autoincrement())
-  carNumber       String
+  carNumber       String        @unique
   type            CarType
   mileage         Int
   price           Int
@@ -35,7 +35,7 @@ model Car {
 
 model Manufacturers {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -74,18 +74,18 @@ model Customer {
 }
 
 model Contract {
-  id             Int            @id @default(autoincrement())
+  id             Int                @id @default(autoincrement())
   carId          Int
   customerId     Int
   status         ContractStatus
   resolutionDate DateTime?
   contractPrice  Int
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt 
-  car       Car                @relation(fields: [carId], references: [id])
-  customer  Customer           @relation(fields: [customerId], references: [id])
-  meetings  Meeting[]
-  documents ContractDocument[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  car            Car                @relation(fields: [carId], references: [id])
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  meetings       Meeting[]
+  documents      ContractDocument[]
 }
 
 model Meeting {
@@ -114,7 +114,8 @@ model User {
   name           String
   email          String   @unique
   password       String
-  employeeNumber String
+  employeeNumber String   @unique
+  phoneNumber    String   @unique
   companyId      Int
   isAdmin        Boolean
   createdAt      DateTime @default(now())

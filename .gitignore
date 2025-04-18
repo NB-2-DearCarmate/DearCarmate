@@ -4,3 +4,5 @@ DS_Store
 request
 *.http
 .vscode
+/dist
+prisma/migrations/

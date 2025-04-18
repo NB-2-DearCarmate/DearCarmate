@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import { object, string } from "superstruct";
+
+export const createCompanyStruct = object({
+  companyName: string(),
+  companyCode: string(),
+=======
 import {
   Infer,
   object,
@@ -31,6 +38,7 @@ export const CompanyStruct = object({
   phone: Phone,
   createdAt: optional(string()),
   updatedAt: optional(string()),
+>>>>>>> f7621834751eaef383b7a2f11b66c60fe2158cf9
 });
 
 export type Company = Infer<typeof CompanyStruct>;
