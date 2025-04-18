@@ -4,7 +4,7 @@ import UnauthorizedError from "../errors/UnauthorizedError";
 import {
   ContractStruct,
   UpdateContractStruct,
-} from "../validators/ContractStructs";
+} from "../validators/Contract";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 
