@@ -1,19 +1,23 @@
 import ForbiddenError from "../errors/ForbiddenError";
 import contractRepository from "../repositories/contractRepository";
+import { ContractType } from "../typings/contract";
 
-async function create({ data, userId: number }) {
-  const car = await contractRepository.getCarId(data.car.id);
-  const customer = await contractRepository.getCustomerId(data.customer.id);
+type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
+type UpdateContract = Partial<CreateContract> & { userId: number };
 
-  return contractRepository.save({ ...data, userId });
+async function create(data: CreateContract) {
+  const car = await contractRepository.getCarId(data.carId);
+  const customer = await contractRepository.getCustomerId(data.customerId);
+
+  return contractRepository.save(data);
 }
 
-async function update(id: number, userId: number, data) {
+async function update(id: number, data: UpdateContract) {
   const findContract = await contractRepository.getById(id);
-  if (findContract.userId !== userId) {
+  if (findContract.userId !== data.userId) {
     throw new ForbiddenError("해당 계약서 담당자만 수정할 수 있습니다.");
   }
-  return await contractRepository.update(id, userId, data);
+  return await contractRepository.update(id, data);
 }
 
 async function deleteById(id: number) {

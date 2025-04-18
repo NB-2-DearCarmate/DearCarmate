@@ -1,3 +1,4 @@
+
 import {
   object,
   string,
@@ -62,3 +63,4 @@ export const ContractQueryStruct = intersection([
 ]);
 
 export type ContractQuery = Infer<typeof ContractQueryStruct>;
+

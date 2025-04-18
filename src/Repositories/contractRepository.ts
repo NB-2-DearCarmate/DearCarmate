@@ -1,9 +1,28 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
+import { ContractType } from "../typings/contract";
 
-async function save(contract) {
+async function getContractList(where: { cursor, limit }: any) {
+  const contractWithCursor = await prisma.contract.findMany({
+    cursor: cursor ? { id: cursor } : undefined,
+    take: limit + 1,
+    orderBy: { createdAt: "desc" },
+  });
+  const contracts = contractWithCursor.slice(0, limit);
+  const cursorContract = contractWithCursor[contractWithCursor.length - 1];
+  const nextCursor = cursorContract ? cursorContract.id : null;
+
+  return {
+    list: contracts,
+    nextCursor,
+  };
+}
+
+async function save(
+  data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
+) {
   const creatContract = await prisma.contract.create({
-    data: contract,
+    data,
   });
 
   return creatContract;
@@ -36,18 +55,13 @@ async function getById(id: number) {
   return contract;
 }
 
-async function update(id: number, contract: []) {
+async function update(id: number, data: Partial<ContractType>) {
   const updatedContract = await prisma.contract.update({
     where: { id },
-    data: {
-      carId: contract.carId,
-      customerId: contract.customerId,
-      userId: contract.userId,
-      resolutionDate: contract.resolutionDate,
-    },
+    data,
   });
 
-  if (updatedContract) {
+  if (!updatedContract) {
     throw new NotFoundError(id);
   }
 
