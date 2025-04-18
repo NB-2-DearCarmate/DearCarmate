@@ -2,31 +2,16 @@ import NotFoundError from "../errors/NotFoundError";
 import BadRequestError from "../errors/BadRequestError";
 import ForbiddenError from "../errors/ForbiddenError";
 import { carRepository } from "../Repositories/carsRepository";
+import { CreateCarDTO } from "../typings/car";
 
 export const carService = {
-  async createCar(carData: {
-    carNumber: string;
-    manufacturerId: number;
-    modelId: number;
-    type: "SEDAN" | "COMPACT" | "SUV";
-    mileage: number;
-    price: number;
-    accidentCount: number;
-    explanation: string;
-    accidentDetails: string;
-    status: "POSSESSION" | "FOR_SALE";
-  }) {
-    return carRepository.createCar(
-      carData.carNumber,
-      carData.manufacturerId,
-      carData.modelId,
-      carData.type,
-      carData.mileage,
-      carData.price,
-      carData.accidentCount,
-      carData.explanation,
-      carData.accidentDetails,
-      carData.status
-    );
+  async createCar(carData: CreateCarDTO) {
+    // 차량 번호 중복 체크
+    const existingCar = await carRepository.findByCarNumber(carData.carNumber);
+    if (existingCar) {
+      throw new BadRequestError("이미 등록된 차량 번호입니다.");
+    }
+
+    return carRepository.createCar(carData);
   },
 };

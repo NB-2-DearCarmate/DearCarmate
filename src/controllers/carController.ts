@@ -16,7 +16,7 @@ export const createCar = async (
   try {
     const carData = create(req.body, CarStruct);
     const car = await carService.createCar(carData);
-    return res.status(201).json(car);
+    res.status(201).json(car);
   } catch (error) {
     next(error);
   }

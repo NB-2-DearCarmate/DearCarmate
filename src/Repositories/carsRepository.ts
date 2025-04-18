@@ -1,31 +1,17 @@
 import prisma from "../lib/prisma";
+import { CreateCarDTO } from "../typings/car";
 
 export const carRepository = {
-  async createCar(
-    carNumber: string,
-    manufacturerId: number,
-    modelId: number,
-    type: "SEDAN" | "COMPACT" | "SUV",
-    mileage: number,
-    price: number,
-    accidentCount: number,
-    explanation: string,
-    accidentDetails: string,
-    status: "POSSESSION" | "FOR_SALE"
-  ) {
+  async createCar(carData: CreateCarDTO) {
     return prisma.car.create({
-      data: {
-        carNumber,
-        modelId,
-        manufacturerId,
-        type,
-        mileage,
-        price,
-        accidentCount,
-        explanation,
-        accidentDetails,
-        status,
-      },
+      data: carData,
+    });
+  },
+
+  async findByCarNumber(carNumber: string) {
+    return prisma.car.findFirst({
+      //findUnique로 변경해야함. 임시 테스트
+      where: { carNumber },
     });
   },
 };
