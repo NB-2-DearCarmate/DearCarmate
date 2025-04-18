@@ -1,9 +1,14 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractType } from "../typings/contract";
+import { CursorPaginationParams } from "../typings/pagination";
 
-async function getContractList(where: {}, { cursor, limit }: any) {
+async function getContractList(
+  where: { status: "VEHICLE_CHECK" },
+  { cursor, limit }: CursorPaginationParams
+) {
   const contractWithCursor = await prisma.contract.findMany({
+    where,
     cursor: cursor ? { id: cursor } : undefined,
     take: limit + 1,
     orderBy: { createdAt: "desc" },

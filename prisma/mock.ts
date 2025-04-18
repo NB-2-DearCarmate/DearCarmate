@@ -154,7 +154,6 @@ export const models = [
 
 export const cars = [
   {
-    id: 1,
     carNumber: "111루 3456",
     type: CarType.SEDAN,
     mileage: 35000,
@@ -169,7 +168,6 @@ export const cars = [
     manufacturerId: 1,
   },
   {
-    id: 2,
     carNumber: "222가 4567",
     type: CarType.SUV,
     mileage: 50000,
@@ -184,7 +182,6 @@ export const cars = [
     manufacturerId: 2,
   },
   {
-    id: 3,
     carNumber: "222가 6457",
     type: CarType.SEDAN,
     mileage: 50000,
@@ -256,7 +253,6 @@ export const contracts = [
     customerId: 2,
     userId: 2,
     status: ContractStatus.PRICE_NEGOTIATION,
-    resolutionDate: new Date("2023-02-15"),
     contractPrice: 15000000,
     createdAt: new Date("2023-01-20"),
     updatedAt: new Date("2023-02-20"),
@@ -266,7 +262,6 @@ export const contracts = [
     customerId: 3,
     userId: 3,
     status: ContractStatus.SUCCESS,
-    resolutionDate: null,
     contractPrice: 25000000,
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
