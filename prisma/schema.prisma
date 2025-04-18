@@ -6,10 +6,199 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Car {
+  id              Int           @id @default(autoincrement())
+  carNumber       String
+  type            CarType
+  mileage         Int
+  price           Int
+  explanation     String?
+  accidentCount   Int?
+  accidentDetails String?
+  status          VehicleStatus
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  modelId         Int
+  model           Models        @relation(fields: [modelId], references: [id])
+  manufacturerId  Int
+  manufacturers   Manufacturers @relation(fields: [manufacturerId], references: [id])
+
+  contracts Contract[]
+}
+
+model Manufacturers {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars   Car[]
+  Models Models[]
+}
+
+model Models {
+  id        Int      @id @default(autoincrement())
+  year      Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  manufacturerId Int
+  manufacturer   Manufacturers @relation(fields: [manufacturerId], references: [id])
+  cars           Car[]
+}
+
+model Customer {
+  id            Int        @id @default(autoincrement())
+  name          String
+  email         String
+  gender        GenderType
+  phoneNumber   String
+  ageGroup      AgeGroup
+  region        Region
+  memo          String?
+  contractCount Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  contracts Contract[]
+  Company   Company?   @relation(fields: [companyId], references: [id])
+  companyId Int?
+}
+
+model Contract {
+  id             Int                @id @default(autoincrement())
+  carId          Int
+  customerId     Int
+  userId         Int
+  status         ContractStatus
+  resolutionDate DateTime?
+  contractPrice  Int
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  car            Car                @relation(fields: [carId], references: [id])
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  user           User               @relation(fields: [userId], references: [id])
+  meetings       Meeting[]
+  documents      ContractDocument[]
+}
+
+model Meeting {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  contractId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id])
+  alarms   Alarm[]
+}
+
+model Alarm {
+  id        Int      @id @default(autoincrement())
+  meetingId Int
+  alarmAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  password       String
+  employeeNumber String
+  companyId      Int
+  isAdmin        Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  company  Company    @relation(fields: [companyId], references: [id])
+  Contract Contract[]
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  companyName String
+  companyCode String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  customers Customer[]
+  users     User[]
+}
+
+model ContractDocument {
+  id         Int      @id @default(autoincrement())
+  contractId Int
+  fileName   String
+  filePath   String
+  fileSize   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id])
+}
+
+enum CarType {
+  SEDAN
+  COMPACT
+  SUV
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+}
+
+enum AgeGroup {
+  AGE_10
+  AGE_20
+  AGE_30
+  AGE_40
+  AGE_50
+  AGE_60
+  AGE_70
+  AGE_80
+}
+
+enum Region {
+  SEOUL
+  GYEONGGI
+  INCHEON
+  GANGWON
+  CHUNGBUK
+  CHUNGNAM
+  SEJONG
+  DAEJEON
+  JEONBUK
+  JEONNAM
+  GWANGJU
+  GYEONGBUK
+  GYEONGNAM
+  DAEGU
+  ULSAN
+  BUSAN
+  JEJU
+}
+
+enum VehicleStatus {
+  POSSESSION
+  FOR_SALE
+}
+
+enum ContractStatus {
+  VEHICLE_CHECK
+  PRICE_NEGOTIATION
+  SUCCESS
+  FAIL
 }
