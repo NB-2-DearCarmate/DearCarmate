@@ -10,12 +10,12 @@ import {
 } from "superstruct";
 import { PageParamsStruct } from "./CommonStruct";
 
-// 🔹 공통 유효성 검사기 직접 정의
+// 공통 유효성 검사기
 const DateString = refine(string(), "DateString", (value: string) =>
   /^\d{4}-\d{2}-\d{2}/.test(value)
 );
 
-// 🔹 계약 상태 (칸반용)
+// 계약 상태 (칸반용)
 const ContractStatus = enums([
   "차량 확인",
   "가격 협의",
@@ -23,33 +23,33 @@ const ContractStatus = enums([
   "계약 실패",
 ]);
 
-// 🔹 미팅 정보 구조
+// 미팅 정보 구조
 const MeetingStruct = object({
   date: DateString,
   place: string(),
   method: optional(enums(["대면", "비대면"])),
 });
 
-// 🔹 계약 등록/수정용 구조
+// 계약 등록/수정용 구조
 export const ContractStruct = object({
-  contractNumber: string(), // 계약번호
-  contractName: string(), // 계약명
-  customerId: number(), // 고객 ID
-  contractDate: DateString, // 계약일자
-  startDate: DateString, // 시작일
-  endDate: DateString, // 종료일
-  amount: number(), // 계약금액
-  status: ContractStatus, // 상태 (칸반용)
-  description: optional(string()), // 계약 내용
-  vehicleId: optional(number()), // 차량 ID
-  meeting: optional(MeetingStruct), // 미팅 정보
+  contractNumber: string(),
+  contractName: string(),
+  customerId: number(),
+  contractDate: DateString,
+  startDate: DateString,
+  endDate: DateString,
+  amount: number(),
+  status: ContractStatus,
+  description: optional(string()),
+  vehicleId: optional(number()),
+  meeting: optional(MeetingStruct),
   createdAt: optional(DateString),
   updatedAt: optional(DateString),
 });
 
 export type Contract = Infer<typeof ContractStruct>;
 
-// 🔹 계약 목록 조회용 쿼리 구조
+// 계약 목록 조회용
 export const ContractQueryStruct = intersection([
   PageParamsStruct,
   object({
