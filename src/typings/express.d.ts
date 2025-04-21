@@ -2,7 +2,7 @@ import { Company } from "@prisma/client";
 import { Request } from "express";
 
 export interface AuthenticatedUser {
-  id: number | string;
+  id: number;
   name: string;
   email: string;
   isAdmin: boolean;
