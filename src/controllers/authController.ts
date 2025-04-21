@@ -16,7 +16,7 @@ import {
   RefreshTokenSuccessResponse,
 } from "../typings/auth";
 
-// 🔐 로그인
+// 로그인
 export const login: RequestHandler<{}, any, LoginRequestBody> = async (
   req,
   res
@@ -61,12 +61,12 @@ export const login: RequestHandler<{}, any, LoginRequestBody> = async (
   });
 };
 
-// 🚪 로그아웃
+// 로그아웃
 export const logout: RequestHandler = (_req, res) => {
   res.status(200).json({ message: "로그아웃 성공" });
 };
 
-// 🔁 토큰 재발급
+// 토큰 재발급
 export const refreshToken: RequestHandler<
   {},
   any,
