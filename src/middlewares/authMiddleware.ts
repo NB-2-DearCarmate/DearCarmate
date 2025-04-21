@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt";
 import prisma from "../lib/prisma";
-import { AuthenticatedUser } from "../typings/express"; // 확장된 타입이 존재할 때
 
 const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -18,7 +17,7 @@ const authMiddleware = async (
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = verifyAccessToken(token);
+    const decoded = verifyAccessToken(token) as { userId: number };
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
