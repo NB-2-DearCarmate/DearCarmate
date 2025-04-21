@@ -11,7 +11,8 @@ const authMiddleware = async (
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "인증 토큰이 없습니다." });
+    res.status(401).json({ message: "인증 토큰이 없습니다." });
+    return;
   }
 
   const token = authHeader.split(" ")[1];
@@ -27,7 +28,8 @@ const authMiddleware = async (
     });
 
     if (!user) {
-      return res.status(401).json({ message: "유효하지 않은 사용자입니다." });
+      res.status(401).json({ message: "유효하지 않은 사용자입니다." });
+      return;
     }
 
     req.user = {
@@ -43,7 +45,8 @@ const authMiddleware = async (
     next();
   } catch (error) {
     console.error("JWT 인증 오류:", error);
-    return res.status(401).json({ message: "토큰이 유효하지 않습니다." });
+    res.status(401).json({ message: "토큰이 유효하지 않습니다." });
+    return;
   }
 };
 
