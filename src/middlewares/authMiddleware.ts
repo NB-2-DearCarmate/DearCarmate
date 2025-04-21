@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../utils/jwt";
+import { verifyAccessToken } from "../utils/jwt";
 import prisma from "../lib/prisma";
 import { AuthenticatedUser } from "../typings/express"; // 확장된 타입이 존재할 때
 
@@ -17,7 +17,7 @@ const authMiddleware = async (
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = verifyToken(token);
+    const decoded = verifyAccessToken(token);
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },

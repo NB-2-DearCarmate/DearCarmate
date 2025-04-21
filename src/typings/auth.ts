@@ -9,7 +9,7 @@ export interface CompanyInfo {
   companyCode: string;
 }
 
-// 로그인 응답 내 유저 정보
+// 유저 정보
 export interface UserInfo {
   id: number;
   name: string;
@@ -31,4 +31,14 @@ export interface LoginSuccessResponse {
 // 공통 에러 응답
 export interface ErrorResponse {
   message: string;
+}
+
+// 토큰 갱신
+export interface RefreshTokenRequestBody {
+  refreshToken: string;
+}
+
+export interface RefreshTokenSuccessResponse {
+  accessToken: string;
+  refreshToken: string;
 }
