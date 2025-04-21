@@ -1,4 +1,4 @@
-export type SearchByCompany = "companyName";
+export type SearchByCompany = "companyName" | "companyId";
 export type SearchByUser = "name" | "email";
 export type SearchByContract = "contractTitle" | "customerName";
 
