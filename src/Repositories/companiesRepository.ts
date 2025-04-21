@@ -84,7 +84,8 @@ export async function getUserByCompany({
     };
   }
   keyword && searchBy ? { [searchBy]: { contains: keyword } } : {};
-  const totalCount = await prisma.user.count({ where });
+  const totalItemCount = await prisma.user.count({ where });
+  const totalPage = Math.ceil(totalItemCount / pageSize);
   const order = orderBy === "oldest" ? "asc" : "desc";
   const users = await prisma.user.findMany({
     where: {
@@ -104,7 +105,9 @@ export async function getUserByCompany({
     take: pageSize,
   });
   return {
-    totalCount,
+    currentPage: page,
+    totalPage,
+    totalItemCount,
     data: users.map((user) => ({
       id: user.id,
       name: user.name,

@@ -6,7 +6,7 @@ import {
   nonempty,
   pattern,
 } from "superstruct";
-import { createCompanyStruct } from "./CompanyStructs.js";
+import { CreateCompanyStruct } from "./CompanyStructs.js";
 
 const PhoneNumber = pattern(string(), /^01[0|1|6|7|8|9]-\d{3,4}-\d{4}$/);
 
@@ -21,7 +21,7 @@ export const CreateUserStruct = object({
   employeeNumber: nonempty(string()),
   isAdmin: boolean(),
   imageUrl: string(),
-  company: createCompanyStruct,
+  company: CreateCompanyStruct,
 });
 
 export const UpdateUserStruct = partial(
