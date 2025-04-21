@@ -25,4 +25,4 @@ async function deleteById(id: number) {
   return await contractRepository.deleteById(id);
 }
 
-export default { create, update, deleteById };
+export default { create, update, deleteById }; 
