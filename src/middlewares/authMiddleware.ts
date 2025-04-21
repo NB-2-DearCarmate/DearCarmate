@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt";
 import prisma from "../lib/prisma";
-import { AuthenticatedUser } from "../typings/express"; // 확장된 타입이 존재할 때
 
 const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "인증 토큰이 없습니다." });
+    res.status(401).json({ message: "인증 토큰이 없습니다." });
+    return;
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = verifyAccessToken(token);
+    const decoded = verifyAccessToken(token) as { userId: number };
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
@@ -27,7 +27,8 @@ const authMiddleware = async (
     });
 
     if (!user) {
-      return res.status(401).json({ message: "유효하지 않은 사용자입니다." });
+      res.status(401).json({ message: "유효하지 않은 사용자입니다." });
+      return;
     }
 
     req.user = {
@@ -43,7 +44,8 @@ const authMiddleware = async (
     next();
   } catch (error) {
     console.error("JWT 인증 오류:", error);
-    return res.status(401).json({ message: "토큰이 유효하지 않습니다." });
+    res.status(401).json({ message: "토큰이 유효하지 않습니다." });
+    return;
   }
 };
 
