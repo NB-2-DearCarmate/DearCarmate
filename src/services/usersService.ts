@@ -58,4 +58,33 @@ export class UserService {
       },
     };
   }
+  async getMyInfo(userId: number) {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+      include: {
+        company: {
+          select: {
+            companyCode: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw { status: 404, message: "존재하지 않는 유저입니다!" };
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      employeeNumber: user.employeeNumber,
+      phoneNumber: user.phoneNumber,
+      imageUrl: user.imageUrl,
+      isAdmin: user.isAdmin,
+      company: {
+        companyCode: user.company?.companyCode || "",
+      },
+    };
+  }
 }
