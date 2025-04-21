@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";
-import { createCompanyStruct } from "../validators/CompanyStructs";
+import {
+  CreateCompanyStruct,
+  PatchCompanyStruct,
+  QueryStruct,
+} from "../validators/CompanyStructs";
 import * as companyService from "../services/companiesService";
 
 // 회사 등록
@@ -11,7 +15,7 @@ export async function createCompanyHandler(
   next: NextFunction
 ) {
   try {
-    const data = create(req.body, createCompanyStruct);
+    const data = create(req.body, CreateCompanyStruct);
     const newCompany = await companyService.registerCompany(data);
     res.status(201).json({ newCompany });
   } catch (error) {
@@ -26,7 +30,13 @@ export async function getCompanyListHandler(
   next: NextFunction
 ) {
   try {
-    const { page = 1, pageSize = 3, orderBy, keyword, searchBy } = req.query;
+    const {
+      page = 1,
+      pageSize = 3,
+      orderBy,
+      keyword,
+      searchBy,
+    } = create(req.query, QueryStruct);
 
     const result = await companyService.getCompanyList({
       page: Number(page),
@@ -49,7 +59,13 @@ export async function getUserByCompaniesHandler(
   next: NextFunction
 ) {
   try {
-    const { page = 1, pageSize = 8, orderBy, keyword, searchBy } = req.query;
+    const {
+      page = 1,
+      pageSize = 8,
+      orderBy,
+      keyword,
+      searchBy,
+    } = create(req.query, QueryStruct);
     const result = await companyService.getUserByCompanies({
       page: Number(page),
       pageSize: Number(pageSize),
@@ -70,7 +86,7 @@ export async function updateCompanyHandler(
   next: NextFunction
 ) {
   try {
-    const data = req.body;
+    const data = create(req.body, PatchCompanyStruct);
     const id = Number(req.params.id);
     const updatedData = await companyService.updatedCompany(id, data);
     res.status(200).json({ updatedData });
@@ -87,7 +103,7 @@ export async function deleteCompanyHandler(
 ) {
   try {
     const id = Number(req.params.id);
-    const data = await companyService.deleteCompany(id);
+    await companyService.deleteCompany(id);
     res.status(200).json({ message: "delete!" });
   } catch (err) {
     next(err);
