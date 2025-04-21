@@ -117,6 +117,7 @@ model User {
   password       String
   employeeNumber String   @unique
   phoneNumber    String   @unique
+  imageUrl       String?
   companyId      Int
   isAdmin        Boolean
   createdAt      DateTime @default(now())
