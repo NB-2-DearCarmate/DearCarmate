@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma";
+import { Prisma } from "@prisma/client";
 import { Company } from "@prisma/client";
 import {
   PaginationParams,
@@ -66,10 +67,24 @@ export async function getUserByCompany({
   orderBy,
   searchBy,
   keyword,
-}: PaginationParams<SearchByUser>) {
-  const where =
-    keyword && searchBy ? { [searchBy]: { contains: keyword } } : {};
-  const totalCount = await prisma.company.count({ where });
+}: PaginationParams<"name" | "email" | "companyName">) {
+  // 유저 -> 컴퍼니
+  // 회사 기준
+  const where: Prisma.UserWhereInput = {};
+  if (keyword && searchBy === "companyName") {
+    where.company = {
+      companyName: {
+        contains: keyword,
+      },
+    };
+    //유저 이름, 이메일
+  } else if (keyword && (searchBy === "name" || searchBy === "email")) {
+    where[searchBy] = {
+      contains: keyword,
+    };
+  }
+  keyword && searchBy ? { [searchBy]: { contains: keyword } } : {};
+  const totalCount = await prisma.user.count({ where });
   const order = orderBy === "oldest" ? "asc" : "desc";
   const users = await prisma.user.findMany({
     where: {
@@ -89,11 +104,35 @@ export async function getUserByCompany({
     take: pageSize,
   });
   return {
+    totalCount,
     data: users.map((user) => ({
       id: user.id,
       name: user.name,
       email: user.email,
       employeeNumber: user.employeeNumber,
+      phoneNumber: user.phoneNumber,
+      company: {
+        companyName: user.company?.companyName,
+      },
     })),
   };
+}
+
+// 회사정보 수정
+export async function patchCompany(id: number, data: Partial<Company>) {
+  const updatedCompany = await prisma.company.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return updatedCompany;
+}
+
+// 삭제
+export async function removeCompany(id: number) {
+  const company = await prisma.company.delete({
+    where: { id },
+  });
+  return company;
 }
