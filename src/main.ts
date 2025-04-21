@@ -6,6 +6,7 @@ import { PORT } from "./lib/constance";
 import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
 import carsRouter from "./routes/carsRouter";
+import userRouter from "./routes/usersRouter";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
+app.use("/users", userRouter);
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);
 
