@@ -3,5 +3,5 @@ DS_Store
 .env
 request
 *.http
-.vscode
-/dist
+.vscode 
+/dist 
