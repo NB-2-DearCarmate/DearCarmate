@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import bcrypt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
 import {
   manufacturers,
   companies,
@@ -43,34 +44,33 @@ async function main() {
     });
     console.log("Companies seeded.");
 
- 
-
     await prisma.models.createMany({
       data: models,
       skipDuplicates: true,
     });
     console.log("Cars seeded.");
-    
-    await prisma.user.createMany({
-      data: users,
-      skipDuplicates: true,
-    });
-    console.log("Users seeded."); 
-    
+
+    for (const user of users) {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      await prisma.user.create({
+        data: {
+          ...user,
+          password: hashedPassword,
+        },
+      });
+    }
+
     await prisma.car.createMany({
       data: cars,
       skipDuplicates: true,
     });
     console.log("Cars seeded.");
-    
 
     await prisma.customer.createMany({
       data: customers,
       skipDuplicates: true,
     });
     console.log("Customers seeded.");
-
-    
 
     await prisma.contract.createMany({
       data: contracts,
