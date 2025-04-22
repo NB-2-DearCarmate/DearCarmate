@@ -5,10 +5,10 @@ import {
   ContractStruct,
   UpdateContractStruct,
   ContractListStruct,
-  ContractStatus,
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
+import { ContractStatus } from "../typings/contract";
 
 export const getContractList: RequestHandler = async (req, res) => {
   const params = create(req.query, ContractListStruct);
@@ -27,19 +27,13 @@ export const createContract: RequestHandler = async (req, res) => {
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
-
-  if (typeof req.body.meeting === "string") {
-    req.body.meeting = new Date(req.body.meeting);
-  }
-
-  const data = create(req.body, ContractStruct);
-
   const userId = user;
-  const contract = await contractService.create({
-    ...data,
-    status: "VEHICLE_CHECK",
-    userId,
-  });
+  const meetingDate = new Date(req.body.meeting);
+
+  const parsedData = create(req.body, ContractStruct);
+  const contractData = { ...parsedData, status: "VEHICLE_CHECK" as ContractStatus, userId };
+
+  const contract = await contractService.create(contractData, meetingDate);
 
   res.status(201).send(contract);
 };
@@ -55,6 +49,10 @@ export const updateContract: RequestHandler = async (req, res) => {
   const data = create(req.body, UpdateContractStruct);
   const userId = user;
   const contract = await contractService.update(id, { ...data, userId });
+
+  if(req.body.meetingDate) {
+    await 
+  }
   res.status(201).send(contract);
 };
 

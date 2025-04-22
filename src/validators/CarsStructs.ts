@@ -20,7 +20,11 @@ export const CarStruct = object({
   accidentCount: min(number(), 0),
   explanation: nonempty(string()),
   accidentDetails: nonempty(string()),
-  status: union([literal("POSSESSION"), literal("FOR_SALE")]),
+  status: union([
+    literal("POSSESSION"),
+    literal("CONTRACT_PROCEEDING"),
+    literal("CONTRACT_COMPLETED"),
+  ]),
 });
 
 export const GetCarListParamsStruct = CarPageParamsStruct;
