@@ -4,7 +4,8 @@ import UnauthorizedError from "../errors/UnauthorizedError";
 import {
   ContractStruct,
   UpdateContractStruct,
-  ContractListStruct
+  ContractListStruct,
+  ContractStatus,
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
@@ -22,13 +23,21 @@ export const getContractList: RequestHandler = async (req, res) => {
 
 export const createContract: RequestHandler = async (req, res) => {
   const user = 1;
+
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
+
+  if (typeof req.body.meeting === "string") {
+    req.body.meeting = new Date(req.body.meeting);
+  }
+
   const data = create(req.body, ContractStruct);
+
   const userId = user;
   const contract = await contractService.create({
     ...data,
+    status: "VEHICLE_CHECK",
     userId,
   });
 

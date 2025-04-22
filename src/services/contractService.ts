@@ -7,7 +7,10 @@ import {
 } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
 
-type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
+type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt"> & {
+  userId: number;
+  status: ContractStatus;
+};
 type UpdateContract = Partial<CreateContract> & { userId: number };
 
 async function getContractList(
@@ -24,7 +27,7 @@ async function getContractList(
 async function create(data: CreateContract) {
   const car = await contractRepository.getCarId(data.carId);
   const customer = await contractRepository.getCustomerId(data.customerId);
-
+  console.log("service:", data);
   return contractRepository.save(data);
 }
 

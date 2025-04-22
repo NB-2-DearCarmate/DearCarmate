@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { getContractList } from "../controllers/contractController";
+import {
+  createContract,
+  deleteContract,
+  getContractList,
+  updateContract,
+} from "../controllers/contractController";
 
 const contractRouter = Router();
 
-contractRouter.get("/", getContractList);
-contractRouter.post("/", getContractList);
-contractRouter.patch("/:id", getContractList);
-contractRouter.delete("/:id", getContractList);
+contractRouter.get("/VEHICLE_CHECK", getContractList);
+contractRouter.post("/", createContract);
+contractRouter.patch("/:id", updateContract);
+contractRouter.delete("/:id", deleteContract);
 
 export default contractRouter;

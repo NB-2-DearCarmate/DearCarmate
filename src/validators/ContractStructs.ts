@@ -12,7 +12,7 @@ import { CursorParamsStruct } from "./CommonStruct";
 const timeRegex = /^\d{4}년 \d{2}월 \d{2}일 \d{2}시 \d{2}분$/;
 
 // 계약 상태 (칸반용)
-const ContractStatus = enums([
+export const ContractStatus = enums([
   "VEHICLE_CHECK",
   "PRICE_NEGOTIATION",
   "SUCCESS",
@@ -23,8 +23,6 @@ const ContractStatus = enums([
 export const ContractStruct = object({
   carId: integer(),
   customerId: integer(),
-  userId: integer(),
-  status: ContractStatus,
   contractPrice: integer(),
   meeting: date(),
 });
@@ -32,7 +30,4 @@ export const ContractStruct = object({
 export const UpdateContractStruct = partial(ContractStruct);
 
 // 계약 목록 조회용
-export const ContractListStruct = intersection([
-  CursorParamsStruct,
-  object({ status: ContractStatus }),
-]);
+export const ContractListStruct = CursorParamsStruct;

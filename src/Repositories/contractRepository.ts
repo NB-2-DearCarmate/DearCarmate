@@ -26,11 +26,17 @@ async function getContractList(
 async function save(
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) {
-  const creatContract = await prisma.contract.create({
-    data,
+  const createContract = await prisma.contract.create({
+    data: {
+      carId: data.carId,
+      customerId: data.customerId,
+      userId: data.userId,
+      status: data.status,
+      contractPrice: data.contractPrice,
+    },
   });
 
-  return creatContract;
+  return createContract;
 }
 
 async function getCarId(id: number) {
