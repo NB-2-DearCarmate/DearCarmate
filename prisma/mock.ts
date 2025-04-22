@@ -1,5 +1,4 @@
 import {
-  PrismaClient,
   CarType,
   VehicleStatus,
   GenderType,
@@ -44,33 +43,33 @@ export const companies = [
 
 export const users = [
   {
-    id: 1,
     name: "이상혁",
     email: "admin@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-001",
+    phoneNumber: "010-1111-2222",
     isAdmin: true,
     companyId: 1,
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
   },
   {
-    id: 2,
     name: "김소희",
     email: "sales@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-002",
+    phoneNumber: "010-3333-4444",
     isAdmin: false,
     companyId: 2,
     createdAt: new Date("2023-03-05"),
     updatedAt: new Date("2023-03-05"),
   },
   {
-    id: 3,
     name: "박지현",
     email: "consultant@carsales.com",
     password: "12341234",
     employeeNumber: "EMP-2023-005",
+    phoneNumber: "010-5555-6666",
     companyId: 3,
     isAdmin: false,
     createdAt: new Date("2023-03-10"),
@@ -180,7 +179,7 @@ export const cars = [
     manufacturerId: 2,
   },
   {
-    carNumber: "222가 4567",
+    carNumber: "222가 6457",
     type: CarType.SEDAN,
     mileage: 50000,
     price: 27000000,
@@ -240,8 +239,8 @@ export const contracts = [
   {
     carId: 1,
     customerId: 1,
+    userId: 1,
     status: ContractStatus.VEHICLE_CHECK,
-    resolutionDate: null,
     contractPrice: 20000000,
     createdAt: new Date("2023-01-15"),
     updatedAt: new Date("2023-01-15"),
@@ -249,8 +248,8 @@ export const contracts = [
   {
     carId: 2,
     customerId: 2,
+    userId: 2,
     status: ContractStatus.PRICE_NEGOTIATION,
-    resolutionDate: new Date("2023-02-15"),
     contractPrice: 15000000,
     createdAt: new Date("2023-01-20"),
     updatedAt: new Date("2023-02-20"),
@@ -258,8 +257,8 @@ export const contracts = [
   {
     carId: 3,
     customerId: 3,
+    userId: 3,
     status: ContractStatus.SUCCESS,
-    resolutionDate: null,
     contractPrice: 25000000,
     createdAt: new Date("2023-03-01"),
     updatedAt: new Date("2023-03-01"),
@@ -268,28 +267,24 @@ export const contracts = [
 
 export const meetings = [
   {
-    id: 1,
     date: new Date("2023-06-05T14:00:00"),
     contractId: 1,
     createdAt: new Date("2023-06-02"),
     updatedAt: new Date("2023-06-02"),
   },
   {
-    id: 2,
     date: new Date("2023-06-12T10:00:00"),
     contractId: 2,
     createdAt: new Date("2023-06-08"),
     updatedAt: new Date("2023-06-08"),
   },
   {
-    id: 3,
     date: new Date("2023-06-25T15:30:00"),
     contractId: 3,
     createdAt: new Date("2023-06-21"),
     updatedAt: new Date("2023-06-21"),
   },
   {
-    id: 4,
     date: new Date("2023-06-28T11:00:00"),
     contractId: 3,
     createdAt: new Date("2023-06-22"),
@@ -299,28 +294,24 @@ export const meetings = [
 
 export const alarms = [
   {
-    id: 1,
     meetingId: 1,
     alarmAt: new Date("2023-06-05T13:00:00"),
     createdAt: new Date("2023-06-02"),
     updatedAt: new Date("2023-06-02"),
   },
   {
-    id: 2,
     meetingId: 2,
     alarmAt: new Date("2023-06-12T09:00:00"),
     createdAt: new Date("2023-06-08"),
     updatedAt: new Date("2023-06-08"),
   },
   {
-    id: 3,
     meetingId: 3,
     alarmAt: new Date("2023-06-25T14:30:00"),
     createdAt: new Date("2023-06-21"),
     updatedAt: new Date("2023-06-21"),
   },
   {
-    id: 4,
     meetingId: 3,
     alarmAt: new Date("2023-06-25T08:00:00"),
     createdAt: new Date("2023-06-21"),
@@ -330,7 +321,6 @@ export const alarms = [
 
 export const contractDocuments = [
   {
-    id: 1,
     contractId: 1,
     fileName: "홍길동_구매계약서.pdf",
     filePath: "/documents/contracts/1/contract.pdf",
@@ -339,7 +329,6 @@ export const contractDocuments = [
     updatedAt: new Date("2023-06-15"),
   },
   {
-    id: 2,
     contractId: 1,
     fileName: "홍길동_차량점검표.pdf",
     filePath: "/documents/contracts/1/inspection.pdf",
@@ -348,7 +337,6 @@ export const contractDocuments = [
     updatedAt: new Date("2023-06-15"),
   },
   {
-    id: 3,
     contractId: 2,
     fileName: "이철수_견적서.pdf",
     filePath: "/documents/contracts/2/quote.pdf",
