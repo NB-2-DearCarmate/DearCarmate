@@ -24,6 +24,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   }
 
   else if (err instanceof SyntaxError && err.message.includes("JSON")) {
+    console.error("JSON 파싱 오류:", err.message);
     res.status(400).send({ message: "유효하지 않은 JSON입니다." });
   }
 

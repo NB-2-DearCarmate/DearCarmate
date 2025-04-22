@@ -18,8 +18,7 @@ app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/customers", customer);
-app.use("/users", UserController);
-app.use("/auth/:login", login);
+app.use("/users", UserController); 
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);login
  
