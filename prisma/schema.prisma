@@ -67,6 +67,7 @@ model Customer {
   contractCount Int
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
 
   contracts Contract[]
   Company   Company?   @relation(fields: [companyId], references: [id])
@@ -96,7 +97,7 @@ model Meeting {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  contract Contract @relation(fields: [contractId], references: [id])
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
   alarms   Alarm[]
 }
 
@@ -107,7 +108,7 @@ model Alarm {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -194,7 +195,8 @@ enum Region {
 
 enum VehicleStatus {
   POSSESSION
-  FOR_SALE
+  CONTRACT_PROCEEDING
+  CONTRACT_COMPLETED
 }
 
 enum ContractStatus {
