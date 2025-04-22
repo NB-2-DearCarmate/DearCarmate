@@ -7,7 +7,8 @@ import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
 import carsRouter from "./routes/carsRouter";
 import customer from "./routes/customersRouter"
-
+import UserController from "./routes/usersRouter"
+import login from "./routes/authRouter"
 const app = express();
 
 app.use(express.json());
@@ -17,8 +18,10 @@ app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/customers", customer);
+app.use("/users", UserController);
+app.use("/auth/:login", login);
 app.use(defaultNotFountHandler);
-app.use(globalErrorHandler);
+app.use(globalErrorHandler);login
  
 
 
