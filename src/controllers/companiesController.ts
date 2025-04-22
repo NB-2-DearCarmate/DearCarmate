@@ -1,21 +1,21 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express"; 
 import { create } from "superstruct";
-import { SearchByCompany } from "../typings/pagination";
+import { SearchByCompany } from "../typings/pagination"; 
 import {
   CreateCompanyStruct,
   PatchCompanyStruct,
   QueryStruct,
-} from "../validators/CompanyStructs";
+} from "../validators/CompanyStructs"; 
 import * as companyService from "../services/companiesService";
 
 // 회사 등록
-export async function createCompanyHandler(
+export async function createCompanyHandler( 
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  try {
-    const data = create(req.body, CreateCompanyStruct);
+  try { 
+    const data = create(req.body, CreateCompanyStruct); 
     const newCompany = await companyService.registerCompany(data);
     res.status(201).json({ newCompany });
   } catch (error) {

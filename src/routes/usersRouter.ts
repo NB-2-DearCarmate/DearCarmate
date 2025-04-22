@@ -8,11 +8,10 @@ const userController = new UserController();
 // 회원가입
 router.post("/", (req, res, next) => {
   userController.createUser(req, res).catch(next);
-});
-
+}); 
 // // 정보 조회 *잠깐 주석처리해노ㅑㅏㅆ스습니ㅏㄷ.
 // router.get("/me", authMiddleware, (req, res, next) => {
-//   userController.getMyInfo(req, res).catch(next);
+//   userController.getMyInfo(req, res).catch(next); 
 // });
 
 export default router;

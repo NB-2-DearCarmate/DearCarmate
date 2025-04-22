@@ -15,11 +15,16 @@ export const globalErrorHandler: ErrorRequestHandler = (
   res,
   next
 ) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
   if (err instanceof StructError || err instanceof BadRequestError) {
-    res.status(400).send({ message: err.message });
+    res.status(400).send({ message: err.message }); 
   }
 
   else if (err instanceof SyntaxError && err.message.includes("JSON")) {
+    console.error("JSON 파싱 오류:", err.message);
     res.status(400).send({ message: "유효하지 않은 JSON입니다." });
   }
 
@@ -35,9 +40,9 @@ export const globalErrorHandler: ErrorRequestHandler = (
   else if (err instanceof UnauthorizedError) {
     res.status(401).send({ message: err.message });
   }
-  else if (err instanceof ForbiddenError) {
+  else if (err instanceof ForbiddenError) { 
     res.status(403).send({ message: err.message });
-  }
-
-  else res.status(500).send({ message: "서버에 문제가 발생하였습니다." });
+  } else {
+    res.status(500).send({ message: "서버에 문제가 발생하였습니다." });
+  } 
 };
