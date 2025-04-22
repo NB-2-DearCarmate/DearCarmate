@@ -67,6 +67,7 @@ model Customer {
   contractCount Int
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
 
   contracts Contract[]
   Company   Company?   @relation(fields: [companyId], references: [id])
