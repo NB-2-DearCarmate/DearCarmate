@@ -4,17 +4,29 @@ import UnauthorizedError from "../errors/UnauthorizedError";
 import {
   ContractStruct,
   UpdateContractStruct,
+  ContractListStruct
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 
+export const getContractList: RequestHandler = async (req, res) => {
+  const params = create(req.query, ContractListStruct);
+  const contractStatus = "VEHICLE_CHECK";
+  const contracts = await contractService.getContractList(
+    contractStatus,
+    params
+  );
+
+  res.status(200).send(contracts);
+};
+
 export const createContract: RequestHandler = async (req, res) => {
-  const user = req.user;
+  const user = 1;
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
   const data = create(req.body, ContractStruct);
-  const userId = user.id;
+  const userId = user;
   const contract = await contractService.create({
     ...data,
     userId,
@@ -24,7 +36,7 @@ export const createContract: RequestHandler = async (req, res) => {
 };
 
 export const updateContract: RequestHandler = async (req, res) => {
-  const user = req.user;
+  const user = 1;
 
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
@@ -32,13 +44,13 @@ export const updateContract: RequestHandler = async (req, res) => {
 
   const { id } = create(req.params, IdParamsStruct);
   const data = create(req.body, UpdateContractStruct);
-  const userId = user.id;
+  const userId = user;
   const contract = await contractService.update(id, { ...data, userId });
   res.status(201).send(contract);
 };
 
 export const deleteContract: RequestHandler = async (req, res) => {
-  const userId = req.user;
+  const userId = 1;
 
   if (!userId) {
     throw new UnauthorizedError("Unauthorized");

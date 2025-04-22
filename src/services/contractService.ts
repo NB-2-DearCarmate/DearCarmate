@@ -1,9 +1,25 @@
 import ForbiddenError from "../errors/ForbiddenError";
 import contractRepository from "../Repositories/contractRepository";
 import { ContractType } from "../typings/contract";
+import {
+  CursorPaginationParams,
+  CursorPaginationResult,
+} from "../typings/pagination";
+import { ContractStatus } from "../typings/contract";
 
 type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
 type UpdateContract = Partial<CreateContract> & { userId: number };
+
+async function getContractList(
+  contractStatus: ContractStatus,
+  params: CursorPaginationParams
+): Promise<CursorPaginationResult<ContractType>> {
+  const contracts = await contractRepository.getContractList(
+    { status: contractStatus },
+    params
+  );
+  return contracts;
+}
 
 async function create(data: CreateContract) {
   const car = await contractRepository.getCarId(data.carId);
@@ -14,9 +30,6 @@ async function create(data: CreateContract) {
 
 async function update(id: number, data: UpdateContract) {
   const findContract = await contractRepository.getById(id);
-  if (findContract.userId !== data.userId) {
-    throw new ForbiddenError("해당 계약서 담당자만 수정할 수 있습니다.");
-  }
   return await contractRepository.update(id, data);
 }
 
@@ -25,4 +38,4 @@ async function deleteById(id: number) {
   return await contractRepository.deleteById(id);
 }
 
-export default { create, update, deleteById }; 
+export default { getContractList, create, update, deleteById };

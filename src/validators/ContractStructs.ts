@@ -1,4 +1,11 @@
-import { object, enums, integer, date, partial } from "superstruct";
+import {
+  object,
+  enums,
+  integer,
+  date,
+  partial,
+  intersection,
+} from "superstruct";
 import { CursorParamsStruct } from "./CommonStruct";
 
 // 미팅, 알람 정보
@@ -25,4 +32,7 @@ export const ContractStruct = object({
 export const UpdateContractStruct = partial(ContractStruct);
 
 // 계약 목록 조회용
-export const ContractListStruct = partial(CursorParamsStruct);
+export const ContractListStruct = intersection([
+  CursorParamsStruct,
+  object({ status: ContractStatus }),
+]);
