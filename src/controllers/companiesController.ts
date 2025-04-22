@@ -30,20 +30,14 @@ export async function getCompanyListHandler(
   next: NextFunction
 ) {
   try {
-    const {
-      page = 1,
-      pageSize = 3,
-      orderBy,
-      keyword,
-      searchBy,
-    } = create(req.query, QueryStruct);
+    const { page = 1, pageSize = 10, orderBy, searchBy, keyword } = req.query;
 
-    const result = await companyService.getCompanyList({
+    const result = await companyService.getAllCompanies({
       page: Number(page),
       pageSize: Number(pageSize),
       orderBy: orderBy as "recent" | "oldest",
-      keyword: keyword as string,
       searchBy: searchBy as SearchByCompany,
+      keyword: keyword as string | undefined,
     });
 
     res.status(200).json(result);
@@ -61,11 +55,12 @@ export async function getUserByCompaniesHandler(
   try {
     const {
       page = 1,
-      pageSize = 8,
+      pageSize = 10,
       orderBy,
       keyword,
       searchBy,
     } = create(req.query, QueryStruct);
+
     const result = await companyService.getUserByCompanies({
       page: Number(page),
       pageSize: Number(pageSize),
@@ -73,6 +68,7 @@ export async function getUserByCompaniesHandler(
       keyword: keyword as string,
       searchBy: searchBy as "name" | "email" | "companyName",
     });
+
     res.status(200).json({ result });
   } catch (error) {
     next(error);

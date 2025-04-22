@@ -1,5 +1,7 @@
 import * as companiesRepo from "../Repositories/companiesRepository";
 import { Company } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import * as usersRepo from "../Repositories/usersRepository";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import {
   RegisterCompany,
@@ -8,9 +10,7 @@ import {
   UpdateCompany,
 } from "../typings/company";
 
-import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
-import UnauthorizedError from "../errors/UnauthorizedError";
 
 // 일반유저x 관리자 전용 기능
 // 회사 등록
@@ -30,17 +30,97 @@ export async function registerCompany(
 }
 
 // 목록조회
-export async function getCompanyList(
-  params: PaginationParams<SearchByCompany>
-): Promise<CompanyList> {
-  return await companiesRepo.getAllCompanies(params);
+export async function getAllCompanies({
+  page,
+  pageSize,
+  orderBy,
+  searchBy,
+  keyword,
+}: PaginationParams<SearchByCompany>) {
+  const where =
+    keyword && searchBy ? { [searchBy]: { contains: keyword } } : {};
+
+  const totalCount = await companiesRepo.countCompanies(where);
+  const order = orderBy === "oldest" ? "asc" : "desc";
+  const companies = await companiesRepo.findCompanies(
+    where,
+    order,
+    (page - 1) * pageSize,
+    pageSize
+  );
+
+  const companyUserCount = await Promise.all(
+    companies.map(async (c) => {
+      const userCount = await companiesRepo.getUserCount(c.id);
+      return {
+        id: c.id,
+        companyName: c.companyName,
+        companyCode: c.companyCode,
+        userCount,
+      };
+    })
+  );
+
+  return {
+    currentPage: page,
+    totalPage: Math.ceil(totalCount / pageSize),
+    totalItemCount: totalCount,
+    data: companyUserCount,
+  };
 }
 
 // 회사 별 유저 리스트
-export async function getUserByCompanies(
-  params: PaginationParams<"name" | "email" | "companyName">
-): Promise<companyByUserList> {
-  return await companiesRepo.getUserByCompany(params);
+export async function getUserByCompanies({
+  page,
+  pageSize,
+  orderBy,
+  searchBy,
+  keyword,
+}: {
+  page: number;
+  pageSize: number;
+  orderBy: "recent" | "oldest";
+  searchBy?: "name" | "email" | "companyName";
+  keyword?: string;
+}) {
+  const where: Prisma.UserWhereInput = {};
+
+  if (keyword && searchBy === "companyName") {
+    where.company = {
+      companyName: {
+        contains: keyword,
+      },
+    };
+  } else if (keyword && (searchBy === "name" || searchBy === "email")) {
+    where[searchBy] = {
+      contains: keyword,
+    };
+  }
+
+  const order = orderBy === "oldest" ? "asc" : "desc";
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
+
+  const totalItemCount = await usersRepo.getAllUserCount(where);
+  const totalPage = Math.ceil(totalItemCount / pageSize);
+
+  const users = await usersRepo.findUsers(where, order, skip, take);
+
+  return {
+    currentPage: page,
+    totalPage,
+    totalItemCount,
+    data: users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      employeeNumber: user.employeeNumber,
+      phoneNumber: user.phoneNumber,
+      company: {
+        companyName: user.company?.companyName,
+      },
+    })),
+  };
 }
 
 // 회사정보 수정
