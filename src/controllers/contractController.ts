@@ -9,30 +9,30 @@ import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 
 export const createContract: RequestHandler = async (req, res) => {
-  const userId = req.user.id;
-  if (!userId) {
+  const user = req.user;
+  if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
   const data = create(req.body, ContractStruct);
-
+  const userId = user.id;
   const contract = await contractService.create({
     ...data,
-    userId: req.user.id,
+    userId,
   });
 
   res.status(201).send(contract);
 };
 
 export const updateContract: RequestHandler = async (req, res) => {
-  const userId = req.user;
+  const user = req.user;
 
-  if (!userId) {
+  if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
 
   const { id } = create(req.params, IdParamsStruct);
   const data = create(req.body, UpdateContractStruct);
-
+  const userId = user.id;
   const contract = await contractService.update(id, { ...data, userId });
   res.status(201).send(contract);
 };
