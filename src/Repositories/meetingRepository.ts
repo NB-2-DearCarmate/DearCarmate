@@ -14,6 +14,13 @@ async function update(id: number, meetingDate: Date) {
   return updatedMeeting;
 }
 
-async fun
+async function getId(contractId: number) {
+  const meeting = await prisma.meeting.findFirst({ where: { contractId } });
+  if (!meeting) {
+    throw new NotFoundError(contractId);
+  }
 
-export default { update };
+  return meeting;
+}
+
+export default { update, getId };
