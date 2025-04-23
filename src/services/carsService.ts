@@ -2,9 +2,10 @@ import NotFoundError from "../errors/NotFoundError";
 import BadRequestError from "../errors/BadRequestError";
 import { CarPaginationParams } from "../typings/pagination";
 import carRepository from "../repositories/carsRepository";
-import { CreateCarDTO, CarList } from "../typings/car";
+import { Car, CarList, UpdateCar } from "../typings/car";
+import carsRepository from "../repositories/carsRepository";
 
-async function createCar(carData: CreateCarDTO) {
+async function createCar(carData: Car) {
   const existingCar = await carRepository.findByCarNumber(carData.carNumber);
   if (existingCar) {
     throw new BadRequestError("이미 등록된 차량 번호입니다.");
@@ -36,9 +37,28 @@ async function getAllCarModels() {
   return { data: result };
 }
 
+async function updateCar(id: number, updateDate: UpdateCar) {
+  const existingCar = await carsRepository.getCarById(id);
+  if (!existingCar) {
+    throw new NotFoundError(id);
+  }
+
+  const updateCar = await carsRepository.updateCar(id, updateDate);
+  return updateCar;
+}
+
+async function deleteCar(id: number) {
+  const existingCar = await carRepository.getCarById(id);
+  if (!existingCar) {
+    throw new NotFoundError(id);
+  }
+  return await carsRepository.deleteCar(id);
+}
 export default {
   createCar,
   getCarList,
   getCarById,
   getAllCarModels,
+  updateCar,
+  deleteCar,
 };

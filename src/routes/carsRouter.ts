@@ -4,6 +4,8 @@ import {
   getCarList,
   getCarById,
   getAllCarModels,
+  updateCar,
+  deleteCar,
 } from "../controllers/carController";
 import { asyncHandler } from "../lib/asyncHandler";
 import authMiddleware from "../middlewares/authMiddleware";
@@ -21,5 +23,11 @@ carsRouter.get("/models", authMiddleware, asyncHandler(getAllCarModels));
 
 //차량 상세 조회 라우터
 carsRouter.get("/:id", authMiddleware, asyncHandler(getCarById));
+
+// 차량 수정 라우터
+carsRouter.patch("/:id", authMiddleware, asyncHandler(updateCar));
+
+// 차량 삭제 라우터
+carsRouter.delete("/:id", authMiddleware, asyncHandler(deleteCar));
 
 export default carsRouter;

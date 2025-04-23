@@ -90,3 +90,35 @@ export const getAllCarModels = async (
     next(error);
   }
 };
+
+// 차량 수정
+export const updateCar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const carId = Number(req.params.id);
+    const updateDate = UpdateCarStruct.create(req.body);
+
+    const updatedCar = await carService.updateCar(carId, updateDate);
+    res.status(200).json(updatedCar);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//차량 삭제
+export const deleteCar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const carId = Number(req.params.id);
+    await carService.deleteCar(carId);
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
