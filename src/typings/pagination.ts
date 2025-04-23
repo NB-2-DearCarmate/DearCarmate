@@ -1,6 +1,7 @@
 export type SearchByCompany = "companyName" | "companyId";
 export type SearchByUser = "name" | "email";
 export type SearchByContract = "contractTitle" | "customerName";
+export type SearchByCar = "carNumber" | "model";
 
 export type PaginationParams<T extends string> = {
   page: number;
@@ -26,3 +27,7 @@ export interface CursorPaginationResult<T> {
 }
 
 export interface UserWithCompany {}
+
+export type CarPaginationParams = PaginationParams<SearchByCar> & {
+  status?: "POSSESSION" | "CONTRACT_PROCEEDING" | "CONTRACT_COMPLETED";
+};
