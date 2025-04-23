@@ -15,10 +15,9 @@ export const createContract: RequestHandler = async (req, res) => {
   }
   const data = create(req.body, ContractStruct);
   const userId = user.id;
-  const contract = await contractService.create({
-    ...data,
-    userId,
-  });
+  const contract = await contractService.create(
+    data,
+);
 
   res.status(201).send(contract);
 };
