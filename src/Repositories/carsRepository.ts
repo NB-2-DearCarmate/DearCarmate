@@ -1,6 +1,7 @@
 import prisma from "../lib/prisma";
 import { CreateCarDTO } from "../typings/car";
 import { CarPaginationParams } from "../typings/pagination";
+import { VehicleStatus, Prisma } from "@prisma/client";
 
 // Car 등록
 async function createCar(carData: CreateCarDTO) {
@@ -20,21 +21,15 @@ async function findByCarNumber(carNumber: string) {
 async function getCarList({
   page,
   pageSize,
-  status = "POSSESSION",
+  status = VehicleStatus.POSSESSION,
   orderBy,
   searchBy,
   keyword,
 }: CarPaginationParams) {
-  const where: {
-    status?: "POSSESSION" | "CONTRACT_PROCEEDING" | "CONTRACT_COMPLETED";
-    carNumber?: { contains: string; mode: "insensitive" };
-    model?: {
-      name: { contains: string; mode: "insensitive" };
-    };
-  } = {};
+  const where: Prisma.CarWhereInput = {};
 
   if (status) {
-    where.status = status;
+    where.status = status as VehicleStatus;
   }
 
   if (searchBy && keyword) {

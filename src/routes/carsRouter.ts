@@ -20,6 +20,6 @@ carsRouter.get("/", authMiddleware, asyncHandler(getCarList));
 carsRouter.get("/:id", authMiddleware, asyncHandler(getCarById));
 
 //차량 제조사 및 모델 조회 라우터
-carsRouter.get("/", authMiddleware, asyncHandler(getAllCarModels));
+carsRouter.get("/models", authMiddleware, asyncHandler(getAllCarModels));
 
 export default carsRouter;
