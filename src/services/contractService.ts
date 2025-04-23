@@ -1,5 +1,5 @@
 import ForbiddenError from "../errors/ForbiddenError";
-import contractRepository from "../Repositories/contractRepository";
+import contractRepository from "../repositories/contractRepository";
 import { ContractType } from "../typings/contract";
 
 type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
@@ -25,4 +25,4 @@ async function deleteById(id: number) {
   return await contractRepository.deleteById(id);
 }
 
-export default { create, update, deleteById }; 
+export default { create, update, deleteById };
