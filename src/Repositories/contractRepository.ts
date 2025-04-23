@@ -2,6 +2,7 @@ import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractStatus, ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination";
+import meetingRepository from "./meetingRepository";
 
 async function getContractList(
   where: { status: ContractStatus },
@@ -24,11 +25,9 @@ async function getContractList(
 }
 
 async function save(
-  data: Omit<ContractType, "id" | "createdAt" | "updatedAt">,
-  meetingDate: Date
+  data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) {
-  const createContract = await prisma.$transaction(async (prisma) => {
-    const contract = await prisma.contract.create({
+  const createContract = await prisma.contract.create({
       data: {
         carId: data.carId,
         customerId: data.customerId,
@@ -38,15 +37,9 @@ async function save(
       },
     });
 
-    const meeting = await prisma.meeting.create({
-      data: { contractId: contract.id, date: meetingDate },
-    });
+    return { createContract };
+  };
 
-    return { contract, meeting };
-  });
-
-  return createContract;
-}
 
 async function getCarId(id: number) {
   const car = await prisma.car.findUnique({ where: { id } });

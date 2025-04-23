@@ -7,6 +7,7 @@ import {
 } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
 import { isVaildAlramDate, isVaildMeetingDate } from "../utils/contractDate";
+import meetingRepository from "../Repositories/meetingRepository";
 
 type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt"> & {
   userId: number;
@@ -25,20 +26,15 @@ async function getContractList(
   return contracts;
 }
 
-async function create(data: CreateContract, meetingDate: Date) {
+async function create(data: CreateContract) {
   const car = await contractRepository.getCarId(data.carId);
   const customer = await contractRepository.getCustomerId(data.customerId);
 
-  if (!isVaildMeetingDate(meetingDate)) {
-    throw new Error("미팅일정은 30분 간격으로 설정 가능합니다.");
-  }
-  return contractRepository.save(data, meetingDate);
+  const contract = await contractRepository.save(data);
+  return contract;
 }
 
-async function update(
-  id: number,
-  data: UpdateContract,
-) {
+async function update(id: number, data: UpdateContract) {
   const findContract = await contractRepository.getById(id);
 
   return await contractRepository.update(id, data);

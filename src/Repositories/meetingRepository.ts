@@ -23,4 +23,13 @@ async function getId(contractId: number) {
   return meeting;
 }
 
-export default { update, getId };
+async function save(contractId: number, meetingDate: Date) {
+  const meeting = await prisma.meeting.create({
+    data: {
+      contractId: contractId,
+      date: meetingDate,
+    },
+  });
+}
+
+export default { update, getId, save };

@@ -9,6 +9,7 @@ import {
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import { ContractStatus } from "../typings/contract";
+import meetingService from "../services/meetingService";
 
 export const getContractList: RequestHandler = async (req, res) => {
   const params = create(req.query, ContractListStruct);
@@ -31,9 +32,17 @@ export const createContract: RequestHandler = async (req, res) => {
   const meetingDate = new Date(req.body.meeting);
 
   const parsedData = create(req.body, ContractStruct);
-  const contractData = { ...parsedData, status: "VEHICLE_CHECK" as ContractStatus, userId };
+  const contractData = {
+    ...parsedData,
+    status: "VEHICLE_CHECK" as ContractStatus,
+    userId,
+    resolutionDate: null,
+  };
 
-  const contract = await contractService.create(contractData, meetingDate);
+  const contract = await contractService.create(contractData);
+  const contractId = contract.createContract.id;
+
+  const meeting = await meetingService.create(contractId, meetingDate);
 
   res.status(201).send(contract);
 };
@@ -50,9 +59,6 @@ export const updateContract: RequestHandler = async (req, res) => {
   const userId = user;
   const contract = await contractService.update(id, { ...data, userId });
 
-  if(req.body.meetingDate) {
-    await 
-  }
   res.status(201).send(contract);
 };
 
