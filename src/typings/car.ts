@@ -16,3 +16,14 @@ export interface CreateCarDTO {
   accidentDetails: string;
   status: CarStatus;
 }
+
+export interface CarResponseDTO extends CreateCarDTO {
+  id: number;
+}
+
+export type CarList = {
+  currentPage: number;
+  totalPage: number;
+  totalItemCount: number;
+  data: CarResponseDTO[];
+};

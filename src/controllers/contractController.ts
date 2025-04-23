@@ -28,6 +28,7 @@ export const createContract: RequestHandler = async (req, res) => {
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
+
   const userId = user;
   const meetingDate = new Date(req.body.meeting);
 
