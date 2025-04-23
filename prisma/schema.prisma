@@ -67,6 +67,7 @@ model Customer {
   contractCount Int
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
 
   contracts Contract[]
   Company   Company?   @relation(fields: [companyId], references: [id])
@@ -74,19 +75,20 @@ model Customer {
 }
 
 model Contract {
-  id            Int                @id @default(autoincrement())
-  carId         Int
-  customerId    Int
-  userId        Int
-  status        ContractStatus
-  contractPrice Int
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  car           Car                @relation(fields: [carId], references: [id])
-  customer      Customer           @relation(fields: [customerId], references: [id])
-  user          User               @relation(fields: [userId], references: [id])
-  meetings      Meeting[]
-  documents     ContractDocument[]
+  id             Int                @id @default(autoincrement())
+  carId          Int
+  customerId     Int
+  userId         Int
+  status         ContractStatus
+  contractPrice  Int
+  resolutionDate DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  car            Car                @relation(fields: [carId], references: [id])
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  user           User               @relation(fields: [userId], references: [id])
+  meetings       Meeting[]
+  documents      ContractDocument[]
 }
 
 model Meeting {
@@ -96,7 +98,7 @@ model Meeting {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  contract Contract @relation(fields: [contractId], references: [id])
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
   alarms   Alarm[]
 }
 
@@ -107,7 +109,7 @@ model Alarm {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -194,7 +196,8 @@ enum Region {
 
 enum VehicleStatus {
   POSSESSION
-  FOR_SALE
+  CONTRACT_PROCEEDING
+  CONTRACT_COMPLETED
 }
 
 enum ContractStatus {
