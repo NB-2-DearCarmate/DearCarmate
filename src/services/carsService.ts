@@ -26,7 +26,14 @@ async function getCarById(id: number) {
 }
 
 async function getAllCarModels() {
-  return getAllCarModels();
+  const manufacturers = await carRepository.getAllCarModels();
+
+  const result = manufacturers.map((manufacturer) => ({
+    manufacturer: manufacturer.name,
+    model: manufacturer.Models.map((model) => model.name),
+  }));
+
+  return { data: result };
 }
 
 export default {
