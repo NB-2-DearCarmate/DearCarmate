@@ -1,8 +1,6 @@
+import { VehicleStatus } from "@prisma/client";
+
 export type CarType = "SEDAN" | "COMPACT" | "SUV";
-export type CarStatus =
-  | "POSSESSION"
-  | "CONTRACT_PROCEEDING"
-  | "CONTRACT_COMPLETED";
 
 export interface CreateCarDTO {
   carNumber: string;
@@ -11,10 +9,10 @@ export interface CreateCarDTO {
   type: CarType;
   mileage: number;
   price: number;
-  accidentCount: number;
-  explanation: string;
-  accidentDetails: string;
-  status: CarStatus;
+  accidentCount: number | null;
+  explanation: string | null;
+  accidentDetails: string | null;
+  status: VehicleStatus;
 }
 
 export interface CarResponseDTO extends CreateCarDTO {
