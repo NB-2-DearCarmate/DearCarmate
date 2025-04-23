@@ -20,6 +20,20 @@ async function getId(contractId: number) {
     throw new NotFoundError(contractId);
   }
 
+  const meetingId = meeting.id;
+
+  return meetingId;
+}
+
+async function getById(id: number) {
+  const meeting = await prisma.meeting.findUnique({
+    where: { id },
+  });
+
+  if (!meeting) {
+    throw new NotFoundError(id);
+  }
+
   return meeting;
 }
 
@@ -30,6 +44,8 @@ async function save(contractId: number, meetingDate: Date) {
       date: meetingDate,
     },
   });
+
+  return meeting;
 }
 
-export default { update, getId, save };
+export default { update, getId, save, getById };

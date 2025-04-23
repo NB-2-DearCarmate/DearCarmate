@@ -1,11 +1,16 @@
-import meetingRepository from "../Repositories/meetingRepository";
+import meetingRepository from "../repositories/meetingRepository";
 import { isVaildMeetingDate } from "../utils/contractDate";
 
-async function updateMeeting(contractId: number, meetingDate: Date) {
-  const meeting = await meetingRepository.getId(contractId);
-  const meetingId = meeting.id;
+async function getId(contractId: number) {
+  const meetingId = await meetingRepository.getId(contractId);
+  return meetingId;
+}
+
+async function update(contractId: number, meetingDate: Date) {
+  const meetingId = await meetingRepository.getId(contractId);
 
   const updatedMeeting = await meetingRepository.update(meetingId, meetingDate);
+
   return updatedMeeting;
 }
 
@@ -18,4 +23,4 @@ async function create(contractId: number, meetingDate: Date) {
 
   return meeting;
 }
-export default { updateMeeting, create };
+export default { getId, update, create };

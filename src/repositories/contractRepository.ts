@@ -2,7 +2,6 @@ import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractStatus, ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination";
-import meetingRepository from "./meetingRepository";
 
 async function getContractList(
   where: { status: ContractStatus },
@@ -37,7 +36,7 @@ async function save(
       },
     });
 
-    return { createContract };
+    return createContract;
   };
 
 

@@ -113,18 +113,17 @@ model Alarm {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   name           String
-  email          String    @unique
+  email          String   @unique
   password       String
-  employeeNumber String    @unique
-  phoneNumber    String    @unique
+  employeeNumber String   @unique
+  phoneNumber    String   @unique
   imageUrl       String?
   companyId      Int
   isAdmin        Boolean
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   company  Company    @relation(fields: [companyId], references: [id])
   Contract Contract[]

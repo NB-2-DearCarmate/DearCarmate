@@ -1,13 +1,11 @@
 import ForbiddenError from "../errors/ForbiddenError";
-import contractRepository from "../Repositories/contractRepository";
+import contractRepository from "../repositories/contractRepository";
 import { ContractType } from "../typings/contract";
 import {
   CursorPaginationParams,
   CursorPaginationResult,
 } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
-import { isVaildAlramDate, isVaildMeetingDate } from "../utils/contractDate";
-import meetingRepository from "../Repositories/meetingRepository";
 
 type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt"> & {
   userId: number;
@@ -45,6 +43,4 @@ async function deleteById(id: number) {
   return await contractRepository.deleteById(id);
 }
 
-
 export default { getContractList, create, update, deleteById };
-

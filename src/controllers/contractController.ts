@@ -10,6 +10,7 @@ import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import { ContractStatus } from "../typings/contract";
 import meetingService from "../services/meetingService";
+import alarmService from "../services/alarmService";
 
 export const getContractList: RequestHandler = async (req, res) => {
   const params = create(req.query, ContractListStruct);
@@ -31,6 +32,7 @@ export const createContract: RequestHandler = async (req, res) => {
 
   const userId = user;
   const meetingDate = new Date(req.body.meeting);
+  const alarmAt = new Date(req.body.alarmAt);
 
   const parsedData = create(req.body, ContractStruct);
   const contractData = {
@@ -41,9 +43,22 @@ export const createContract: RequestHandler = async (req, res) => {
   };
 
   const contract = await contractService.create(contractData);
-  const contractId = contract.createContract.id;
+  const contractId = contract.id;
 
-  const meeting = await meetingService.create(contractId, meetingDate);
+  if (req.body.meeting) {
+    const meetingDate = new Date(req.body.meeting);
+    const meeting = await meetingService.create(contractId, meetingDate);
+    const meetingId = meeting.id;
+
+    if (req.body.alarmAt) {
+      const alarmAt = new Date(req.body.alarmAt);
+      const updatedAlarmAt = await alarmService.create(
+        meetingId,
+        meetingDate,
+        alarmAt
+      );
+    }
+  }
 
   res.status(201).send(contract);
 };
@@ -55,12 +70,36 @@ export const updateContract: RequestHandler = async (req, res) => {
     throw new UnauthorizedError("Unauthorized");
   }
 
-  const { id } = create(req.params, IdParamsStruct);
-  const data = create(req.body, UpdateContractStruct);
   const userId = user;
-  const contract = await contractService.update(id, { ...data, userId });
 
-  res.status(201).send(contract);
+  const { id } = create(req.params, IdParamsStruct);
+  const parsedData = create(req.body, UpdateContractStruct);
+
+  if (parsedData.status === "SUCCESS" && !parsedData.resolutionDate) {
+    throw new Error("계약일은 필수 입력 요소입니다.");
+  }
+
+  const updatedContract = await contractService.update(id, {
+    ...parsedData,
+    userId,
+  });
+
+  if (req.body.meeting) {
+    const meetingDate = new Date(req.body.meeting);
+    const updatedMeeting = await meetingService.update(id, meetingDate);
+    const meetingId = updatedMeeting.id;
+
+    if (req.body.alarmAt) {
+      const alarmAt = new Date(req.body.alarmAt);
+      const updatedAlarmAt = await alarmService.update(
+        meetingId,
+        meetingDate,
+        alarmAt
+      );
+    }
+  }
+
+  res.status(201).send(updatedContract);
 };
 
 export const deleteContract: RequestHandler = async (req, res) => {
