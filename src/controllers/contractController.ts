@@ -12,9 +12,42 @@ import { ContractStatus } from "../typings/contract";
 import meetingService from "../services/meetingService";
 import alarmService from "../services/alarmService";
 
-export const getContractList: RequestHandler = async (req, res) => {
+export const getContractCheckList: RequestHandler = async (req, res) => {
   const params = create(req.query, ContractListStruct);
   const contractStatus = "VEHICLE_CHECK";
+  const contracts = await contractService.getContractList(
+    contractStatus,
+    params
+  );
+
+  res.status(200).send(contracts);
+};
+
+export const getContractPriceList: RequestHandler = async (req, res) => {
+  const params = create(req.query, ContractListStruct);
+  const contractStatus = "PRICE_NEGOTIATION";
+  const contracts = await contractService.getContractList(
+    contractStatus,
+    params
+  );
+
+  res.status(200).send(contracts);
+};
+
+export const getContractSuccessList: RequestHandler = async (req, res) => {
+  const params = create(req.query, ContractListStruct);
+  const contractStatus = "SUCCESS";
+  const contracts = await contractService.getContractList(
+    contractStatus,
+    params
+  );
+
+  res.status(200).send(contracts);
+};
+
+export const getContractFailList: RequestHandler = async (req, res) => {
+  const params = create(req.query, ContractListStruct);
+  const contractStatus = "FAIL";
   const contracts = await contractService.getContractList(
     contractStatus,
     params

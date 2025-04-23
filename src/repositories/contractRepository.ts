@@ -16,10 +16,14 @@ async function getContractList(
   const contracts = contractWithCursor.slice(0, limit);
   const cursorContract = contractWithCursor[contractWithCursor.length - 1];
   const nextCursor = cursorContract ? cursorContract.id : null;
+  const totalContract = await prisma.contract.count({
+    where,
+  });
 
   return {
     list: contracts,
     nextCursor,
+    totalContract,
   };
 }
 
@@ -27,18 +31,17 @@ async function save(
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) {
   const createContract = await prisma.contract.create({
-      data: {
-        carId: data.carId,
-        customerId: data.customerId,
-        userId: data.userId,
-        status: data.status,
-        contractPrice: data.contractPrice,
-      },
-    });
+    data: {
+      carId: data.carId,
+      customerId: data.customerId,
+      userId: data.userId,
+      status: data.status,
+      contractPrice: data.contractPrice,
+    },
+  });
 
-    return createContract;
-  };
-
+  return createContract;
+}
 
 async function getCarId(id: number) {
   const car = await prisma.car.findUnique({ where: { id } });
