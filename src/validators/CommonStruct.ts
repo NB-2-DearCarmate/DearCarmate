@@ -30,14 +30,3 @@ export const CursorParamsStruct = object({
   orderBy: optional(enums(["recent"])),
   keyword: optional(nonempty(string())),
 });
-
-//차량
-export const CarPageParamsStruct = object({
-  page: defaulted(integerString, 1),
-  pageSize: defaulted(integerString, 10),
-  status: optional(
-    enums(["possession", "contractProceeding", "contractCompleted"])
-  ),
-  searchBy: optional(enums(["carNumber", "model"])),
-  keyword: optional(nonempty(string())),
-});

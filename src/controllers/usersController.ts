@@ -12,5 +12,5 @@ export class UserController {
       const status = err.status || 500;
       return res.status(status).json({ message: err.message || "서버 에러" });
     }
-  };
+  }; 
 }

@@ -1,5 +1,5 @@
-import companiesRepo from "../Repositories/companiesRepository";
-import * as usersRepo from "../Repositories/usersRepository";
+import companiesRepo from "../repositories/companiesRepository";
+import * as usersRepo from "../repositories/usersRepository";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { UserWhereInput } from "../typings/user";
 import { GetAllCompaniesResponse } from "../typings/company";
