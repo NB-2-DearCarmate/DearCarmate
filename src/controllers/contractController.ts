@@ -15,10 +15,10 @@ export const createContract: RequestHandler = async (req, res) => {
   }
 
   const data = create(req.body, ContractStruct);
-
+  const userId = user.id;
   const contract = await contractService.create({
     ...data,
-    userId: user.id,
+    userId,
   });
 
   res.status(201).send(contract);
@@ -26,18 +26,15 @@ export const createContract: RequestHandler = async (req, res) => {
 
 export const updateContract: RequestHandler = async (req, res) => {
   const user = req.user;
+
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
 
   const { id } = create(req.params, IdParamsStruct);
   const data = create(req.body, UpdateContractStruct);
-
-  const contract = await contractService.update(id, {
-    ...data,
-    userId: user.id,
-  });
-
+  const userId = user.id;
+  const contract = await contractService.update(id, { ...data, userId });
   res.status(201).send(contract);
 };
 
@@ -50,5 +47,5 @@ export const deleteContract: RequestHandler = async (req, res) => {
   const { id } = create(req.params, IdParamsStruct);
   await contractService.deleteById(id);
 
-  res.status(204).send();
+  res.status(204);
 };

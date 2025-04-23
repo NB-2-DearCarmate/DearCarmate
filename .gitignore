@@ -5,3 +5,4 @@ request
 *.http
 .vscode
 /dist
+prisma/migrations/

@@ -1,12 +1,12 @@
 import {
   coerce,
-  type Infer,
   nonempty,
   object,
   string,
   number,
   optional,
 } from "superstruct";
+const CoercedNumber = coerce(number(), string(), (value) => Number(value));
 
 export const CreateCompanyStruct = object({
   companyName: coerce(nonempty(string()), string(), (value) => value.trim()),
@@ -14,11 +14,11 @@ export const CreateCompanyStruct = object({
 });
 
 export const QueryStruct = object({
-  page: number(),
-  pageSize: number(),
+  page: optional(CoercedNumber),
+  pageSize: optional(CoercedNumber),
   orderBy: optional(string()),
-  keyword: optional(string()),
   searchBy: optional(string()),
+  keyword: optional(string()),
 });
 
 export const PatchCompanyStruct = object({
