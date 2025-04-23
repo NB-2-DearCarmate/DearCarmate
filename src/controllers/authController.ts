@@ -1,8 +1,6 @@
-// src/controllers/auth.controller.ts
-
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
-import prisma from "../lib/prisma"; // or '../prisma/client'
+import prisma from "../lib/prisma";
 import {
   generateAccessToken,
   generateRefreshToken,
