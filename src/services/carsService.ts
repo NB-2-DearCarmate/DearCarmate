@@ -1,7 +1,7 @@
 import NotFoundError from "../errors/NotFoundError";
 import BadRequestError from "../errors/BadRequestError";
 import ForbiddenError from "../errors/ForbiddenError";
-import { carRepository } from "../Repositories/carsRepository";
+import { carRepository } from "../repositories/carsRepository";
 import { CreateCarDTO } from "../typings/car";
 
 export const carService = {
