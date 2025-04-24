@@ -1,5 +1,5 @@
 import ForbiddenError from "../errors/ForbiddenError";
-import contractRepository from "../repositories/contractRepository";
+import contractRepository from "../1/contractRepository";
 import { ContractType } from "../typings/contract";
 import {
   CursorPaginationParams,
@@ -13,7 +13,6 @@ type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt"> & {
 };
 type UpdateContract = Partial<CreateContract> & { userId: number };
 
-
 // 계약 조회
 async function getContractList(
   contractStatus: ContractStatus,
@@ -26,7 +25,6 @@ async function getContractList(
   return contracts;
 }
 
-
 // 계약 생성
 async function create(data: CreateContract) {
   const car = await contractRepository.getCarId(data.carId);
@@ -35,7 +33,6 @@ async function create(data: CreateContract) {
   const contract = await contractRepository.save(data);
   return contract;
 }
-
 
 // 계약 수정
 async function update(id: number, data: UpdateContract) {

@@ -1,4 +1,4 @@
-import meetingRepository from "../repositories/meetingRepository";
+import meetingRepository from "../1/meetingRepository";
 import { isVaildMeetingDate } from "../utils/contractDate";
 
 async function getId(contractId: number) {

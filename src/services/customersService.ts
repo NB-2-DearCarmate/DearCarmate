@@ -1,4 +1,4 @@
-import { CustomerRepository } from "../repositories/customersRepositories";
+import { CustomerRepository } from "../1/customersRepositories";
 import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/client";
@@ -8,36 +8,44 @@ import { Customer } from "@prisma/client";
 
 // 회사 등록
 export const CustomerService = {
-    createCustomer: async (data: CreateCustomerInput) => {
-      return await CustomerRepository.create(data);
-    },
-  
-    getCustomers: async ({ page, limit, search }: { page: number, limit: number, search: string  ,memo?: string; }) => {
-      return prisma.customer.findMany({
-        where: { 
-          OR: [
-            { name: { contains: search, mode: 'insensitive' } },
-            { email: { contains: search, mode: 'insensitive' } }
-          ], 
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { createdAt: 'asc' },
-      });
-    },
+  createCustomer: async (data: CreateCustomerInput) => {
+    return await CustomerRepository.create(data);
+  },
 
-    patchCustomers : async (id : number , data: Partial<Customer>) => {
-      return await CustomerRepository.update(id,data);
-    },
+  getCustomers: async ({
+    page,
+    limit,
+    search,
+  }: {
+    page: number;
+    limit: number;
+    search: string;
+    memo?: string;
+  }) => {
+    return prisma.customer.findMany({
+      where: {
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+        ],
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: "asc" },
+    });
+  },
 
-    deleteCustomers: async (id : number) =>{
-      return await CustomerRepository.delete(id);
-    },
+  patchCustomers: async (id: number, data: Partial<Customer>) => {
+    return await CustomerRepository.update(id, data);
+  },
 
-    finduniqueCustomers : async(id : number)=>{
-      return prisma.customer.findUnique({
-        where : {id},
-        
-      })
-    }
+  deleteCustomers: async (id: number) => {
+    return await CustomerRepository.delete(id);
+  },
+
+  finduniqueCustomers: async (id: number) => {
+    return prisma.customer.findUnique({
+      where: { id },
+    });
+  },
 };

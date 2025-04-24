@@ -1,4 +1,4 @@
-import alarmRepository from "../repositories/alarmRepository";
+import alarmRepository from "../1/alarmRepository";
 import { isVaildAlramDate } from "../utils/contractDate";
 
 async function create(meetingId: number, meetingDate: Date, alarmAt: Date) {
