@@ -10,6 +10,7 @@ import { globalErrorHandler } from "./controllers/errorController";
 import carsRouter from "./routes/carsRouter";
 import customer from "./routes/customersRouter";
 import UserController from "./routes/usersRouter";
+import contractDocumentRouter from "./routes/contractDocumentRouter";
 import login from "./routes/authRouter";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/customers", customer);
 app.use("/users", UserController);
+app.use("/contractDocuments", contractDocumentRouter);
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);
 

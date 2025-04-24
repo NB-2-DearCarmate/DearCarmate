@@ -40,7 +40,13 @@ export const getCompanyListHandler = async (
   next: NextFunction
 ) => {
   try {
-    const { page = 1, pageSize = 10, orderBy, searchBy, keyword } = req.query;
+    const {
+      page = 1,
+      pageSize = 10,
+      orderBy,
+      searchBy,
+      keyword,
+    } = create(req.query, QueryStruct);
 
     const result = await companyService.getAllCompanies({
       page: Number(page),
