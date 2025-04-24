@@ -6,9 +6,8 @@ async function getId(contractId: number) {
   return meetingId;
 }
 
-async function update(contractId: number, meetingDate: Date) {
-  const meetingId = await meetingRepository.getId(contractId);
-
+async function update(meetingId: number, meetingDate: Date) {
+  const meeting = await meetingRepository.getById(meetingId);
   const updatedMeeting = await meetingRepository.update(meetingId, meetingDate);
 
   return updatedMeeting;
@@ -23,4 +22,24 @@ async function create(contractId: number, meetingDate: Date) {
 
   return meeting;
 }
-export default { getId, update, create };
+
+async function getByDate(contractId: number, meetingDate: Date) {
+  return await meetingRepository.findOne(contractId, meetingDate);
+}
+
+async function findAllByContractId(contractId: number) {
+  const meetings = await meetingRepository.findAllByContractId(contractId);
+  return meetings;
+}
+
+async function deleteById(meetingId: number) {
+  return await meetingRepository.deleteById(meetingId);
+}
+export default {
+  getId,
+  update,
+  create,
+  getByDate,
+  findAllByContractId,
+  deleteById,
+};

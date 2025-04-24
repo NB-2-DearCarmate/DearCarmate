@@ -48,4 +48,48 @@ async function save(contractId: number, meetingDate: Date) {
   return meeting;
 }
 
-export default { update, getId, save, getById };
+async function findOne(contractId: number, meetingDate: Date) {
+  const meeting = await prisma.meeting.findFirst({
+    where: {
+      contractId: contractId,
+      date: meetingDate,
+    },
+  });
+
+  return meeting;
+}
+
+async function deleteMany(contractId: number) {
+  await prisma.meeting.deleteMany({
+    where: { contractId },
+  });
+}
+
+async function findAllByContractId(contractId: number) {
+  const meetings = await prisma.meeting.findMany({
+    where: { contractId },
+  });
+
+  if (meetings.length === 0) {
+    throw new NotFoundError(contractId);
+  }
+
+  return meetings;
+}
+
+async function deleteById(meetingId: number) {
+  await prisma.meeting.delete({
+    where: { id: meetingId },
+  });
+}
+
+export default {
+  update,
+  getId,
+  save,
+  getById,
+  findOne,
+  deleteMany,
+  deleteById,
+  findAllByContractId,
+};

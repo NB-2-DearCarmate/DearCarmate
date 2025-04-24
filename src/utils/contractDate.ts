@@ -11,7 +11,6 @@ export function isVaildMeetingDate(date: Date): boolean {
 }
 
 export function isVaildAlramDate(alarmDate: Date, meetingDate: Date): boolean {
-  console.log(alarmDate);
   const alarm9AM = (d: Date) => {
     const date = new Date(d);
     date.setHours(9, 0, 0, 0);

@@ -42,8 +42,6 @@ export const UpdateContractStruct = object({
   resolutionDate: optional(
     coerce(date(), string(), (value) => new Date(value))
   ),
-  meeting: optional(string()),
-  alarmAt: optional(string()),
 });
 
 export const updatePriceStruct = object({
