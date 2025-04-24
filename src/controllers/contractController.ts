@@ -5,6 +5,7 @@ import {
   ContractStruct,
   UpdateContractStruct,
   ContractListStruct,
+  updatePriceStruct,
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
@@ -12,6 +13,7 @@ import { ContractStatus } from "../typings/contract";
 import meetingService from "../services/meetingService";
 import alarmService from "../services/alarmService";
 
+//상태별 계약 조회
 export const getContractCheckList: RequestHandler = async (req, res) => {
   const params = create(req.query, ContractListStruct);
   const contractStatus = "VEHICLE_CHECK";
@@ -56,6 +58,7 @@ export const getContractFailList: RequestHandler = async (req, res) => {
   res.status(200).send(contracts);
 };
 
+//계약 생성
 export const createContract: RequestHandler = async (req, res) => {
   const user = 1;
 
@@ -64,8 +67,6 @@ export const createContract: RequestHandler = async (req, res) => {
   }
 
   const userId = user;
-  const meetingDate = new Date(req.body.meeting);
-  const alarmAt = new Date(req.body.alarmAt);
 
   const parsedData = create(req.body, ContractStruct);
   const contractData = {
@@ -78,24 +79,47 @@ export const createContract: RequestHandler = async (req, res) => {
   const contract = await contractService.create(contractData);
   const contractId = contract.id;
 
-  if (req.body.meeting) {
-    const meetingDate = new Date(req.body.meeting);
-    const meeting = await meetingService.create(contractId, meetingDate);
-    const meetingId = meeting.id;
+  if (req.body.meetings) {
+    const meetingsData = Array.isArray(req.body.meetings)
+      ? req.body.meetings
+      : [req.body.meetings];
 
-    if (req.body.alarmAt) {
-      const alarmAt = new Date(req.body.alarmAt);
-      const updatedAlarmAt = await alarmService.create(
-        meetingId,
-        meetingDate,
-        alarmAt
+    if(meetingsData.length > 3) {
+      res.status(400).send({ message: "미팅은 최대 3개까지만 등록 가능합니다."})
+    }
+
+    for (const meeting of meetingsData) {
+      const meetingDate = new Date(meeting.date.replace(" ", "T"));
+      const createdMeeting = await meetingService.create(
+        contractId,
+        meetingDate
       );
+      const meetingId = createdMeeting.id;
+
+      if (meeting.alarms) {
+          const alarmData = Array.isArray(meeting.alarms)
+            ? meeting.alarms
+            : [meeting.alarms];
+
+            if(alarmData.length > 2) {
+              res.status(400).send({ message: "알람은 최대 2개까지만 등록 가능합니다."})
+            }
+
+          for (const alarmAt of alarmData) {
+            const alarmDate = new Date(alarmAt.replace(" ", "T"));
+            const updatedAlarmAt = await alarmService.create(
+              meetingId,
+              meetingDate,
+              alarmDate
+            );
+          }
+      }
     }
   }
-
   res.status(201).send(contract);
 };
 
+//계약 수정
 export const updateContract: RequestHandler = async (req, res) => {
   const user = 1;
 
@@ -135,6 +159,25 @@ export const updateContract: RequestHandler = async (req, res) => {
   res.status(201).send(updatedContract);
 };
 
+// 계약금 수정
+export const updatePrice: RequestHandler = async (req, res) => {
+  const userId = 1;
+  if (!userId) {
+    throw new UnauthorizedError("Unauthorized");
+  }
+
+  const { id } = create(req.params, IdParamsStruct);
+  const parsedPrice = create(req.body, updatePriceStruct);
+
+  const contractPrice = await contractService.updatePrice(
+    id,
+    parsedPrice.contractPrice
+  );
+
+  res.status(201).send(contractPrice);
+};
+
+//계약 삭제
 export const deleteContract: RequestHandler = async (req, res) => {
   const userId = 1;
 

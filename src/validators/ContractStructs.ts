@@ -6,11 +6,16 @@ import {
   date,
   string,
   coerce,
+  array,
 } from "superstruct";
 import { CursorParamsStruct } from "./CommonStruct";
 
 // 미팅, 알람 정보
-const timeRegex = /^\d{4}년 \d{2}월 \d{2}일 \d{2}시 \d{2}분$/;
+
+const MeetingStruct = object({
+  date: string(),
+  alarms: optional(array(string())),
+});
 
 // 계약 상태 (칸반용)
 export const ContractStatus = enums([
@@ -26,8 +31,7 @@ export const ContractStruct = object({
   customerId: integer(),
   contractPrice: integer(),
   resolutionDate: optional(date()),
-  meeting: string(),
-  alarmAt: string(),
+  meetings: optional(array(MeetingStruct)),
 });
 
 export const UpdateContractStruct = object({
@@ -40,6 +44,10 @@ export const UpdateContractStruct = object({
   ),
   meeting: optional(string()),
   alarmAt: optional(string()),
+});
+
+export const updatePriceStruct = object({
+  contractPrice: integer(),
 });
 
 // 계약 목록 조회용

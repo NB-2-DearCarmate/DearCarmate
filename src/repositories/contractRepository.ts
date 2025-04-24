@@ -76,21 +76,21 @@ async function update(id: number, data: Partial<ContractType>) {
     data,
   });
 
-  if (!updatedContract) {
-    throw new NotFoundError(id);
-  }
-
   return updatedContract;
+}
+
+async function updatePrice(id: number, price: number) {
+  const contractPrice = await prisma.contract.update({
+    where: { id },
+    data: { contractPrice: price },
+  });
+  return contractPrice;
 }
 
 async function deleteById(id: number) {
   const contract = await prisma.contract.delete({
     where: { id },
   });
-
-  if (!contract) {
-    throw new NotFoundError(id);
-  }
 
   return contract;
 }
@@ -102,5 +102,6 @@ export default {
   save,
   getById,
   update,
+  updatePrice,
   deleteById,
 };

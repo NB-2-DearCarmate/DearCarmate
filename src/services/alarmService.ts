@@ -1,5 +1,4 @@
 import alarmRepository from "../repositories/alarmRepository";
-import meetingRepository from "../repositories/meetingRepository";
 import { isVaildAlramDate } from "../utils/contractDate";
 
 async function create(meetingId: number, meetingDate: Date, alarmAt: Date) {
