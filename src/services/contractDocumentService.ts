@@ -3,7 +3,8 @@ import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
 import {
   ContractDraftItemDto,
   PageContractDocumentItemDto,
-} from "../typings/contrarctDocument";
+} from "../dto/contractDocument.dto";
+import { SaveFileInfo } from "../typings/contrarctDocument";
 
 const contractDocumentList = async (
   params: PaginationParams<SearchByContractDraft>
@@ -61,7 +62,13 @@ const contractDraftList = async (): Promise<ContractDraftItemDto[]> => {
   }));
 };
 
+const uploadContractFile = async (files: SaveFileInfo[]) => {
+  const save = await contractDocumentRepo.uploadContractDocuments(files);
+  return save[0].id;
+};
+
 export default {
   contractDocumentList,
   contractDraftList,
+  uploadContractFile,
 };

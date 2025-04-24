@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma";
+import { SaveFileInfo } from "../typings/contrarctDocument";
 import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
 
 // 계약서 업로드 시 목록조회
@@ -38,7 +39,25 @@ const getContractList = async () => {
   return contracts;
 };
 
+// 계약서 업로드
+const uploadContractDocuments = async (files: SaveFileInfo[]) => {
+  const saveFile = await Promise.all(
+    files.map((file) =>
+      prisma.contractDocument.create({
+        data: {
+          fileName: file.fileName,
+          filePath: file.filePath,
+          fileSize: file.fileSize,
+          contractId: file.contractId,
+        },
+      })
+    )
+  );
+  return saveFile;
+};
+
 export default {
   getAllcontractDocumentList,
   getContractList,
+  uploadContractDocuments,
 };
