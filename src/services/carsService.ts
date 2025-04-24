@@ -1,7 +1,7 @@
 import NotFoundError from "../errors/NotFoundError";
 import BadRequestError from "../errors/BadRequestError";
 import { CarPaginationParams } from "../typings/pagination";
-import carRepository from "../1/carsRepository";
+import carRepository from "../repositories/carsRepository";
 import { CreateCarDTO, CarList } from "../typings/car";
 
 async function createCar(carData: CreateCarDTO) {

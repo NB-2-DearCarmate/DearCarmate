@@ -1,4 +1,4 @@
-import { CustomerRepository } from "../1/customersRepositories";
+import { CustomerRepository } from "../repositories/customersRepositories";
 import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/client";

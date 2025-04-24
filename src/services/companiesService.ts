@@ -1,4 +1,4 @@
-import * as companiesRepo from "../1/companiesRepository";
+import * as companiesRepo from "../repositories/companiesRepository";
 import { Company } from "@prisma/client";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import {

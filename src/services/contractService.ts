@@ -1,5 +1,5 @@
 import ForbiddenError from "../errors/ForbiddenError";
-import contractRepository from "../1/contractRepository";
+import contractRepository from "../repositories/contractRepository";
 import { ContractType } from "../typings/contract";
 import {
   CursorPaginationParams,
