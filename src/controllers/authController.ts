@@ -20,7 +20,7 @@ export const login: RequestHandler<{}, any, LoginRequestBody> = async (
   res
 ) => {
   const { email, password } = req.body;
-  console.log(email,password);
+  console.log(email, password);
 
   if (!email || !password) {
     res.status(400).json({ message: "잘못된 요청입니다" });

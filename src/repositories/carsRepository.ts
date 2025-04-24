@@ -1,10 +1,10 @@
 import prisma from "../lib/prisma";
-import { CreateCarDTO } from "../typings/car";
+import { Car, UpdateCar } from "../typings/car";
 import { CarPaginationParams } from "../typings/pagination";
 import { VehicleStatus, Prisma } from "@prisma/client";
 
 // Car 등록
-async function createCar(carData: CreateCarDTO) {
+async function createCar(carData: Car) {
   return prisma.car.create({
     data: carData,
   });
@@ -75,19 +75,27 @@ async function getAllCarModels() {
   const manufacturers = await prisma.manufacturers.findMany({
     include: {
       Models: {
-        select: {
-          name: true,
-        },
+        select: { name: true },
       },
     },
   });
 
-  const result = manufacturers.map((manufacturer) => ({
-    manufacturer: manufacturer.name,
-    model: manufacturer.Models.map((model) => model.name),
-  }));
+  return manufacturers;
+}
 
-  return { data: result };
+// Car 수정
+async function updateCar(id: number, updateDate: UpdateCar) {
+  return prisma.car.update({
+    where: { id },
+    data: updateDate,
+  });
+}
+
+// Car 삭제
+async function deleteCar(id: number) {
+  return prisma.car.delete({
+    where: { id },
+  });
 }
 
 export default {
@@ -96,4 +104,6 @@ export default {
   getCarList,
   getCarById,
   getAllCarModels,
+  updateCar,
+  deleteCar,
 };
