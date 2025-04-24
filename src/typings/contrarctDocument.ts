@@ -1,4 +1,4 @@
-export type SaveFIleInfo = {
+export type SaveFileInfo = {
   fileName: string;
   filePath: string;
   contractId: number;

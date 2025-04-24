@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { create } from "superstruct";
 import { STATIC_PATH } from "../lib/constance";
 import { QueryStruct } from "../validators/CompanyStructs";
-import { MulterRequest } from "../typings/multer";
 import { SearchByContractDraft } from "../typings/pagination";
 import { ContractDraftItemDto } from "../dto/contractDocument.dto";
 import { SaveFileInfo } from "../typings/contrarctDocument";
@@ -52,7 +51,7 @@ export const getContractDraftListHandler = async (
 };
 
 export const uploadContractDocumentsHandler = async (
-  req: MulterRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -69,10 +68,12 @@ export const uploadContractDocumentsHandler = async (
       fileName: f.filename,
       filePath: path.join(STATIC_PATH, f.filename),
       fileSize: f.size,
-      contractId: req.body.contractId,
+      contractId: Number(req.body.contractId),
     }));
-    const contractDocumentId = contractDocumentService.uploadContractFile(file);
-    res.status(201).json(contractDocumentId);
+    const contractDocumentId = await contractDocumentService.uploadContractFile(
+      file
+    );
+    res.status(200).json({ contractDocumentId: contractDocumentId });
   } catch (error) {
     next(error);
   }
