@@ -1,12 +1,13 @@
 import prisma from "../lib/prisma";
-import { PaginationParams, SearchByContractName } from "../typings/pagination";
+import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
 
+// 계약서 업로드 시 목록조회
 const getAllcontractDocumentList = async ({
   page,
   pageSize,
   keyword,
   orderBy,
-}: PaginationParams<SearchByContractName>) => {
+}: PaginationParams<SearchByContractDraft>) => {
   const where = {};
   const contracts = await prisma.contract.findMany({
     where,
@@ -22,10 +23,22 @@ const getAllcontractDocumentList = async ({
       user: true,
     },
   });
-  const totalCount = await prisma.contract.count({ where });
-  return { contracts, totalCount };
+
+  return { contracts };
+};
+
+// 계약서 추가 화면에서 계약목록조회
+const getContractList = async () => {
+  const contracts = await prisma.contract.findMany({
+    include: {
+      customer: true,
+      car: { include: { model: true } },
+    },
+  });
+  return contracts;
 };
 
 export default {
   getAllcontractDocumentList,
+  getContractList,
 };

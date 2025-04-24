@@ -14,7 +14,7 @@ import {
   GetCompanyByUserListDTO,
   RegisterCompanyResponseDTO,
   UpdateCompanyResponseDTO,
-} from "../dto/companiesDTO";
+} from "../dto/companies.dto";
 import * as companyService from "../services/companiesService";
 
 // 회사 등록
@@ -22,7 +22,7 @@ export const createCompanyHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const data: CreateCompanyDTO = create(req.body, CreateCompanyStruct);
     const newCompany: RegisterCompanyResponseDTO =
@@ -38,7 +38,7 @@ export const getCompanyListHandler = async (
   req: Request<GetCompanyListQueryDTO, GetCompanyListResponseDTO>,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const {
       page = 1,
@@ -67,7 +67,7 @@ export const getUserByCompaniesHandler = async (
   req: Request<GetCompanyListQueryDTO, GetCompanyByUserListDTO>,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const {
       page = 1,
@@ -96,7 +96,7 @@ export const updateCompanyHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const data = create(req.body, PatchCompanyStruct);
     const id = Number(req.params.id);
@@ -113,7 +113,7 @@ export const deleteCompanyHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const id = Number(req.params.id);
     await companyService.deleteCompany(id);
