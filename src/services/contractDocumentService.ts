@@ -1,6 +1,5 @@
 import path from "path";
 import fs from "fs";
-import JSZip from "jszip";
 import contractDocumentRepo from "../repositories/contractDocumentRepository";
 import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
 import {
@@ -76,6 +75,7 @@ const downloadContractFile = async (contractDocumentId: number) => {
   if (!file) {
     throw new BadRequestError("파일이 없습니다.");
   }
+
   const filePath = path.resolve(
     __dirname,
     "../../docUploads/contractDocument",

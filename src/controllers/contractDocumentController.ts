@@ -65,12 +65,23 @@ export const uploadContractDocumentsHandler = async (
     if (!req.files || !Array.isArray(req.files)) {
       throw new Error("파일이 없습니다.");
     }
+
+    console.log("업로드된 파일들:", files);
+    console.log("본문 바디값:", req.body);
+    console.log(files.length);
+    if (files.length !== 2) {
+      console.error("2개 모두 업로드 되지 않았습니다.");
+    }
+
     const file: SaveFileInfo[] = files.map((f) => ({
       fileName: f.filename,
       filePath: path.join(STATIC_PATH, f.filename),
       fileSize: f.size,
       contractId: Number(req.body.contractId),
     }));
+
+    console.log("파일 정보:", file);
+
     const contractDocumentId = await contractDocumentService.uploadContractFile(
       file
     );
@@ -88,18 +99,20 @@ export const downloadContractDocHandler = async (
   try {
     const { contractDocumentId } = req.params;
     const numContractDoc = Number(contractDocumentId);
+
     const file = await contractDocumentService.downloadContractFile(
       numContractDoc
     );
     if (!file) {
       throw new BadRequestError("파일을 찾을 수 없습나다");
     }
+
     res.set({
       "Content-Type": "application/octet-stream",
       "Content-Disposition": `attachment; filename="${file.fileName}"`,
       "Content-Length": file.content.length,
     });
-    res.json({ contractDocumentId: file.id });
+    res.send(file.content);
   } catch (error) {
     next(error);
   }

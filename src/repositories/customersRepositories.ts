@@ -13,24 +13,22 @@ export const CustomerRepository = {
     return prisma.customer.findMany();
   },
 
-  update : async (id : number,data: Partial<Customer>) =>{
+  update: async (id: number, data: Partial<Customer>) => {
     return prisma.customer.update({
-      where : { id },
+      where: { id },
       data,
     });
   },
 
-  delete : async (id : number) =>{
+  delete: async (id: number) => {
     return prisma.customer.delete({
-      where : {id},
-    })
+      where: { id },
+    });
   },
 
-  findunique : async(id : number)=>{
+  findunique: async (id: number) => {
     return prisma.customer.findUnique({
-      where : {id},
-
-    })
-  }
-
+      where: { id },
+    });
+  },
 };

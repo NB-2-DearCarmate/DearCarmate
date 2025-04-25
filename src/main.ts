@@ -8,7 +8,7 @@ import authRoutes from "./routes/authRouter";
 import { PORT } from "./lib/constance";
 import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
-import carsRouter from "./routes/carsRouter";
+//import carsRouter from "./routes/carsRouter";
 import customer from "./routes/customersRouter";
 import UserController from "./routes/usersRouter";
 import contractDocumentRouter from "./routes/contractDocumentRouter";
@@ -23,7 +23,7 @@ app.use(cors());
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(swaggerSpec));
 
 app.use("/companies", companiesRouter);
-app.use("/cars", carsRouter);
+//app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/customers", customer);
 app.use("/users", UserController);

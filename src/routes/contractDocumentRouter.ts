@@ -7,13 +7,18 @@ import {
   uploadContractDocumentsHandler,
 } from "../controllers/contractDocumentController";
 import authMiddleware from "../middlewares/authMiddleware";
-import multer from "multer";
 
 const router = Router();
 
 router.post(
   "/upload",
-  upload.array("contractDocument"),
+  (req, res, next) => {
+    console.log("파일요청들어옴");
+    console.log("req.files:", req.files);
+    next();
+  },
+  upload.array("contractDocument", 5),
+  authMiddleware,
   uploadContractDocumentsHandler
 );
 router.get("/", authMiddleware, getAllContractDocumentListHandler);

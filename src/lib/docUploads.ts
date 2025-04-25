@@ -2,21 +2,25 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const uploadDir = "uploads/contractDocument";
+const uploadDir = path.join(__dirname, "../../docUploads/contractDocument");
 
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir), { recursive: true };
+  console.log("디렉터리 없음");
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("디렉토리 생성완료");
+} else {
+  console.log("디렉토리 존재함.");
 }
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "docUploads/contractDocument");
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname); // 확장자 추출
-    const baseName = path.basename(file.originalname, ext); // 확장자 제외한 파일 이름
-    const timestamp = Date.now(); // 현재 타임스탬프
-    const fileName = `${baseName}-${timestamp}${ext}`; // 파일명 + 타임스탬프
+    const ext = path.extname(file.originalname);
+    const baseName = path.basename(file.originalname, ext);
+    const timestamp = Date.now();
+    const fileName = `${baseName}-${timestamp}${ext}`;
     cb(null, fileName);
   },
 });
