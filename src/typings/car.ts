@@ -2,20 +2,20 @@ import { VehicleStatus } from "@prisma/client";
 
 export type CarType = "SEDAN" | "COMPACT" | "SUV";
 
-export interface CreateCarDTO {
+export interface Car {
   carNumber: string;
   manufacturerId: number;
   modelId: number;
   type: CarType;
   mileage: number;
   price: number;
-  accidentCount: number | null;
+  accidentCount: number;
   explanation: string | null;
   accidentDetails: string | null;
-  status: VehicleStatus;
+  status: VehicleStatus | null;
 }
 
-export interface CarResponseDTO extends CreateCarDTO {
+export interface CarResponse extends Car {
   id: number;
 }
 
@@ -23,5 +23,7 @@ export type CarList = {
   currentPage: number;
   totalPage: number;
   totalItemCount: number;
-  data: CarResponseDTO[];
+  data: CarResponse[];
 };
+
+export type UpdateCar = Partial<Car>;

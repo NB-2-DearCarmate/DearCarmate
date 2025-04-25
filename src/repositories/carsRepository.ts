@@ -1,10 +1,10 @@
 import prisma from "../lib/prisma";
-import { CreateCarDTO } from "../typings/car";
+import { Car, UpdateCar } from "../typings/car";
 import { CarPaginationParams } from "../typings/pagination";
 import { VehicleStatus, Prisma } from "@prisma/client";
 
 // Car 등록
-async function createCar(carData: CreateCarDTO) {
+async function createCar(carData: Car) {
   return prisma.car.create({
     data: carData,
   });
@@ -83,10 +83,36 @@ async function getAllCarModels() {
   return manufacturers;
 }
 
+// Car 수정
+async function updateCar(id: number, updateDate: UpdateCar) {
+  return prisma.car.update({
+    where: { id },
+    data: updateDate,
+  });
+}
+
+// Car 삭제
+async function deleteCar(id: number) {
+  return prisma.car.delete({
+    where: { id },
+  });
+}
+
+// 대량 차량 등록
+async function bulkCreateCars(carList: Car[]) {
+  return prisma.car.createMany({
+    data: carList,
+    skipDuplicates: true,
+  });
+}
+
 export default {
   createCar,
   findByCarNumber,
   getCarList,
   getCarById,
   getAllCarModels,
+  updateCar,
+  deleteCar,
+  bulkCreateCars,
 };

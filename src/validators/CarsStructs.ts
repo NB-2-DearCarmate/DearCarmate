@@ -9,6 +9,7 @@ import {
   literal,
   optional,
   coerce,
+  defaulted,
 } from "superstruct";
 
 export const CarStruct = object({
@@ -21,11 +22,14 @@ export const CarStruct = object({
   accidentCount: min(number(), 0),
   explanation: nonempty(string()),
   accidentDetails: nonempty(string()),
-  status: union([
-    literal("POSSESSION"),
-    literal("CONTRACT_PROCEEDING"),
-    literal("CONTRACT_COMPLETED"),
-  ]),
+  status: defaulted(
+    union([
+      literal("POSSESSION"),
+      literal("CONTRACT_PROCEEDING"),
+      literal("CONTRACT_COMPLETED"),
+    ]),
+    "POSSESSION"
+  ),
 });
 export const CarQueryStruct = object({
   page: coerce(number(), string(), (value) => Number(value)),

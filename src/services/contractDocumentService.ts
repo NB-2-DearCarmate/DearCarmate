@@ -78,7 +78,7 @@ const downloadContractFile = async (contractDocumentId: number) => {
   }
   const filePath = path.resolve(
     __dirname,
-    "../../uploads/contractDocument",
+    "../../docUploads/contractDocument",
     file.filePath
   );
 

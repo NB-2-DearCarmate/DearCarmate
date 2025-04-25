@@ -10,7 +10,7 @@ if (!fs.existsSync(uploadDir)) {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/contractDocument");
+    cb(null, "docUploads/contractDocument");
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname); // 확장자 추출
