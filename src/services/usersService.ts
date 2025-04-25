@@ -9,6 +9,7 @@ import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 class UserService {
+  // 회원가입
   createUser = async (
     rawData: any
   ): Promise<{
@@ -77,6 +78,7 @@ class UserService {
     };
   };
 
+  // 정보 조회
   getMyInfo = async (
     userId: number
   ): Promise<{
@@ -121,6 +123,7 @@ class UserService {
     };
   };
 
+  // 정보 수정
   updateMyInfo = async (
     userId: number,
     rawData: unknown
@@ -171,6 +174,17 @@ class UserService {
     });
 
     return updatedUser;
+  };
+
+  // 회원탈퇴
+  deleteMyAccount = async (userId: number): Promise<void> => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw { status: 404, message: "존재하지 않는 유저입니다!" };
+    }
+
+    await prisma.user.delete({ where: { id: userId } });
   };
 }
 

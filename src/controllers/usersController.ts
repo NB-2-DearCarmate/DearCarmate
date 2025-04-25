@@ -60,3 +60,23 @@ export const updateMyInfoHandler = async (
     res.status(status).json({ message: err.message || "서버 오류" });
   }
 };
+
+// 회원탈퇴
+export const deleteMyAccountHandler = async (
+  req: AuthenticatedUserRequest,
+  res: Response<{ message: string }>
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: "로그인이 필요합니다!" });
+      return;
+    }
+
+    await userService.deleteMyAccount(Number(req.user.id));
+    res.status(200).json({ message: "유저 삭제 성공" });
+  } catch (err: any) {
+    const status = err.status || 500;
+    const message = err.message || "서버 오류";
+    res.status(status).json({ message });
+  }
+};
