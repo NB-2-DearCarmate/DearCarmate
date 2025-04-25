@@ -7,7 +7,6 @@ import {
   getContractPriceList,
   getContractSuccessList,
   updateContract,
-  updatePrice,
 } from "../controllers/contractController";
 
 const contractRouter = Router();
@@ -18,7 +17,6 @@ contractRouter.get("/SUCCESS", getContractSuccessList);
 contractRouter.get("/FAIL", getContractFailList);
 contractRouter.post("/", createContract);
 contractRouter.patch("/:id", updateContract);
-contractRouter.patch("/price/:id", updatePrice);
 contractRouter.delete("/:id", deleteContract);
 
 export default contractRouter;

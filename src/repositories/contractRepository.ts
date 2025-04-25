@@ -52,6 +52,17 @@ async function getCarId(id: number) {
   return car;
 }
 
+async function updateCarStatus(carId: number) {
+  const createContract = await prisma.car.update({
+    where: { id: carId },
+    data: {
+      status: "CONTRACT_PROCEEDING",
+    },
+  });
+
+  return createContract;
+}
+
 async function getCustomerId(id: number) {
   const customer = await prisma.customer.findUnique({ where: { id } });
   if (!customer) {
@@ -59,6 +70,24 @@ async function getCustomerId(id: number) {
   }
 
   return customer;
+}
+
+async function getUserId(id: number) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) {
+    throw new NotFoundError(id);
+  }
+
+  return user;
+}
+
+async function getModelId(id: number) {
+  const model = await prisma.models.findUnique({ where: { id } });
+  if (!model) {
+    throw new NotFoundError(id);
+  }
+
+  return model;
 }
 
 async function getById(id: number) {
@@ -79,12 +108,15 @@ async function update(id: number, data: Partial<ContractType>) {
   return updatedContract;
 }
 
-async function updatePrice(id: number, price: number) {
-  const contractPrice = await prisma.contract.update({
-    where: { id },
-    data: { contractPrice: price },
+async function completedCar(carId: number) {
+  const updateStatus = await prisma.car.update({
+    where: { id: carId },
+    data: {
+      status: "CONTRACT_COMPLETED",
+    },
   });
-  return contractPrice;
+
+  return updateStatus;
 }
 
 async function deleteById(id: number) {
@@ -102,6 +134,9 @@ export default {
   save,
   getById,
   update,
-  updatePrice,
   deleteById,
+  updateCarStatus,
+  getUserId,
+  completedCar,
+  getModelId,
 };

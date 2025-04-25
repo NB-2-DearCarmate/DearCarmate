@@ -40,18 +40,52 @@ async function update(id: number, data: UpdateContract) {
   return await contractRepository.update(id, data);
 }
 
-// 계약금 수정
-async function updatePrice(id: number, price: number) {
-  const findContract = await contractRepository.getById(id);
-  const contractPrice = await contractRepository.updatePrice(id, price);
-
-  return contractPrice;
-}
-
 // 계약 삭제
 async function deleteById(id: number) {
   const findContract = await contractRepository.getById(id);
   return await contractRepository.deleteById(id);
 }
 
-export default { getContractList, create, update, updatePrice, deleteById };
+//외래키 참조
+async function getCarId(carId: number) {
+  const car = await contractRepository.getCarId(carId);
+  return car;
+}
+
+async function updateCarStatus(carId: number) {
+  const createContract = await contractRepository.updateCarStatus(carId);
+  return createContract;
+}
+
+async function complectedCar(carId: number) {
+  const updatedStatus = await contractRepository.completedCar(carId);
+  return updatedStatus;
+}
+async function getCustomerId(customerId: number) {
+  const customer = await contractRepository.getCustomerId(customerId);
+  return customer;
+}
+
+async function getUserId(userId: number) {
+  const user = await contractRepository.getUserId(userId);
+  return user;
+}
+
+async function getModelId(modelId: number) {
+  const model = await contractRepository.getModelId(modelId);
+
+  return model;
+}
+
+export default {
+  getContractList,
+  create,
+  update,
+  deleteById,
+  getCarId,
+  getCustomerId,
+  getUserId,
+  updateCarStatus,
+  complectedCar,
+  getModelId,
+};

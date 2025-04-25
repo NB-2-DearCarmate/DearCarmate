@@ -29,7 +29,6 @@ export const ContractStatus = enums([
 export const ContractStruct = object({
   carId: integer(),
   customerId: integer(),
-  contractPrice: integer(),
   resolutionDate: optional(date()),
   meetings: optional(array(MeetingStruct)),
 });

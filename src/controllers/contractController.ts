@@ -30,6 +30,8 @@ export const getContractCheckList: RequestHandler = async (req, res) => {
     params
   );
 
+  const contractList = {};
+
   res.status(200).send(contracts);
 };
 
@@ -75,18 +77,27 @@ export const createContract: RequestHandler = async (req, res) => {
   }
 
   const userId = user;
+  const userData = await contractService.getUserId(userId);
 
   const parsedData = create(req.body, ContractStruct);
+  const car = await contractService.getCarId(parsedData.carId);
+  const customer = await contractService.getCustomerId(parsedData.customerId);
+  const model = await contractService.getModelId(car.modelId);
+
   const contractData = {
     ...parsedData,
     status: "VEHICLE_CHECK" as ContractStatus,
     userId,
     resolutionDate: null,
+    contractPrice: car.price,
   };
 
   const contract = await contractService.create(contractData);
   const contractId = contract.id;
 
+  const updateCarStatus = await contractService.updateCarStatus(car.id);
+
+  const meetingResult: { date: Date; alarms: Date[] }[] = [];
   if (req.body.meetings) {
     const meetingsData = Array.isArray(req.body.meetings)
       ? req.body.meetings
@@ -105,7 +116,7 @@ export const createContract: RequestHandler = async (req, res) => {
         meetingDate
       );
       const meetingId = createdMeeting.id;
-
+      const alarms: Date[] = [];
       if (meeting.alarms) {
         const alarmData = Array.isArray(meeting.alarms)
           ? meeting.alarms
@@ -119,16 +130,37 @@ export const createContract: RequestHandler = async (req, res) => {
 
         for (const alarmAt of alarmData) {
           const alarmDate = new Date(alarmAt.replace(" ", "T"));
-          const updatedAlarmAt = await alarmService.create(
-            meetingId,
-            meetingDate,
-            alarmDate
-          );
+          await alarmService.create(meetingId, meetingDate, alarmDate);
+          alarms.push(alarmDate);
         }
       }
+
+      meetingResult.push({
+        date: meetingDate,
+        alarms,
+      });
     }
   }
-  res.status(201).send(contract);
+
+  const contractResult = {
+    id: contract.id,
+    status: contract.status,
+    resolutionDate: contract.resolutionDate,
+    meetings: meetingResult,
+    user: {
+      id: userId,
+      name: userData.name,
+    },
+    customer: {
+      id: customer.id,
+    },
+    car: {
+      id: car.id,
+      model: model.name,
+    },
+  };
+
+  res.status(201).send(contractResult);
 };
 
 //계약 수정
@@ -142,6 +174,7 @@ export const updateContract: RequestHandler = async (req, res) => {
   }
 
   const userId = user;
+  const userData = await contractService.getUserId(userId);
 
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
@@ -155,6 +188,19 @@ export const updateContract: RequestHandler = async (req, res) => {
     userId,
   });
 
+  if (updatedContract.status === "SUCCESS") {
+    await contractService.complectedCar(updatedContract.carId);
+  }
+
+  const customer = await contractService.getCustomerId(
+    updatedContract.customerId
+  );
+
+  const car = await contractService.getCarId(updatedContract.carId);
+
+  const model = await contractService.getModelId(car.modelId);
+
+  const meetingResult: { date: Date; alarms: Date[] }[] = [];
   if (req.body.meetings) {
     const meetingsData = Array.isArray(req.body.meetings)
       ? req.body.meetings
@@ -187,6 +233,7 @@ export const updateContract: RequestHandler = async (req, res) => {
       const existingMeeting = await meetingService.getByDate(id, meetingDate);
 
       let meetingId: number;
+
       if (existingMeeting) {
         meetingId = existingMeeting.id;
         await meetingService.update(meetingId, meetingDate);
@@ -195,39 +242,48 @@ export const updateContract: RequestHandler = async (req, res) => {
         meetingId = createdMeeting.id;
       }
 
+      const alarms: Date[] = [];
       if (meeting.alarms) {
         await alarmService.deleteByMeetingId(meetingId);
-        const alarms = Array.isArray(meeting.alarms)
+        const alarmData = Array.isArray(meeting.alarms)
           ? meeting.alarms
           : [meeting.alarms];
 
-        for (const alarmAt of alarms) {
+        for (const alarmAt of alarmData) {
           const alarmDate = parseDate(alarmAt);
           await alarmService.create(meetingId, meetingDate, alarmDate);
+          alarms.push(alarmDate);
         }
       }
+
+      meetingResult.push({
+        date: meetingDate,
+        alarms,
+      });
     }
   }
 
-  res.status(200).send(updatedContract);
-};
+  const updatedContractResult = {
+    id: updatedContract.id,
+    status: updatedContract.status,
+    resolutionDate: updatedContract.resolutionDate,
+    contractPrice: updatedContract.contractPrice,
+    meetings: meetingResult,
+    user: {
+      id: userId,
+      name: userData.name,
+    },
+    customer: {
+      id: customer.id,
+      name: customer.name,
+    },
+    car: {
+      id: car.id,
+      modle: model.name,
+    },
+  };
 
-// 계약금 수정
-export const updatePrice: RequestHandler = async (req, res) => {
-  const userId = 1;
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
-  }
-
-  const { id } = create(req.params, IdParamsStruct);
-  const parsedPrice = create(req.body, updatePriceStruct);
-
-  const contractPrice = await contractService.updatePrice(
-    id,
-    parsedPrice.contractPrice
-  );
-
-  res.status(201).send(contractPrice);
+  res.status(200).send(updatedContractResult);
 };
 
 //계약 삭제

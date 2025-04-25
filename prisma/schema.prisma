@@ -200,6 +200,7 @@ enum VehicleStatus {
   CONTRACT_COMPLETED
 }
 
+
 enum ContractStatus {
   VEHICLE_CHECK
   PRICE_NEGOTIATION
