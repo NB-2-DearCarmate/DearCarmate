@@ -54,6 +54,14 @@ async function deleteCar(id: number) {
   }
   return await carsRepository.deleteCar(id);
 }
+
+async function bulkCreateCarsService(carList: Car[]) {
+  if (!carList.length) {
+    throw new Error("등록할 차량 정보가 없습니다.");
+  }
+  return await carRepository.bulkCreateCars(carList);
+}
+
 export default {
   createCar,
   getCarList,
@@ -61,4 +69,5 @@ export default {
   getAllCarModels,
   updateCar,
   deleteCar,
+  bulkCreateCarsService,
 };

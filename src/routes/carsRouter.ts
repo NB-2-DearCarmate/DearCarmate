@@ -6,9 +6,11 @@ import {
   getAllCarModels,
   updateCar,
   deleteCar,
+  uploadCarsFromCSV,
 } from "../controllers/carController";
 import { asyncHandler } from "../lib/asyncHandler";
 import authMiddleware from "../middlewares/authMiddleware";
+import upload from "../middlewares/upload";
 
 const carsRouter = Router();
 
@@ -20,6 +22,14 @@ carsRouter.get("/", authMiddleware, asyncHandler(getCarList));
 
 //차량 제조사 및 모델 조회 라우터
 carsRouter.get("/models", authMiddleware, asyncHandler(getAllCarModels));
+
+//차량 대용량 파일 업로드
+carsRouter.post(
+  "/upload",
+  authMiddleware,
+  upload.single("file"),
+  asyncHandler(uploadCarsFromCSV)
+);
 
 //차량 상세 조회 라우터
 carsRouter.get("/:id", authMiddleware, asyncHandler(getCarById));

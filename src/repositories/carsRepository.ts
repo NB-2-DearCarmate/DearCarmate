@@ -98,6 +98,14 @@ async function deleteCar(id: number) {
   });
 }
 
+// 대량 차량 등록
+async function bulkCreateCars(carList: Car[]) {
+  return prisma.car.createMany({
+    data: carList,
+    skipDuplicates: true,
+  });
+}
+
 export default {
   createCar,
   findByCarNumber,
@@ -106,4 +114,5 @@ export default {
   getAllCarModels,
   updateCar,
   deleteCar,
+  bulkCreateCars,
 };
