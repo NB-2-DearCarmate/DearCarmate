@@ -53,7 +53,7 @@ export const createContract: RequestHandler = async (req, res) => {
   if (!user) {
     res.status(400).send({ message: "로그인이 필요합니다." });
   }
-
+  const data = create(req.body, ContractStruct);
   const userId = user.id;
   const userData = await contractService.getUserId(userId);
 
@@ -262,15 +262,15 @@ export const updateContract: RequestHandler = async (req, res) => {
 
 //계약 삭제
 export const deleteContract: RequestHandler = async (req, res) => {
-  const user = req.user;
+  const userId = req.user;
 
-  if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다." });
+  if (!userId) {
+    throw new UnauthorizedError("Unauthorized");
   }
 
   const userId = user.id;
   const { id } = create(req.params, IdParamsStruct);
-  const contract = await contractService.deleteById(id, userId);
+  const contract = await contractService.deleteById(id);
 
   res.status(200).send({ message: "계약 삭제 성공" });
 };

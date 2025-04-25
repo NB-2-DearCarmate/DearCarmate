@@ -1,71 +1,69 @@
-import { Request, Response, NextFunction } from "express"; 
+import { RequestHandler } from "express";
 import { create } from "superstruct";
-import { SearchByCompany } from "../typings/pagination"; 
+import { SearchByCompany } from "../typings/pagination";
 import {
   CreateCompanyStruct,
   PatchCompanyStruct,
   QueryStruct,
-} from "../validators/CompanyStructs"; 
+} from "../validators/CompanyStructs";
+import {
+  CreateCompanyDTO,
+  GetCompanyListQueryDTO,
+  GetCompanyListResponseDTO,
+  GetCompanyByUserListDTO,
+  RegisterCompanyResponseDTO,
+  UpdateCompanyResponseDTO,
+} from "../dto/companiesDTO";
 import * as companyService from "../services/companiesService";
 
 // 회사 등록
-export async function createCompanyHandler( 
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try { 
-    const data = create(req.body, CreateCompanyStruct); 
-    const newCompany = await companyService.registerCompany(data);
-    res.status(201).json({ newCompany });
+export const createCompanyHandler: RequestHandler = async (req, res, next) => {
+  try {
+    const data: CreateCompanyDTO = create(req.body, CreateCompanyStruct);
+    const newCompany: RegisterCompanyResponseDTO =
+      await companyService.registerCompany(data);
+    res.status(201).json(newCompany);
   } catch (error) {
     next(error);
   }
-}
+};
 
 // 회사 목록조회
-export async function getCompanyListHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const getCompanyListHandler: RequestHandler<
+  GetCompanyListQueryDTO,
+  GetCompanyListResponseDTO
+> = async (req, res, next) => {
   try {
-    const {
-      page = 1,
-      pageSize = 3,
-      orderBy,
-      keyword,
-      searchBy,
-    } = create(req.query, QueryStruct);
+    const { page = 1, pageSize = 10, orderBy, searchBy, keyword } = req.query;
 
-    const result = await companyService.getCompanyList({
+    const result = await companyService.getAllCompanies({
       page: Number(page),
       pageSize: Number(pageSize),
       orderBy: orderBy as "recent" | "oldest",
-      keyword: keyword as string,
       searchBy: searchBy as SearchByCompany,
+      keyword: keyword as string | undefined,
     });
 
     res.status(200).json(result);
   } catch (error) {
     next(error);
   }
-}
+};
 
 // 회사 별 유저 목록조회
-export async function getUserByCompaniesHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const getUserByCompaniesHandler: RequestHandler<
+  GetCompanyListQueryDTO,
+  GetCompanyByUserListDTO
+> = async (req, res, next) => {
   try {
     const {
       page = 1,
-      pageSize = 8,
+      pageSize = 10,
       orderBy,
       keyword,
       searchBy,
     } = create(req.query, QueryStruct);
+
     const result = await companyService.getUserByCompanies({
       page: Number(page),
       pageSize: Number(pageSize),
@@ -73,34 +71,28 @@ export async function getUserByCompaniesHandler(
       keyword: keyword as string,
       searchBy: searchBy as "name" | "email" | "companyName",
     });
-    res.status(200).json({ result });
+
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
-}
+};
 
 // 회사정보 수정
-export async function updateCompanyHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const updateCompanyHandler: RequestHandler = async (req, res, next) => {
   try {
     const data = create(req.body, PatchCompanyStruct);
     const id = Number(req.params.id);
-    const updatedData = await companyService.updatedCompany(id, data);
-    res.status(200).json({ updatedData });
+    const updatedData: UpdateCompanyResponseDTO =
+      await companyService.updatedCompany(id, data);
+    res.status(200).json(updatedData);
   } catch (error) {
     next(error);
   }
-}
+};
 
 // 삭제
-export async function deleteCompanyHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const deleteCompanyHandler: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     await companyService.deleteCompany(id);
@@ -108,4 +100,4 @@ export async function deleteCompanyHandler(
   } catch (err) {
     next(err);
   }
-}
+};

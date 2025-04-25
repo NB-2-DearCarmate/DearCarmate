@@ -14,21 +14,21 @@ datasource db {
 }
 
 model Car {
-  id              Int           @id @default(autoincrement())
-  carNumber       String        @unique
+  id              Int            @id @default(autoincrement())
+  carNumber       String         @unique
   type            CarType
   mileage         Int
   price           Int
   explanation     String?
-  accidentCount   Int?
+  accidentCount   Int
   accidentDetails String?
-  status          VehicleStatus
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  status          VehicleStatus?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   modelId         Int
-  model           Models        @relation(fields: [modelId], references: [id])
+  model           Models         @relation(fields: [modelId], references: [id])
   manufacturerId  Int
-  manufacturers   Manufacturers @relation(fields: [manufacturerId], references: [id])
+  manufacturers   Manufacturers  @relation(fields: [manufacturerId], references: [id])
 
   contracts Contract[]
 }
@@ -149,7 +149,7 @@ model ContractDocument {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  contract Contract @relation(fields: [contractId], references: [id])
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 }
 
 enum CarType {
@@ -201,8 +201,8 @@ enum VehicleStatus {
 }
 
 enum ContractStatus {
-  VEHICLE_CHECK
-  PRICE_NEGOTIATION
-  SUCCESS
-  FAIL
+  CARINSPECTION
+  PRICENEGOTIATION
+  CONTRACTSUCCESSFUL
+  CONTRACTFAILED
 }

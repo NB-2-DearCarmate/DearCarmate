@@ -74,15 +74,50 @@ export const getCarById = async (
   }
 };
 
-// 차량 모델 및 제조사 조회
+// 전체 제조사와 그에 속한 모델들을 조회하는 컨트롤러
 export const getAllCarModels = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    // 서비스에서 제조사와 모델 정보를 가져옴
+    const manufacturersWithModels = await carService.getAllCarModels();
+
+    // 성공적으로 데이터를 가져오면 JSON 형태로 응답
+    res.status(200).json(manufacturersWithModels);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 차량 수정
+export const updateCar = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const carModels = await carService.getAllCarModels();
-    res.status(200).json(carModels);
+    const carId = Number(req.params.id);
+    const updateDate = UpdateCarStruct.create(req.body);
+
+    const updatedCar = await carService.updateCar(carId, updateDate);
+    res.status(200).json(updatedCar);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//차량 삭제
+export const deleteCar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const carId = Number(req.params.id);
+    await carService.deleteCar(carId);
+    res.status(204).send();
   } catch (error) {
     next(error);
   }
