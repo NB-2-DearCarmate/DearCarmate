@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: DearCarmate API
+  version: 1.0.0
+  description: DearCarmate 프로젝트 - API 문서
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /companies:
+    $ref: "./companies.swagger.yaml"

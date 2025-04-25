@@ -1,0 +1,62 @@
+post:
+  summary: 회사 등록
+  tags:
+    - Companies
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            companyName:
+              type: string
+              example: "햇살카"
+            companyCode:
+              type: string
+              example: "COMCAR01"
+          required:
+            - companyName
+            - companyCode
+  responses:
+    "201":
+      description: 회사 등록 성공
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              companyName:
+                type: string
+                example: "카메이트"
+              companyCode:
+                type: string
+                example: "CM12345"
+              userCount:
+                type: integer
+                example: 3
+    "400":
+      description: 잘못된 요청입니다
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+    "401":
+      description: 인증 실패 - 관리자 권한 필요
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 관리자 권한이 필요합니다
