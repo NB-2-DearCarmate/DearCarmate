@@ -13,6 +13,7 @@ export const createContract: RequestHandler = async (req, res) => {
   if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
+
   const data = create(req.body, ContractStruct);
   const userId = user.id;
   const contract = await contractService.create(
@@ -37,14 +38,13 @@ export const updateContract: RequestHandler = async (req, res) => {
 };
 
 export const deleteContract: RequestHandler = async (req, res) => {
-  const userId = req.user;
-
-  if (!userId) {
+  const user = req.user;
+  if (!user) {
     throw new UnauthorizedError("Unauthorized");
   }
 
   const { id } = create(req.params, IdParamsStruct);
-  const contract = await contractService.deleteById(id);
+  await contractService.deleteById(id);
 
   res.status(204);
 };

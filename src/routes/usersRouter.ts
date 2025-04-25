@@ -1,17 +1,17 @@
-import { Router } from "express";
-import { UserController } from "../controllers/usersController";
+import { Router, RequestHandler } from "express";
 import authMiddleware from "../middlewares/authMiddleware";
+import {
+  createUserHandler,
+  getMyInfoHandler,
+  updateMyInfoHandler,
+  deleteMyAccountHandler,
+} from "../controllers/usersController";
 
 const router = Router();
-const userController = new UserController();
 
-// 회원가입
-router.post("/", (req, res, next) => {
-  userController.createUser(req, res).catch(next);
-}); 
-// // 정보 조회 *잠깐 주석처리해노ㅑㅏㅆ스습니ㅏㄷ.
-// router.get("/me", authMiddleware, (req, res, next) => {
-//   userController.getMyInfo(req, res).catch(next); 
-// });
+router.post("/", createUserHandler as RequestHandler);
+router.get("/me", authMiddleware, getMyInfoHandler as RequestHandler);
+router.patch("/me", authMiddleware, updateMyInfoHandler as RequestHandler);
+router.delete("/me", authMiddleware, deleteMyAccountHandler as RequestHandler);
 
 export default router;
