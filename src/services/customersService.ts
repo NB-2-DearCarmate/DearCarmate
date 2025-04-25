@@ -1,7 +1,7 @@
 import { CustomerRepository } from "../repositories/customersRepositories";
 import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
-import prisma from "../lib/client";
+import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { Customer } from "@prisma/client";
