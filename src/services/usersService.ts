@@ -186,6 +186,17 @@ class UserService {
 
     await prisma.user.delete({ where: { id: userId } });
   };
+
+  // 유저 삭제
+  deleteUserById = async (userId: number): Promise<void> => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw { status: 404, message: "존재하지 않는 유저입니다!" };
+    }
+
+    await prisma.user.delete({ where: { id: userId } });
+  };
 }
 
 export default UserService;
