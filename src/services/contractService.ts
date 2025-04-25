@@ -15,13 +15,13 @@ type UpdateContract = Partial<CreateContract> & { userId: number };
 
 // 계약 조회
 async function getContractList(
-  contractStatus: ContractStatus,
-  params: CursorPaginationParams
+  params: CursorPaginationParams,
+  userId: number
 ): Promise<CursorPaginationResult<ContractType>> {
-  const contracts = await contractRepository.getContractList(
-    { status: contractStatus },
-    params
-  );
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const contracts = await contractRepository.getContractList(companyId, params);
   return contracts;
 }
 
@@ -35,14 +35,22 @@ async function create(data: CreateContract) {
 }
 
 // 계약 수정
-async function update(id: number, data: UpdateContract) {
+async function update(id: number, userId: number, data: UpdateContract) {
   const findContract = await contractRepository.getById(id);
+
+  if (userId !== findContract.userId) {
+    throw new ForbiddenError("담당자만 수정이 가능합니다.");
+  }
   return await contractRepository.update(id, data);
 }
 
 // 계약 삭제
-async function deleteById(id: number) {
+async function deleteById(id: number, userId: number) {
   const findContract = await contractRepository.getById(id);
+
+  if (userId !== findContract.userId) {
+    throw new ForbiddenError("담당자만 수정이 가능합니다.");
+  }
   return await contractRepository.deleteById(id);
 }
 

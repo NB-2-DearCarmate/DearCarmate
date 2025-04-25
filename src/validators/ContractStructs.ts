@@ -9,6 +9,7 @@ import {
   array,
 } from "superstruct";
 import { CursorParamsStruct } from "./CommonStruct";
+import { CONTRACT_STATUS_VALUES } from "../typings/contract"; 
 
 // 미팅, 알람 정보
 
@@ -18,12 +19,9 @@ const MeetingStruct = object({
 });
 
 // 계약 상태 (칸반용)
-export const ContractStatus = enums([
-  "VEHICLE_CHECK",
-  "PRICE_NEGOTIATION",
-  "SUCCESS",
-  "FAIL",
-]);
+export const ContractStatusStruct = enums(CONTRACT_STATUS_VALUES);
+
+
 
 // 계약 등록/수정용 구조
 export const ContractStruct = object({
@@ -34,17 +32,14 @@ export const ContractStruct = object({
 });
 
 export const UpdateContractStruct = object({
-  carId: optional(integer()),
-  customerId: optional(integer()),
-  contractPrice: optional(integer()),
-  status: optional(ContractStatus),
+  carId: integer(),
+  customerId: integer(),
+  contractPrice: integer(),
+  status: ContractStatusStruct,
   resolutionDate: optional(
     coerce(date(), string(), (value) => new Date(value))
   ),
-});
-
-export const updatePriceStruct = object({
-  contractPrice: integer(),
+  userId: integer(),
 });
 
 // 계약 목록 조회용

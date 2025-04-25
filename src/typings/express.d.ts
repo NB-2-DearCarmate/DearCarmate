@@ -12,13 +12,13 @@ export interface AuthenticatedUser {
 }
 
 export interface AuthenticatedUserRequest extends Request {
-  user?: AuthenticatedUser;
+  user: AuthenticatedUser;
 }
 
 declare global {
   namespace Express {
     interface Request {
-      user?: AuthenticatedUser;
+      user: AuthenticatedUser;
     }
   }
 }

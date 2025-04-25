@@ -1,17 +1,15 @@
 import { RequestHandler } from "express";
 import contractService from "../services/contractService";
-import UnauthorizedError from "../errors/UnauthorizedError";
 import {
   ContractStruct,
   UpdateContractStruct,
   ContractListStruct,
-  updatePriceStruct,
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
-import { ContractStatus } from "../typings/contract";
 import meetingService from "../services/meetingService";
 import alarmService from "../services/alarmService";
+import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
 
 type MeetingInput = {
   date: string;
@@ -21,62 +19,42 @@ type MeetingInput = {
 // 시간 변환
 const parseDate = (str: string): Date => new Date(str.replace(" ", "T"));
 
-//상태별 계약 조회
-export const getContractCheckList: RequestHandler = async (req, res) => {
+//계약 조회
+export const getContractList: RequestHandler = async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다." });
+  }
+
+  const userId = user.id;
   const params = create(req.query, ContractListStruct);
-  const contractStatus = "VEHICLE_CHECK";
-  const contracts = await contractService.getContractList(
-    contractStatus,
-    params
-  );
+
+  const contractByStatus: Record<
+    ContractStatus,
+    { totalItemCount: number; data: any[] }
+  > = Object.fromEntries(
+    CONTRACT_STATUS_ORDER.map((status) => [
+      status,
+      { totalItemCount: 0, data: [] },
+    ])
+  ) as Record<ContractStatus, { totalItemCount: number; data: any[] }>;
+  const contracts = await contractService.getContractList(params, userId);
 
   const contractList = {};
 
   res.status(200).send(contracts);
 };
 
-export const getContractPriceList: RequestHandler = async (req, res) => {
-  const params = create(req.query, ContractListStruct);
-  const contractStatus = "PRICE_NEGOTIATION";
-  const contracts = await contractService.getContractList(
-    contractStatus,
-    params
-  );
-
-  res.status(200).send(contracts);
-};
-
-export const getContractSuccessList: RequestHandler = async (req, res) => {
-  const params = create(req.query, ContractListStruct);
-  const contractStatus = "SUCCESS";
-  const contracts = await contractService.getContractList(
-    contractStatus,
-    params
-  );
-
-  res.status(200).send(contracts);
-};
-
-export const getContractFailList: RequestHandler = async (req, res) => {
-  const params = create(req.query, ContractListStruct);
-  const contractStatus = "FAIL";
-  const contracts = await contractService.getContractList(
-    contractStatus,
-    params
-  );
-
-  res.status(200).send(contracts);
-};
-
 //계약 생성
 export const createContract: RequestHandler = async (req, res) => {
-  const user = 1;
+  const user = req.user;
 
   if (!user) {
-    throw new UnauthorizedError("Unauthorized");
+    res.status(400).send({ message: "로그인이 필요합니다." });
   }
 
-  const userId = user;
+  const userId = user.id;
   const userData = await contractService.getUserId(userId);
 
   const parsedData = create(req.body, ContractStruct);
@@ -166,14 +144,13 @@ export const createContract: RequestHandler = async (req, res) => {
 //계약 수정
 export const updateContract: RequestHandler = async (req, res) => {
   const { meetings, ...contractData } = req.body;
-
-  const user = 1;
+  const user = req.user;
 
   if (!user) {
-    throw new UnauthorizedError("Unauthorized");
+    res.status(400).send({ message: "로그인이 필요합니다." });
   }
 
-  const userId = user;
+  const userId = user.id;
   const userData = await contractService.getUserId(userId);
 
   const { id } = create(req.params, IdParamsStruct);
@@ -183,10 +160,7 @@ export const updateContract: RequestHandler = async (req, res) => {
     throw new Error("계약일은 필수 입력 요소입니다.");
   }
 
-  const updatedContract = await contractService.update(id, {
-    ...parsedData,
-    userId,
-  });
+  const updatedContract = await contractService.update(id, userId, parsedData);
 
   if (updatedContract.status === "SUCCESS") {
     await contractService.complectedCar(updatedContract.carId);
@@ -288,14 +262,15 @@ export const updateContract: RequestHandler = async (req, res) => {
 
 //계약 삭제
 export const deleteContract: RequestHandler = async (req, res) => {
-  const userId = 1;
+  const user = req.user;
 
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다." });
   }
 
+  const userId = user.id;
   const { id } = create(req.params, IdParamsStruct);
-  const contract = await contractService.deleteById(id);
+  const contract = await contractService.deleteById(id, userId);
 
-  res.status(204);
+  res.status(200).send({ message: "계약 삭제 성공" });
 };

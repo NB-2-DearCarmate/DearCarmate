@@ -26,7 +26,7 @@ export const PageParamsStruct = object({
 //커서
 export const CursorParamsStruct = object({
   cursor: defaulted(integerString, 0),
-  limit: defaulted(integerString, 10),
+  limit: defaulted(integerString, 5),
   orderBy: optional(enums(["recent"])),
   keyword: optional(nonempty(string())),
 });

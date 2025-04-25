@@ -2,21 +2,16 @@ import { Router } from "express";
 import {
   createContract,
   deleteContract,
-  getContractCheckList,
-  getContractFailList,
-  getContractPriceList,
-  getContractSuccessList,
+  getContractList,
   updateContract,
 } from "../controllers/contractController";
+import authMiddleware from "../middlewares/authMiddleware";
 
 const contractRouter = Router();
 
-contractRouter.get("/VEHICLE_CHECK", getContractCheckList);
-contractRouter.get("/PRICE_NEGOTIATION", getContractPriceList);
-contractRouter.get("/SUCCESS", getContractSuccessList);
-contractRouter.get("/FAIL", getContractFailList);
-contractRouter.post("/", createContract);
-contractRouter.patch("/:id", updateContract);
-contractRouter.delete("/:id", deleteContract);
+contractRouter.get("/", authMiddleware, getContractList);
+contractRouter.post("/", authMiddleware, createContract);
+contractRouter.patch("/:id", authMiddleware, updateContract);
+contractRouter.delete("/:id", authMiddleware, deleteContract);
 
 export default contractRouter;
