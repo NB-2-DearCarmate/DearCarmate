@@ -6,9 +6,9 @@ import { PORT } from "./lib/constance";
 import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
 import carsRouter from "./routes/carsRouter";
-import customer from "./routes/customersRouter"
-import UserController from "./routes/usersRouter"
-import login from "./routes/authRouter"
+import customer from "./routes/customersRouter";
+import usersRouter from "./routes/usersRouter";
+import login from "./routes/authRouter";
 const app = express();
 
 app.use(express.json());
@@ -18,11 +18,10 @@ app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/customers", customer);
-app.use("/users", UserController); 
+app.use("/users", usersRouter);
 app.use(defaultNotFountHandler);
-app.use(globalErrorHandler);login
- 
-
+app.use(globalErrorHandler);
+login;
 
 app.listen(PORT, () => {
   console.log(`server starting ${PORT}`);
