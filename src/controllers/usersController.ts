@@ -4,6 +4,7 @@ import { AuthenticatedUserRequest } from "../typings/express";
 import { CreateUserRequest, UserResponse } from "../dto/usersDTO";
 import { UpdateMyInfoStruct } from "../validators/UsersStructs";
 import { create } from "superstruct";
+import { IdParamsStruct } from "../validators/CommonStruct";
 
 const userService = new UserService();
 
@@ -78,5 +79,26 @@ export const deleteMyAccountHandler = async (
     const status = err.status || 500;
     const message = err.message || "서버 오류";
     res.status(status).json({ message });
+  }
+};
+
+// 유저 삭제
+export const deleteUserHandler = async (
+  req: AuthenticatedUserRequest,
+  res: Response<{ message: string }>
+): Promise<void> => {
+  try {
+    if (!req.user || !req.user.isAdmin) {
+      res.status(401).json({ message: "관리자 권한이 필요합니다!" });
+      return;
+    }
+
+    const { userId } = create(req.params, IdParamsStruct);
+
+    await userService.deleteUserById(Number(userId));
+    res.status(200).json({ message: "유저 삭제 성공" });
+  } catch (err: any) {
+    const status = err.status || 500;
+    res.status(status).json({ message: err.message || "서버 오류" });
   }
 };
