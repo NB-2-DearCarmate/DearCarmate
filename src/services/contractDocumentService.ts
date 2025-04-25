@@ -1,3 +1,6 @@
+import path from "path";
+import fs from "fs";
+import JSZip from "jszip";
 import contractDocumentRepo from "../repositories/contractDocumentRepository";
 import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
 import {
@@ -5,6 +8,7 @@ import {
   PageContractDocumentItemDto,
 } from "../dto/contractDocument.dto";
 import { SaveFileInfo } from "../typings/contrarctDocument";
+import BadRequestError from "../errors/BadRequestError";
 
 const contractDocumentList = async (
   params: PaginationParams<SearchByContractDraft>
@@ -67,8 +71,31 @@ const uploadContractFile = async (files: SaveFileInfo[]) => {
   return save[0].id;
 };
 
+const downloadContractFile = async (contractDocumentId: number) => {
+  const file = await contractDocumentRepo.findDocumentId(contractDocumentId);
+  if (!file) {
+    throw new BadRequestError("파일이 없습니다.");
+  }
+  const filePath = path.resolve(
+    __dirname,
+    "../../uploads/contractDocument",
+    file.filePath
+  );
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`파일이 존재하지 않습니다: ${filePath}`);
+  }
+  const fileInfo = fs.readFileSync(filePath);
+  return {
+    fileName: file.fileName,
+    content: fileInfo,
+    id: file.id,
+  };
+};
+
 export default {
   contractDocumentList,
   contractDraftList,
   uploadContractFile,
+  downloadContractFile,
 };

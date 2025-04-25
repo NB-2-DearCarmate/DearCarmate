@@ -8,6 +8,7 @@ import { SaveFileInfo } from "../typings/contrarctDocument";
 import path from "path";
 import BadRequestError from "../errors/BadRequestError";
 import contractDocumentService from "../services/contractDocumentService";
+import NotFoundError from "../errors/NotFoundError";
 
 export const getAllContractDocumentListHandler = async (
   req: Request,
@@ -74,6 +75,31 @@ export const uploadContractDocumentsHandler = async (
       file
     );
     res.status(200).json({ contractDocumentId: contractDocumentId });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const downloadContractDocHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { contractDocumentId } = req.params;
+    const numContractDoc = Number(contractDocumentId);
+    const file = await contractDocumentService.downloadContractFile(
+      numContractDoc
+    );
+    if (!file) {
+      throw new BadRequestError("파일을 찾을 수 없습나다");
+    }
+    res.set({
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename="${file.fileName}"`,
+      "Content-Length": file.content.length,
+    });
+    res.json({ contractDocumentId: file.id });
   } catch (error) {
     next(error);
   }
