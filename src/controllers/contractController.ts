@@ -39,11 +39,21 @@ export const getContractList: RequestHandler = async (req, res) => {
       { totalItemCount: 0, data: [] },
     ])
   ) as Record<ContractStatus, { totalItemCount: number; data: any[] }>;
-  const contracts = await contractService.getContractList(params, userId);
 
-  const contractList = {};
+  for (const status of CONTRACT_STATUS_ORDER) {
+    const contracts = await contractService.getContractList(
+      userId,
+      { cursor: params.cursor, limit: params.limit },
+      status
+    );
 
-  res.status(200).send(contracts);
+    contractByStatus[status] = {
+      totalItemCount: contracts.totalContract,
+      data: contracts.list,
+    };
+  }
+
+  res.status(200).send(contractByStatus);
 };
 
 //계약 생성
@@ -64,7 +74,7 @@ export const createContract: RequestHandler = async (req, res) => {
 
   const contractData = {
     ...parsedData,
-    status: "VEHICLE_CHECK" as ContractStatus,
+    status: "CARINSPECTION" as ContractStatus,
     userId,
     resolutionDate: null,
     contractPrice: car.price,
@@ -156,13 +166,16 @@ export const updateContract: RequestHandler = async (req, res) => {
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
 
-  if (parsedData.status === "SUCCESS" && !parsedData.resolutionDate) {
+  if (
+    parsedData.status === "CONTRACTSUCCESSFUL" &&
+    !parsedData.resolutionDate
+  ) {
     throw new Error("계약일은 필수 입력 요소입니다.");
   }
 
   const updatedContract = await contractService.update(id, userId, parsedData);
 
-  if (updatedContract.status === "SUCCESS") {
+  if (updatedContract.status === "CONTRACTSUCCESSFUL") {
     await contractService.complectedCar(updatedContract.carId);
   }
 
@@ -262,15 +275,15 @@ export const updateContract: RequestHandler = async (req, res) => {
 
 //계약 삭제
 export const deleteContract: RequestHandler = async (req, res) => {
-  const userId = req.user;
+  const user = req.user;
 
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다." });
   }
 
   const userId = user.id;
   const { id } = create(req.params, IdParamsStruct);
-  const contract = await contractService.deleteById(id);
+  const contract = await contractService.deleteById(id, userId);
 
   res.status(200).send({ message: "계약 삭제 성공" });
 };

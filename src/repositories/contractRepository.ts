@@ -2,13 +2,23 @@ import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination";
+import { ContractStatus } from "../typings/contract";
 
 async function getContractList(
   companyId: number,
-  { cursor, limit }: CursorPaginationParams
+  { cursor, limit }: CursorPaginationParams,
+  status: ContractStatus
 ) {
   const contractWithCursor = await prisma.contract.findMany({
-    where: { user: { companyId } },
+    where: { user: { companyId }, status },
+    include: {
+      car: true,
+      customer: true,
+      user: true,
+      meetings: {
+        include: { alarms: true },
+      },
+    },
     cursor: cursor ? { id: cursor } : undefined,
     take: limit + 1,
     orderBy: { createdAt: "desc" },
@@ -17,7 +27,7 @@ async function getContractList(
   const cursorContract = contractWithCursor[contractWithCursor.length - 1];
   const nextCursor = cursorContract ? cursorContract.id : null;
   const totalContract = await prisma.contract.count({
-    where: { user: { companyId } },
+    where: { user: { companyId }, status },
   });
 
   return {

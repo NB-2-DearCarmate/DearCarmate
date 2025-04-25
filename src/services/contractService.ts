@@ -4,6 +4,7 @@ import { ContractType } from "../typings/contract";
 import {
   CursorPaginationParams,
   CursorPaginationResult,
+  CursorPaginationResultWithTotal,
 } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
 
@@ -15,13 +16,18 @@ type UpdateContract = Partial<CreateContract> & { userId: number };
 
 // 계약 조회
 async function getContractList(
-  params: CursorPaginationParams,
-  userId: number
-): Promise<CursorPaginationResult<ContractType>> {
+  userId: number,
+  { cursor, limit }: CursorPaginationParams,
+  status: ContractStatus
+): Promise<CursorPaginationResultWithTotal<ContractType>> {
   const user = await contractRepository.getUserId(userId);
   const companyId = user.companyId;
 
-  const contracts = await contractRepository.getContractList(companyId, params);
+  const contracts = await contractRepository.getContractList(
+    companyId,
+    { cursor, limit },
+    status
+  );
   return contracts;
 }
 
