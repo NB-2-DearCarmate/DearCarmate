@@ -6,6 +6,19 @@ import {
   UpdateCarStruct,
   CarQueryStruct,
 } from "../validators/CarsStructs";
+import { Car } from "../typings/car";
+import {
+  CreateCarDTO,
+  CreateCarResponseDTO,
+  CarListResponseDTO,
+  CarByIdDTO,
+  GetCarByIdResponseDTO,
+  GetAllCarModelsResponseDTO,
+  UpdateCarDTO,
+  UpdateCarResponseDTO,
+  UploadCarDTO,
+  UploadCarResponseDTO,
+} from "../dto/carsDTO";
 import carService from "../services/carsService";
 import csv from "csv-parser";
 import fs from "fs";
@@ -17,8 +30,8 @@ export const createCar = async (
   next: NextFunction
 ) => {
   try {
-    const carData = create(req.body, CarStruct);
-    const car = await carService.createCar(carData);
+    const carData: CreateCarDTO = create(req.body, CarStruct);
+    const car: CreateCarResponseDTO = await carService.createCar(carData);
     res.status(201).json(car);
   } catch (error) {
     next(error);
@@ -41,7 +54,7 @@ export const getCarList = async (
       keyword,
     } = create(req.query, CarQueryStruct);
 
-    const carList = await carService.getCarList({
+    const carList: CarListResponseDTO = await carService.getCarList({
       page,
       pageSize,
       status: status as
@@ -66,9 +79,9 @@ export const getCarById = async (
   next: NextFunction
 ) => {
   try {
-    const carId = Number(req.params.id);
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
 
-    const car = await carService.getCarById(carId);
+    const car: GetCarByIdResponseDTO = await carService.getCarById(carId.id);
 
     res.status(200).json(car);
   } catch (error) {
@@ -84,7 +97,8 @@ export const getAllCarModels = async (
 ) => {
   try {
     // 서비스에서 제조사와 모델 정보를 가져옴
-    const manufacturersWithModels = await carService.getAllCarModels();
+    const manufacturersWithModels: GetAllCarModelsResponseDTO =
+      await carService.getAllCarModels();
 
     // 성공적으로 데이터를 가져오면 JSON 형태로 응답
     res.status(200).json(manufacturersWithModels);
@@ -100,10 +114,13 @@ export const updateCar = async (
   next: NextFunction
 ) => {
   try {
-    const carId = Number(req.params.id);
-    const updateDate = UpdateCarStruct.create(req.body);
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
+    const updateData: UpdateCarDTO = UpdateCarStruct.create(req.body);
 
-    const updatedCar = await carService.updateCar(carId, updateDate);
+    const updatedCar: UpdateCarResponseDTO = await carService.updateCar(
+      carId.id,
+      updateData
+    );
     res.status(200).json(updatedCar);
   } catch (error) {
     next(error);
@@ -117,8 +134,8 @@ export const deleteCar = async (
   next: NextFunction
 ) => {
   try {
-    const carId = Number(req.params.id);
-    await carService.deleteCar(carId);
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
+    await carService.deleteCar(carId.id);
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -145,7 +162,7 @@ export const uploadCarsFromCSV = async (
       .on("end", async () => {
         try {
           // 필드 매핑 등 데이터 가공 필요 (예: 문자열 -> 숫자)
-          const cars = results.map((row) => ({
+          const cars: UploadCarDTO[] = results.map((row: Car) => ({
             carNumber: row.carNumber,
             manufacturerId: Number(row.manufacturerId),
             modelId: Number(row.modelId),
@@ -155,10 +172,11 @@ export const uploadCarsFromCSV = async (
             accidentCount: Number(row.accidentCount) || 0,
             explanation: row.explanation || null,
             accidentDetails: row.accidentDetails || null,
-            status: row.status,
+            status: row.status || null,
           }));
 
-          const saved = await carService.bulkCreateCarsService(cars);
+          const saved: UploadCarResponseDTO =
+            await carService.bulkCreateCarsService(cars);
           res.status(201).json(saved);
         } catch (err) {
           next(err);
