@@ -10,9 +10,9 @@ export interface Car {
   mileage: number;
   price: number;
   accidentCount: number;
-  explanation: string | null;
-  accidentDetails: string | null;
-  status: VehicleStatus | null;
+  explanation?: string | null;
+  accidentDetails?: string | null;
+  status?: VehicleStatus | null;
 }
 
 export interface CarResponse extends Car {
