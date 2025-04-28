@@ -13,7 +13,7 @@ const integerString = coerce(integer(), string(), (value) => parseInt(value));
 
 export const IdParamsStruct = object({
   id: integerString,
-  userId: integerString,
+  userId: optional(integerString),
 });
 
 //페이지네이션
@@ -27,7 +27,7 @@ export const PageParamsStruct = object({
 //커서
 export const CursorParamsStruct = object({
   cursor: defaulted(integerString, 0),
-  limit: defaulted(integerString, 10),
+  limit: defaulted(integerString, 5),
   orderBy: optional(enums(["recent"])),
   keyword: optional(nonempty(string())),
 });

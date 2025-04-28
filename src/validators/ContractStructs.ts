@@ -1,28 +1,46 @@
-import { object, enums, integer, date, partial } from "superstruct";
+import {
+  object,
+  enums,
+  integer,
+  optional,
+  date,
+  string,
+  coerce,
+  array,
+} from "superstruct";
 import { CursorParamsStruct } from "./CommonStruct";
+import { CONTRACT_STATUS_VALUES } from "../typings/contract";
 
 // 미팅, 알람 정보
-const timeRegex = /^\d{4}년 \d{2}월 \d{2}일 \d{2}시 \d{2}분$/;
+
+export const MeetingStruct = object({
+  date: coerce(date(), string(), (value) => new Date(value)),
+  alarms: optional(array(coerce(date(), string(), (value) => new Date(value)))),
+});
 
 // 계약 상태 (칸반용)
-const ContractStatus = enums([
-  "VEHICLE_CHECK",
-  "PRICE_NEGOTIATION",
-  "SUCCESS",
-  "FAIL",
-]);
+export const ContractStatusStruct = enums(CONTRACT_STATUS_VALUES);
 
 // 계약 등록/수정용 구조
 export const ContractStruct = object({
   carId: integer(),
   customerId: integer(),
-  userId: integer(),
-  status: ContractStatus,
-  contractPrice: integer(),
-  meeting: date(),
+  resolutionDate: optional(date()),
+  meetings: optional(array(MeetingStruct)),
 });
 
-export const UpdateContractStruct = partial(ContractStruct);
+export const UpdateContractStruct = object({
+  carId: integer(),
+  customerId: integer(),
+  contractPrice: integer(),
+  status: ContractStatusStruct,
+  resolutionDate: optional(
+    coerce(date(), string(), (value) => new Date(value))
+  ),
+  userId: integer(),
+});
+
+export const updateMeetings = optional(array(MeetingStruct));
 
 // 계약 목록 조회용
-export const ContractListStruct = partial(CursorParamsStruct);
+export const ContractListStruct = CursorParamsStruct;
