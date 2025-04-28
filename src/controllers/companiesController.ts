@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { NextFunction, Request, Response } from "express";
 import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";
 import {
@@ -13,11 +14,15 @@ import {
   GetCompanyByUserListDTO,
   RegisterCompanyResponseDTO,
   UpdateCompanyResponseDTO,
-} from "../dto/companiesDTO";
+} from "../dto/companies.dto";
 import * as companyService from "../services/companiesService";
 
 // 회사 등록
-export const createCompanyHandler: RequestHandler = async (req, res, next) => {
+export const createCompanyHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const data: CreateCompanyDTO = create(req.body, CreateCompanyStruct);
     const newCompany: RegisterCompanyResponseDTO =
@@ -29,12 +34,19 @@ export const createCompanyHandler: RequestHandler = async (req, res, next) => {
 };
 
 // 회사 목록조회
-export const getCompanyListHandler: RequestHandler<
-  GetCompanyListQueryDTO,
-  GetCompanyListResponseDTO
-> = async (req, res, next) => {
+export const getCompanyListHandler = async (
+  req: Request<GetCompanyListQueryDTO, GetCompanyListResponseDTO>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const { page = 1, pageSize = 10, orderBy, searchBy, keyword } = req.query;
+    const {
+      page = 1,
+      pageSize = 10,
+      orderBy,
+      searchBy,
+      keyword,
+    } = create(req.query, QueryStruct);
 
     const result = await companyService.getAllCompanies({
       page: Number(page),
@@ -51,10 +63,11 @@ export const getCompanyListHandler: RequestHandler<
 };
 
 // 회사 별 유저 목록조회
-export const getUserByCompaniesHandler: RequestHandler<
-  GetCompanyListQueryDTO,
-  GetCompanyByUserListDTO
-> = async (req, res, next) => {
+export const getUserByCompaniesHandler = async (
+  req: Request<GetCompanyListQueryDTO, GetCompanyByUserListDTO>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const {
       page = 1,
@@ -79,7 +92,11 @@ export const getUserByCompaniesHandler: RequestHandler<
 };
 
 // 회사정보 수정
-export const updateCompanyHandler: RequestHandler = async (req, res, next) => {
+export const updateCompanyHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const data = create(req.body, PatchCompanyStruct);
     const id = Number(req.params.id);
@@ -92,7 +109,11 @@ export const updateCompanyHandler: RequestHandler = async (req, res, next) => {
 };
 
 // 삭제
-export const deleteCompanyHandler: RequestHandler = async (req, res, next) => {
+export const deleteCompanyHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id = Number(req.params.id);
     await companyService.deleteCompany(id);

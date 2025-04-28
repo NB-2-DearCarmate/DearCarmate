@@ -131,6 +131,9 @@ export const updatedCompany = async (
   if (!id || id <= 0) {
     throw new NotFoundError(id);
   }
+  if (!data.companyCode?.trim() || !data.companyName?.trim()) {
+    throw new BadRequestError("필수 입력 값이 없습니다.");
+  }
   const newCompany = await companiesRepo.patchCompany(id, data);
 
   return newCompany;

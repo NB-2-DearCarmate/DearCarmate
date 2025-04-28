@@ -1,31 +1,37 @@
 import express from "express";
 import cors from "cors";
-// import companiesRouter from "./routes/companiesRouter";
+import path from "path";
+import YAML from "yamljs";
+import SwaggerUi from "swagger-ui-express";
+import companiesRouter from "./routes/companiesRouter";
 import authRoutes from "./routes/authRouter";
 import { PORT } from "./lib/constance";
 import { defaultNotFountHandler } from "./controllers/errorController";
 import { globalErrorHandler } from "./controllers/errorController";
 import carsRouter from "./routes/carsRouter";
-
 import userRouter from "./routes/usersRouter";
+import customer from "./routes/customersRouter";
+import UserController from "./routes/usersRouter";
+import contractDocumentRouter from "./routes/contractDocumentRouter";
 import contractRouter from "./routes/contractRouter";
-import customer from "./routes/customersRouter"
-import UserController from "./routes/usersRouter"
-import login from "./routes/authRouter"
+import login from "./routes/authRouter";
 
 const app = express();
+const swaggerSpec = YAML.load(path.join(__dirname, "../dist/openapi.yaml"));
 
 app.use(express.json());
 app.use(cors());
 
-// app.use("/companies", companiesRouter);
+app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(swaggerSpec));
+
+app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
 app.use("/users", userRouter);
 app.use("/contracts", contractRouter);
 app.use("/customers", customer);
-app.use("/users", UserController); 
-
+app.use("/users", UserController);
+app.use("/contractDocuments", contractDocumentRouter);
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);
 login;

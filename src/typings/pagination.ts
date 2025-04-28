@@ -2,6 +2,10 @@ export type SearchByCompany = "companyName" | "companyId";
 export type SearchByUser = "name" | "email";
 export type SearchByContract = "contractTitle" | "customerName";
 export type SearchByCar = "carNumber" | "model";
+export type SearchByContractDraft =
+  | "contractName"
+  | "carNumber"
+  | "managerName";
 
 export type PaginationParams<T extends string> = {
   page: number;
