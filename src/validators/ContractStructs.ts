@@ -9,19 +9,17 @@ import {
   array,
 } from "superstruct";
 import { CursorParamsStruct } from "./CommonStruct";
-import { CONTRACT_STATUS_VALUES } from "../typings/contract"; 
+import { CONTRACT_STATUS_VALUES } from "../typings/contract";
 
 // 미팅, 알람 정보
 
-const MeetingStruct = object({
-  date: string(),
-  alarms: optional(array(string())),
+export const MeetingStruct = object({
+  date: coerce(date(), string(), (value) => new Date(value)),
+  alarms: optional(array(coerce(date(), string(), (value) => new Date(value)))),
 });
 
 // 계약 상태 (칸반용)
 export const ContractStatusStruct = enums(CONTRACT_STATUS_VALUES);
-
-
 
 // 계약 등록/수정용 구조
 export const ContractStruct = object({
@@ -41,6 +39,8 @@ export const UpdateContractStruct = object({
   ),
   userId: integer(),
 });
+
+export const updateMeetings = optional(array(MeetingStruct));
 
 // 계약 목록 조회용
 export const ContractListStruct = CursorParamsStruct;

@@ -112,7 +112,7 @@ const getById = async (id: number) => {
 const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
-    data,
+    data
   });
 
   return updatedContract;

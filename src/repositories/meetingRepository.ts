@@ -2,7 +2,7 @@ import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 
 const update = async (id: number, meetingDate: Date) => {
-  const updatedMeeting = await prisma.meeting.update({
+  const updatedMeeting = await prisma.meeting.updateMany({
     where: { id },
     data: { date: meetingDate },
   });

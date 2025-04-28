@@ -4,11 +4,17 @@ import {
   ContractStruct,
   UpdateContractStruct,
   ContractListStruct,
+  updateMeetings,
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import meetingService from "../services/meetingService";
 import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
+import {
+  CreateContractResponseDTO,
+  MeetingDTO,
+  UpdateContractResponseDTO,
+} from "../dto/contractDTO";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -69,7 +75,7 @@ export const createContract = async (req: Request, res: Response) => {
   );
   const contractId = contract.id;
 
-  let meetingResult: { date: Date; alarms: Date[] }[] = [];
+  let meetingResult: MeetingDTO[] = [];
 
   if (parsedData.meetings) {
     meetingResult = await meetingService.createWithAlarms(
@@ -78,7 +84,7 @@ export const createContract = async (req: Request, res: Response) => {
     );
   }
 
-  const contractResult = {
+  const contractResult: CreateContractResponseDTO = {
     id: contract.id,
     status: contract.status,
     resolutionDate: contract.resolutionDate,
@@ -112,10 +118,9 @@ export const updateContract = async (req: Request, res: Response) => {
   const userId = user.id;
 
   const userData = await contractService.getUserId(userId);
-  console.log(req.params);
   const { id } = create(req.params, IdParamsStruct);
-  console.log({ id });
   const parsedData = create(contractData, UpdateContractStruct);
+  const parsedMeeting = create(meetings, updateMeetings);
 
   if (
     parsedData.status === "CONTRACTSUCCESSFUL" &&
@@ -141,11 +146,11 @@ export const updateContract = async (req: Request, res: Response) => {
 
   const model = await contractService.getModelId(car.modelId);
 
-  const meetingResult = meetings
-    ? await meetingService.updateMeetings(id, meetings)
+  const meetingResult = parsedMeeting
+    ? await meetingService.updateMeetings(id, parsedMeeting)
     : [];
 
-  const updatedContractResult = {
+  const updatedContractResult: UpdateContractResponseDTO = {
     id: updatedContract.id,
     status: updatedContract.status,
     resolutionDate: updatedContract.resolutionDate,

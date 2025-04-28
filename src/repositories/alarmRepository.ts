@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 
 const save = async (meetingId: number, alarmAt: Date) => {
-  const alarm = await prisma.alarm.create({
+  const alarm = await prisma.alarm.createMany({
     data: {
       meetingId: meetingId,
       alarmAt: alarmAt,

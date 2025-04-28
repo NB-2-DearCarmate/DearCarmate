@@ -1,6 +1,7 @@
 import meetingRepository from "../repositories/meetingRepository";
 import alarmService from "./alarmService";
 import { isVaildMeetingDate } from "../utils/contractDate";
+import { MeetingDTO } from "../dto/contractDTO";
 
 // 시간 변환
 const parseDate = (str: string): Date => new Date(str.replace(" ", "T"));
@@ -19,20 +20,20 @@ const update = async (meetingId: number, meetingDate: Date) => {
 
 const createWithAlarms = async (
   contractId: number,
-  meetings: { date: string; alarms?: string[] }[]
-): Promise<{ date: Date; alarms: Date[] }[]> => {
+  meetings: MeetingDTO[]
+): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지만 등록 가능합니다.");
   }
 
-  const meetingResult: { date: Date; alarms: Date[] }[] = [];
+  const meetingResult: MeetingDTO[] = [];
 
   for (const meeting of meetings) {
     if (meeting.alarms && meeting.alarms.length > 2) {
       throw new Error("알람은 최대 2개까지만 등록 가능합니다.");
     }
 
-    const meetingDate = new Date(meeting.date.replace(" ", "T"));
+    const meetingDate = meeting.date;
 
     if (!isVaildMeetingDate(meetingDate)) {
       throw new Error("미팅일정은 30분 간격으로 설정 가능합니다.");
@@ -48,9 +49,8 @@ const createWithAlarms = async (
 
     if (meeting.alarms && Array.isArray(meeting.alarms)) {
       for (const alarmAt of meeting.alarms) {
-        const alarmDate = new Date(alarmAt.replace(" ", "T"));
-        await alarmService.create(meetingId, meetingDate, alarmDate);
-        alarms.push(alarmDate);
+        await alarmService.create(meetingId, meetingDate, alarmAt);
+        alarms.push(alarmAt);
       }
     }
 
@@ -65,26 +65,27 @@ const createWithAlarms = async (
 
 const updateMeetings = async (
   contractId: number,
-  meetings: { date: string; alarms?: string[] }[]
-): Promise<{ date: Date; alarms: Date[] }[]> => {
+  meetings: MeetingDTO[]
+): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
   }
 
-  const meetingResult: { date: Date; alarms: Date[] }[] = [];
+  const meetingResult: MeetingDTO[] = [];
 
-  const requestedDates = meetings.map((m) => parseDate(m.date).getTime());
+  const requestedDates = meetings.map((m) => m.date.getTime());
+
   const existingMeetings = await findAllByContractId(contractId);
 
   for (const existing of existingMeetings) {
-    if (!requestedDates.includes(new Date(existing.date).getTime())) {
+    if (!requestedDates.includes(existing.date.getTime())) {
       await alarmService.deleteByMeetingId(existing.id);
       await deleteById(existing.id);
     }
   }
 
   for (const meeting of meetings) {
-    const meetingDate = parseDate(meeting.date);
+    const meetingDate = meeting.date;
 
     if (!isVaildMeetingDate(meetingDate)) {
       throw new Error("미팅일정은 30분 간격으로 설정 가능합니다.");
@@ -113,9 +114,9 @@ const updateMeetings = async (
     }
 
     for (const alarmAt of alarmData) {
-      const alarmDate = parseDate(alarmAt);
-      await alarmService.create(meetingId, meetingDate, alarmDate);
-      alarms.push(alarmDate);
+      alarms.push(alarmAt);
+      await alarmService.create(meetingId, meetingDate, alarmAt);
+      
     }
 
     meetingResult.push({
