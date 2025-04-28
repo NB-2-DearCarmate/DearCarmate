@@ -59,7 +59,7 @@ const deleteById = async (id: number, userId: number) => {
   const findContract = await contractRepository.getById(id);
 
   if (userId !== findContract.userId) {
-    throw new ForbiddenError("담당자만 수정이 가능합니다.");
+    throw new ForbiddenError("담당자만 삭제가 가능합니다.");
   }
   return await contractRepository.deleteById(id);
 };

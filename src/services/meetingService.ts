@@ -5,22 +5,22 @@ import { isVaildMeetingDate } from "../utils/contractDate";
 // 시간 변환
 const parseDate = (str: string): Date => new Date(str.replace(" ", "T"));
 
-async function getId(contractId: number) {
+const getId = async (contractId: number) => {
   const meetingId = await meetingRepository.getId(contractId);
   return meetingId;
-}
+};
 
-async function update(meetingId: number, meetingDate: Date) {
+const update = async (meetingId: number, meetingDate: Date) => {
   const meeting = await meetingRepository.getById(meetingId);
   const updatedMeeting = await meetingRepository.update(meetingId, meetingDate);
 
   return updatedMeeting;
-}
+};
 
-async function createWithAlarms(
+const createWithAlarms = async (
   contractId: number,
   meetings: { date: string; alarms?: string[] }[]
-): Promise<{ date: Date; alarms: Date[] }[]> {
+): Promise<{ date: Date; alarms: Date[] }[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지만 등록 가능합니다.");
   }
@@ -61,12 +61,12 @@ async function createWithAlarms(
   }
 
   return meetingResult;
-}
+};
 
-async function updateMeetings(
+const updateMeetings = async (
   contractId: number,
   meetings: { date: string; alarms?: string[] }[]
-): Promise<{ date: Date; alarms: Date[] }[]> {
+): Promise<{ date: Date; alarms: Date[] }[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
   }
@@ -125,20 +125,20 @@ async function updateMeetings(
   }
 
   return meetingResult;
-}
+};
 
-async function getByDate(contractId: number, meetingDate: Date) {
+const getByDate = async (contractId: number, meetingDate: Date) => {
   return await meetingRepository.findOne(contractId, meetingDate);
-}
+};
 
-async function findAllByContractId(contractId: number) {
+const findAllByContractId = async (contractId: number) => {
   const meetings = await meetingRepository.findAllByContractId(contractId);
   return meetings;
-}
+};
 
-async function deleteById(meetingId: number) {
+const deleteById = async (meetingId: number) => {
   return await meetingRepository.deleteById(meetingId);
-}
+};
 export default {
   getId,
   update,

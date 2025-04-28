@@ -24,16 +24,3 @@ declare global {
   }
 }
 
-declare module "express" {
-  interface Request {
-    user: {
-      id: number;
-      name: string;
-      email: string;
-      isAdmin: boolean;
-      company: {
-        companyCode: string;
-      };
-    };
-  }
-}

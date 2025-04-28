@@ -13,7 +13,7 @@ const integerString = coerce(integer(), string(), (value) => parseInt(value));
 
 export const IdParamsStruct = object({
   id: integerString,
-  userId: integerString,
+  userId: optional(integerString),
 });
 
 //페이지네이션

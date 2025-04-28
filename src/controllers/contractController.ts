@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from "express";
+import { Request, Response } from "express";
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -25,7 +25,6 @@ export const getContractList = async (req: Request, res: Response) => {
     acc[status] = { totalItemCount: 0, data: [] };
     return acc;
   }, {} as Record<ContractStatus, { totalItemCount: number; data: any[] }>);
-  
 
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
@@ -111,8 +110,11 @@ export const updateContract = async (req: Request, res: Response) => {
   }
 
   const userId = user.id;
+
   const userData = await contractService.getUserId(userId);
+  console.log(req.params);
   const { id } = create(req.params, IdParamsStruct);
+  console.log({ id });
   const parsedData = create(contractData, UpdateContractStruct);
 
   if (
@@ -120,6 +122,10 @@ export const updateContract = async (req: Request, res: Response) => {
     !parsedData.resolutionDate
   ) {
     throw new Error("계약일은 필수 입력 요소입니다.");
+  }
+
+  if (userId !== parsedData.userId) {
+    res.status(400).send({ message: "userId 를 확인해주세요" });
   }
 
   const updatedContract = await contractService.update(id, userId, parsedData);

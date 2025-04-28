@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 
-async function update(id: number, meetingDate: Date) {
+const update = async (id: number, meetingDate: Date) => {
   const updatedMeeting = await prisma.meeting.update({
     where: { id },
     data: { date: meetingDate },
@@ -12,9 +12,9 @@ async function update(id: number, meetingDate: Date) {
   }
 
   return updatedMeeting;
-}
+};
 
-async function getId(contractId: number) {
+const getId = async (contractId: number) => {
   const meeting = await prisma.meeting.findFirst({ where: { contractId } });
   if (!meeting) {
     throw new NotFoundError(contractId);
@@ -23,9 +23,9 @@ async function getId(contractId: number) {
   const meetingId = meeting.id;
 
   return meetingId;
-}
+};
 
-async function getById(id: number) {
+const getById = async (id: number) => {
   const meeting = await prisma.meeting.findUnique({
     where: { id },
   });
@@ -35,7 +35,7 @@ async function getById(id: number) {
   }
 
   return meeting;
-}
+};
 
 async function save(contractId: number, meetingDate: Date) {
   const meeting = await prisma.meeting.create({
@@ -48,7 +48,7 @@ async function save(contractId: number, meetingDate: Date) {
   return meeting;
 }
 
-async function findOne(contractId: number, meetingDate: Date) {
+const findOne = async (contractId: number, meetingDate: Date) => {
   const meeting = await prisma.meeting.findFirst({
     where: {
       contractId: contractId,
@@ -57,15 +57,15 @@ async function findOne(contractId: number, meetingDate: Date) {
   });
 
   return meeting;
-}
+};
 
-async function deleteMany(contractId: number) {
+const deleteMany = async (contractId: number) => {
   await prisma.meeting.deleteMany({
     where: { contractId },
   });
-}
+};
 
-async function findAllByContractId(contractId: number) {
+const findAllByContractId = async (contractId: number) => {
   const meetings = await prisma.meeting.findMany({
     where: { contractId },
   });
@@ -75,13 +75,13 @@ async function findAllByContractId(contractId: number) {
   }
 
   return meetings;
-}
+};
 
-async function deleteById(meetingId: number) {
+const deleteById = async (meetingId: number) => {
   await prisma.meeting.delete({
     where: { id: meetingId },
   });
-}
+};
 
 export default {
   update,

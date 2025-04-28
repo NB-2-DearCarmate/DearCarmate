@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 
-async function save(meetingId: number, alarmAt: Date) {
+const save = async (meetingId: number, alarmAt: Date) => {
   const alarm = await prisma.alarm.create({
     data: {
       meetingId: meetingId,
@@ -9,10 +9,10 @@ async function save(meetingId: number, alarmAt: Date) {
   });
 
   return alarm;
-}
+};
 
-async function deleteMany(meetingId: number) {
+const deleteMany = async (meetingId: number) => {
   await prisma.alarm.deleteMany({ where: { meetingId } });
-}
+};
 
 export default { save, deleteMany };
