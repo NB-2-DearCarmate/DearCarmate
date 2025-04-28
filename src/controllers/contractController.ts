@@ -25,11 +25,7 @@ export const getContractList = async (req: Request, res: Response) => {
   }
 
   const userId = user.id;
-<<<<<<< HEAD
-  const contract = await contractService.create(data);
-=======
   const params = create(req.query, ContractListStruct);
->>>>>>> eff852dd93d33562677817a08156465cb1c1784e
 
   const contractByStatus = CONTRACT_STATUS_ORDER.reduce((acc, status) => {
     acc[status] = { totalItemCount: 0, data: [] };

@@ -1,4 +1,3 @@
-paths:
 /companies:
   post:
     summary: 회사 등록

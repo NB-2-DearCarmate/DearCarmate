@@ -1,4 +1,3 @@
-paths:
 /contractDocuments:
   get:
     summary: 계약서 업로드 시 계약 목록조회
