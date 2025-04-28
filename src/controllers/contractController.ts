@@ -21,15 +21,11 @@ export const getContractList = async (req: Request, res: Response) => {
   const userId = user.id;
   const params = create(req.query, ContractListStruct);
 
-  const contractByStatus: Record<
-    ContractStatus,
-    { totalItemCount: number; data: any[] }
-  > = Object.fromEntries(
-    CONTRACT_STATUS_ORDER.map((status) => [
-      status,
-      { totalItemCount: 0, data: [] },
-    ])
-  ) as Record<ContractStatus, { totalItemCount: number; data: any[] }>;
+  const contractByStatus = CONTRACT_STATUS_ORDER.reduce((acc, status) => {
+    acc[status] = { totalItemCount: 0, data: [] };
+    return acc;
+  }, {} as Record<ContractStatus, { totalItemCount: number; data: any[] }>);
+  
 
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
