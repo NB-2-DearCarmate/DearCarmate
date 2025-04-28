@@ -26,7 +26,7 @@ declare global {
 
 declare module "express" {
   interface Request {
-    user?: {
+    user: {
       id: number;
       name: string;
       email: string;

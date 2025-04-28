@@ -3,23 +3,19 @@ import contractRepository from "../repositories/contractRepository";
 import { ContractType } from "../typings/contract";
 import {
   CursorPaginationParams,
-  CursorPaginationResult,
   CursorPaginationResultWithTotal,
 } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
 
-type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt"> & {
-  userId: number;
-  status: ContractStatus;
-};
+type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
 type UpdateContract = Partial<CreateContract> & { userId: number };
 
 // 계약 조회
-async function getContractList(
+const getContractList = async (
   userId: number,
   { cursor, limit }: CursorPaginationParams,
   status: ContractStatus
-): Promise<CursorPaginationResultWithTotal<ContractType>> {
+): Promise<CursorPaginationResultWithTotal<ContractType>> => {
   const user = await contractRepository.getUserId(userId);
   const companyId = user.companyId;
 
@@ -29,67 +25,76 @@ async function getContractList(
     status
   );
   return contracts;
-}
+};
 
 // 계약 생성
-async function create(data: CreateContract) {
+const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
-  const customer = await contractRepository.getCustomerId(data.customerId);
+  const updateCarStatus = await contractRepository.updateCarStatus(car.id);
 
-  const contract = await contractRepository.save(data);
-  return contract;
-}
+  const customer = await contractRepository.getCustomerId(data.customerId);
+  const model = await contractRepository.getModelId(car.modelId);
+
+  const contractData = {
+    ...data,
+    contractPrice: car.price,
+  };
+
+  const contract = await contractRepository.save(contractData);
+  return { contract, customer, model };
+};
 
 // 계약 수정
-async function update(id: number, userId: number, data: UpdateContract) {
+const update = async (id: number, userId: number, data: UpdateContract) => {
   const findContract = await contractRepository.getById(id);
 
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 수정이 가능합니다.");
   }
   return await contractRepository.update(id, data);
-}
+};
 
 // 계약 삭제
-async function deleteById(id: number, userId: number) {
+const deleteById = async (id: number, userId: number) => {
   const findContract = await contractRepository.getById(id);
 
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 수정이 가능합니다.");
   }
   return await contractRepository.deleteById(id);
-}
+};
 
 //외래키 참조
-async function getCarId(carId: number) {
+const getCarId = async (carId: number) => {
   const car = await contractRepository.getCarId(carId);
   return car;
-}
+};
 
-async function updateCarStatus(carId: number) {
+const updateCarStatus = async (carId: number) => {
   const createContract = await contractRepository.updateCarStatus(carId);
   return createContract;
-}
+};
 
-async function complectedCar(carId: number) {
+const complectedCar = async (carId: number) => {
   const updatedStatus = await contractRepository.completedCar(carId);
   return updatedStatus;
-}
-async function getCustomerId(customerId: number) {
+};
+
+const getCustomerId = async (customerId: number) => {
   const customer = await contractRepository.getCustomerId(customerId);
   return customer;
-}
+};
 
-async function getUserId(userId: number) {
+const getUserId = async (userId: number) => {
   const user = await contractRepository.getUserId(userId);
   return user;
-}
+};
 
-async function getModelId(modelId: number) {
+const getModelId = async (modelId: number) => {
   const model = await contractRepository.getModelId(modelId);
 
   return model;
-}
+};
 
 export default {
   getContractList,

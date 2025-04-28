@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -8,19 +8,10 @@ import {
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import meetingService from "../services/meetingService";
-import alarmService from "../services/alarmService";
 import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
 
-type MeetingInput = {
-  date: string;
-  alarms?: string[];
-};
-
-// 시간 변환
-const parseDate = (str: string): Date => new Date(str.replace(" ", "T"));
-
 //계약 조회
-export const getContractList: RequestHandler = async (req, res) => {
+export const getContractList = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {
@@ -57,77 +48,39 @@ export const getContractList: RequestHandler = async (req, res) => {
 };
 
 //계약 생성
-export const createContract: RequestHandler = async (req, res) => {
+export const createContract = async (req: Request, res: Response) => {
   const user = req.user;
-
   if (!user) {
     res.status(400).send({ message: "로그인이 필요합니다." });
+    return;
   }
-  const data = create(req.body, ContractStruct);
+
   const userId = user.id;
   const userData = await contractService.getUserId(userId);
-
   const parsedData = create(req.body, ContractStruct);
-  const car = await contractService.getCarId(parsedData.carId);
-  const customer = await contractService.getCustomerId(parsedData.customerId);
-  const model = await contractService.getModelId(car.modelId);
 
   const contractData = {
-    ...parsedData,
-    status: "CARINSPECTION" as ContractStatus,
+    carId: parsedData.carId,
+    customerId: parsedData.customerId,
     userId,
+    status: "CARINSPECTION" as ContractStatus,
     resolutionDate: null,
-    contractPrice: car.price,
+    contractPrice: 0,
+    meeting: parsedData.meetings,
   };
 
-  const contract = await contractService.create(contractData);
+  const { contract, customer, model } = await contractService.create(
+    contractData
+  );
   const contractId = contract.id;
 
-  const updateCarStatus = await contractService.updateCarStatus(car.id);
+  let meetingResult: { date: Date; alarms: Date[] }[] = [];
 
-  const meetingResult: { date: Date; alarms: Date[] }[] = [];
-  if (req.body.meetings) {
-    const meetingsData = Array.isArray(req.body.meetings)
-      ? req.body.meetings
-      : [req.body.meetings];
-
-    if (meetingsData.length > 3) {
-      res
-        .status(400)
-        .send({ message: "미팅은 최대 3개까지만 등록 가능합니다." });
-    }
-
-    for (const meeting of meetingsData) {
-      const meetingDate = new Date(meeting.date.replace(" ", "T"));
-      const createdMeeting = await meetingService.create(
-        contractId,
-        meetingDate
-      );
-      const meetingId = createdMeeting.id;
-      const alarms: Date[] = [];
-      if (meeting.alarms) {
-        const alarmData = Array.isArray(meeting.alarms)
-          ? meeting.alarms
-          : [meeting.alarms];
-
-        if (alarmData.length > 2) {
-          res
-            .status(400)
-            .send({ message: "알람은 최대 2개까지만 등록 가능합니다." });
-        }
-
-        for (const alarmAt of alarmData) {
-          const alarmDate = new Date(alarmAt.replace(" ", "T"));
-          await alarmService.create(meetingId, meetingDate, alarmDate);
-          alarms.push(alarmDate);
-        }
-      }
-
-      meetingResult.push({
-        date: meetingDate,
-        alarms,
-      });
-    }
+  if (parsedData.meetings) {
+    meetingResult = await meetingService.createWithAlarms(
+      contractId,
+      parsedData.meetings
+    );
   }
 
   const contractResult = {
@@ -143,7 +96,7 @@ export const createContract: RequestHandler = async (req, res) => {
       id: customer.id,
     },
     car: {
-      id: car.id,
+      id: contract.carId,
       model: model.name,
     },
   };
@@ -152,17 +105,17 @@ export const createContract: RequestHandler = async (req, res) => {
 };
 
 //계약 수정
-export const updateContract: RequestHandler = async (req, res) => {
+export const updateContract = async (req: Request, res: Response) => {
   const { meetings, ...contractData } = req.body;
   const user = req.user;
 
   if (!user) {
     res.status(400).send({ message: "로그인이 필요합니다." });
+    return;
   }
 
   const userId = user.id;
   const userData = await contractService.getUserId(userId);
-
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
 
@@ -179,76 +132,16 @@ export const updateContract: RequestHandler = async (req, res) => {
     await contractService.complectedCar(updatedContract.carId);
   }
 
-  const customer = await contractService.getCustomerId(
-    updatedContract.customerId
-  );
-
-  const car = await contractService.getCarId(updatedContract.carId);
+  const [customer, car] = await Promise.all([
+    contractService.getCustomerId(updatedContract.customerId),
+    contractService.getCarId(updatedContract.carId),
+  ]);
 
   const model = await contractService.getModelId(car.modelId);
 
-  const meetingResult: { date: Date; alarms: Date[] }[] = [];
-  if (req.body.meetings) {
-    const meetingsData = Array.isArray(req.body.meetings)
-      ? req.body.meetings
-      : [req.body.meetings];
-
-    if (meetingsData.length > 3) {
-      throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
-    }
-
-    for (const m of meetingsData) {
-      if (Array.isArray(m.alarms) && m.alarms.length > 2) {
-        throw new Error("한 미팅에는 최대 2개의 알람만 설정할 수 있습니다.");
-      }
-    }
-
-    const existingMeetings = await meetingService.findAllByContractId(id);
-    const requestedDates = meetingsData.map((m: MeetingInput) =>
-      parseDate(m.date).getTime()
-    );
-
-    for (const existing of existingMeetings) {
-      if (!requestedDates.includes(new Date(existing.date).getTime())) {
-        await alarmService.deleteByMeetingId(existing.id);
-        await meetingService.deleteById(existing.id);
-      }
-    }
-
-    for (const meeting of meetingsData) {
-      const meetingDate = parseDate(meeting.date);
-      const existingMeeting = await meetingService.getByDate(id, meetingDate);
-
-      let meetingId: number;
-
-      if (existingMeeting) {
-        meetingId = existingMeeting.id;
-        await meetingService.update(meetingId, meetingDate);
-      } else {
-        const createdMeeting = await meetingService.create(id, meetingDate);
-        meetingId = createdMeeting.id;
-      }
-
-      const alarms: Date[] = [];
-      if (meeting.alarms) {
-        await alarmService.deleteByMeetingId(meetingId);
-        const alarmData = Array.isArray(meeting.alarms)
-          ? meeting.alarms
-          : [meeting.alarms];
-
-        for (const alarmAt of alarmData) {
-          const alarmDate = parseDate(alarmAt);
-          await alarmService.create(meetingId, meetingDate, alarmDate);
-          alarms.push(alarmDate);
-        }
-      }
-
-      meetingResult.push({
-        date: meetingDate,
-        alarms,
-      });
-    }
-  }
+  const meetingResult = meetings
+    ? await meetingService.updateMeetings(id, meetings)
+    : [];
 
   const updatedContractResult = {
     id: updatedContract.id,
@@ -266,7 +159,7 @@ export const updateContract: RequestHandler = async (req, res) => {
     },
     car: {
       id: car.id,
-      modle: model.name,
+      model: model.name,
     },
   };
 
@@ -274,7 +167,7 @@ export const updateContract: RequestHandler = async (req, res) => {
 };
 
 //계약 삭제
-export const deleteContract: RequestHandler = async (req, res) => {
+export const deleteContract = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {

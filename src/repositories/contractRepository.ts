@@ -4,11 +4,11 @@ import { ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination";
 import { ContractStatus } from "../typings/contract";
 
-async function getContractList(
+const getContractList = async (
   companyId: number,
   { cursor, limit }: CursorPaginationParams,
   status: ContractStatus
-) {
+) => {
   const contractWithCursor = await prisma.contract.findMany({
     where: { user: { companyId }, status },
     include: {
@@ -35,11 +35,11 @@ async function getContractList(
     nextCursor,
     totalContract,
   };
-}
+};
 
-async function save(
+const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
-) {
+) => {
   const createContract = await prisma.contract.create({
     data: {
       carId: data.carId,
@@ -51,18 +51,18 @@ async function save(
   });
 
   return createContract;
-}
+};
 
-async function getCarId(id: number) {
+const getCarId = async (id: number) => {
   const car = await prisma.car.findUnique({ where: { id } });
   if (!car) {
     throw new NotFoundError(id);
   }
 
   return car;
-}
+};
 
-async function updateCarStatus(carId: number) {
+const updateCarStatus = async (carId: number) => {
   const createContract = await prisma.car.update({
     where: { id: carId },
     data: {
@@ -71,54 +71,54 @@ async function updateCarStatus(carId: number) {
   });
 
   return createContract;
-}
+};
 
-async function getCustomerId(id: number) {
+const getCustomerId = async (id: number) => {
   const customer = await prisma.customer.findUnique({ where: { id } });
   if (!customer) {
     throw new NotFoundError(id);
   }
 
   return customer;
-}
+};
 
-async function getUserId(id: number) {
+const getUserId = async (id: number) => {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
     throw new NotFoundError(id);
   }
 
   return user;
-}
+};
 
-async function getModelId(id: number) {
+const getModelId = async (id: number) => {
   const model = await prisma.models.findUnique({ where: { id } });
   if (!model) {
     throw new NotFoundError(id);
   }
 
   return model;
-}
+};
 
-async function getById(id: number) {
+const getById = async (id: number) => {
   const contract = await prisma.contract.findUnique({ where: { id } });
   if (!contract) {
     throw new NotFoundError(id);
   }
 
   return contract;
-}
+};
 
-async function update(id: number, data: Partial<ContractType>) {
+const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
     data,
   });
 
   return updatedContract;
-}
+};
 
-async function completedCar(carId: number) {
+const completedCar = async (carId: number) => {
   const updateStatus = await prisma.car.update({
     where: { id: carId },
     data: {
@@ -127,15 +127,15 @@ async function completedCar(carId: number) {
   });
 
   return updateStatus;
-}
+};
 
-async function deleteById(id: number) {
+const deleteById = async (id: number) => {
   const contract = await prisma.contract.delete({
     where: { id },
   });
 
   return contract;
-}
+};
 
 export default {
   getContractList,
