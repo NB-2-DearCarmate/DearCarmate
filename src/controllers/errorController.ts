@@ -34,6 +34,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   } else if (err instanceof ForbiddenError) {
     res.status(403).send({ message: err.message });
   } else {
+    console.log(err);
     res.status(500).send({ message: "서버에 문제가 발생하였습니다." });
   }
 };

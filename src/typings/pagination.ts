@@ -30,6 +30,11 @@ export interface CursorPaginationResult<T> {
   nextCursor: number | null;
 }
 
+export interface CursorPaginationResultWithTotal<T>
+  extends CursorPaginationResult<T> {
+  totalContract: number;
+}
+
 export interface UserWithCompany {}
 
 export type CarPaginationParams = PaginationParams<SearchByCar> & {

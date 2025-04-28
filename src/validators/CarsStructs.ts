@@ -22,6 +22,7 @@ export const CarStruct = object({
   accidentCount: min(number(), 0),
   explanation: nonempty(string()),
   accidentDetails: nonempty(string()),
+
   status: defaulted(
     union([
       literal("POSSESSION"),
