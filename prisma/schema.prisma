@@ -29,6 +29,8 @@ model Car {
   model           Models         @relation(fields: [modelId], references: [id])
   manufacturerId  Int
   manufacturers   Manufacturers  @relation(fields: [manufacturerId], references: [id])
+  companyId       Int
+  company         Company        @relation(fields: [companyId], references: [id])
 
   contracts Contract[]
 }
@@ -139,6 +141,7 @@ model Company {
 
   customers Customer[]
   users     User[]
+  Car       Car[]
 }
 
 model ContractDocument {
