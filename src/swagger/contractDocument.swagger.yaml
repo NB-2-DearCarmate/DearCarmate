@@ -1,0 +1,91 @@
+paths:
+/contractDocuments:
+  get:
+    summary: 계약서 업로드 시 계약 목록조회
+    tags:
+      - ContractDocuments
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: page
+        in: query
+        description: 현재 페이지 번호
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: limit
+        in: query
+        description: 페이지당 보여줄 계약 수
+        required: false
+        schema:
+          type: integer
+          example: 10
+      - name: searchBy
+        in: query
+        description: 검색 기준
+        required: false
+        schema:
+          type: string
+          enum: [companyName, carNumber, managerName]
+          example: "companyName"
+      - name: keyword
+        in: query
+        description: 검색어
+        required: false
+        schema:
+          type: string
+          example: "ABC자동차"
+    responses:
+      "200":
+        description: 계약서 목록 조회 성공
+        content:
+          application/json:
+            shcema:
+              type: object
+              properties:
+                currentPage:
+                  type: integer
+                  example: 1
+                totalPages:
+                  type: integer
+                  example: 5
+                totalItemCount:
+                  type: integer
+                  example: 42
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      contractName:
+                        type: string
+                        example: "K9 - 홍길동고객님"
+                      resolutionDate:
+                        type: string
+                        example: "2024-02-22T09:00:00.000Z"
+                      documentCount:
+                        type: integer
+                        example: 2
+                      manager:
+                        type: string
+                        example: 딜러3
+                      carNumber:
+                        type: string
+                        example: 111보 3333
+                      documents:
+                        type: array
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          file:
+                            type: string
+                            example: "계약서1.svg"
+    "400":
+      description: 잘못된 요청입니다.
+    "401":
+      description: 로그인이 필요합니다.

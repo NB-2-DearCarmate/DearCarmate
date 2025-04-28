@@ -7,4 +7,7 @@ servers:
   - url: http://localhost:3000
 
 paths:
-  $ref: "./companies.swagger.yaml"
+  /companies:
+    $ref: "./companies.swagger.yaml#/paths/companies"
+  /contractDocuments:
+    $ref: "./contractDocument.swagger.yaml#/paths/contractDocuments"
