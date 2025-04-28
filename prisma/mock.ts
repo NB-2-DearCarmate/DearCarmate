@@ -163,6 +163,7 @@ export const cars = [
     updatedAt: new Date("2023-04-01"),
     modelId: 2,
     manufacturerId: 1,
+    companyId: 1,
   },
   {
     carNumber: "222가 4567",
@@ -177,6 +178,7 @@ export const cars = [
     updatedAt: new Date("2023-05-15"),
     modelId: 9,
     manufacturerId: 2,
+    companyId: 2,
   },
   {
     carNumber: "222가 6457",
@@ -191,6 +193,7 @@ export const cars = [
     updatedAt: new Date("2023-05-15"),
     modelId: 4,
     manufacturerId: 1,
+    companyId: 3,
   },
 ];
 export const customers = [
