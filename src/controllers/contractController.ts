@@ -18,6 +18,15 @@ import {
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
+  const { searchBy = "customerName", keyword = "" } = req.query as {
+    searchBy?: "customerName" | "userName";
+    keyword?: string;
+  };
+
+  if (!["customerName", "userName"].includes(searchBy)) {
+    res.status(400).send({ message: "searchBy 값이 올바르지 않습니다." });
+  }
+
   const user = req.user;
 
   if (!user) {
@@ -35,13 +44,36 @@ export const getContractList = async (req: Request, res: Response) => {
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
       userId,
-      { cursor: params.cursor, limit: params.limit },
+      { searchBy, keyword },
       status
     );
 
+    const contractResult = contracts.list.map((contract) => ({
+      id: contract.id,
+      status: contract.status,
+      contractPrice: contract.contractPrice,
+      resolutionDate: contract.resolutionDate,
+      car: {
+        id: contract.car.id,
+        model: contract.car.model.name,
+      },
+      customer: {
+        id: contract.customer.id,
+        name: contract.customer.name,
+      },
+      user: {
+        id: contract.user.id,
+        name: contract.user.name,
+      },
+      meetings: contract.meetings.map((meeting) => ({
+        date: meeting.date,
+        alarms: meeting.alarms.map((alarm) => alarm.alarmAt),
+      })),
+    }));
+
     contractByStatus[status] = {
       totalItemCount: contracts.totalContract,
-      data: contracts.list,
+      data: contractResult,
     };
   }
 
