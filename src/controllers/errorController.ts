@@ -1,12 +1,6 @@
 import { StructError } from "superstruct";
 import BadRequestError from "../errors/BadRequestError";
-import {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-} from "express";
+import { NextFunction, Request, Response } from "express";
 import NotFoundError from "../errors/NotFoundError";
 import ForbiddenError from "../errors/ForbiddenError";
 import UnauthorizedError from "../errors/UnauthorizedError";
@@ -30,7 +24,8 @@ export const globalErrorHandler = (
   }
 
   if (err instanceof StructError || err instanceof BadRequestError) {
-    res.status(400).send({ message: err.message });
+    console.warn("잘못된 요청 디테일:", err.message);
+    res.status(400).send({ message: "잘못된 요청입니다." });
   } else if (err instanceof SyntaxError && err.message.includes("JSON")) {
     console.error("JSON 파싱 오류:", err.message);
     res.status(400).send({ message: "유효하지 않은 JSON입니다." });

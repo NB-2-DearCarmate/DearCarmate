@@ -107,13 +107,45 @@ const getUserList = async (companyId: number) => {
 const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) => {
+  const { carId, customerId, userId, status, resolutionDate, contractPrice } =
+    data;
   const createContract = await prisma.contract.create({
-    data: {
-      carId: data.carId,
-      customerId: data.customerId,
-      userId: data.userId,
-      status: data.status,
-      contractPrice: data.contractPrice,
+    data: { carId, customerId, userId, status, resolutionDate, contractPrice },
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: { name: true },
+          },
+        },
+      },
     },
   });
 
@@ -180,6 +212,44 @@ const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
     data,
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return updatedContract;
@@ -206,8 +276,6 @@ const deleteById = async (id: number) => {
 
 export default {
   getContractList,
-  getCarId,
-  getCustomerId,
   save,
   getById,
   update,
@@ -216,7 +284,9 @@ export default {
   getUserId,
   completedCar,
   getModelId,
+  getCustomerId,
   getUserList,
   getCustomerList,
   getCarList,
+  getCarId,
 };

@@ -21,7 +21,7 @@ async function getCarList(params: CarPaginationParams): Promise<CarList> {
 async function getCarById(id: number) {
   const car = await carRepository.getCarById(id);
   if (!car) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
   return car;
 }
@@ -40,7 +40,7 @@ async function getAllCarModels() {
 async function updateCar(id: number, updateDate: UpdateCar) {
   const existingCar = await carsRepository.getCarById(id);
   if (!existingCar) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
 
   const updateCar = await carsRepository.updateCar(id, updateDate);
@@ -50,7 +50,7 @@ async function updateCar(id: number, updateDate: UpdateCar) {
 async function deleteCar(id: number) {
   const existingCar = await carRepository.getCarById(id);
   if (!existingCar) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
   return await carsRepository.deleteCar(id);
 }
