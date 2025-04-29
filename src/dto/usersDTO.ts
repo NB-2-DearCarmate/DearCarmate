@@ -1,3 +1,4 @@
+// 요청 DTO
 export interface CreateUserRequest {
   name: string;
   email: string;
@@ -8,7 +9,16 @@ export interface CreateUserRequest {
   company: string;
   companyCode: string;
 }
+export interface UpdateMyInfoRequest {
+  employeeNumber?: string;
+  phoneNumber?: string;
+  currentPassword: string;
+  password?: string;
+  passwordConfirmation?: string;
+  imageUrl?: string;
+}
 
+// 응답 DTO
 export interface UserResponse {
   id: number;
   name: string;
@@ -20,13 +30,4 @@ export interface UserResponse {
   company: {
     companyCode: string;
   };
-}
-
-export interface UpdateMyInfoRequest {
-  employeeNumber?: string;
-  phoneNumber?: string;
-  currentPassword: string;
-  password?: string;
-  passwordConfirmation?: string;
-  imageUrl?: string;
 }
