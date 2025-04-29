@@ -29,7 +29,7 @@ const findCompanies = async (
   order: "asc" | "desc",
   skip: number,
   take: number
-): Promise<Company[]> => {
+): Promise<Company[]> => { 
   return prisma.company.findMany({
     where,
     orderBy: { createdAt: order },

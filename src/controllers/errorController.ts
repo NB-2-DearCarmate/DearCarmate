@@ -1,19 +1,29 @@
 import { StructError } from "superstruct";
 import BadRequestError from "../errors/BadRequestError";
-import { ErrorRequestHandler, RequestHandler } from "express";
+import {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from "express";
 import NotFoundError from "../errors/NotFoundError";
 import ForbiddenError from "../errors/ForbiddenError";
 import UnauthorizedError from "../errors/UnauthorizedError";
 
-export const defaultNotFountHandler: RequestHandler = (req, res, next) => {
+export const defaultNotFountHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.status(404).send({ message: "해당 경로를 찾을 수 없습니다." });
 };
 
-export const globalErrorHandler: ErrorRequestHandler = (
-  err,
-  req,
-  res,
-  next
+export const globalErrorHandler = (
+  err: Error & { code?: string },
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   if (res.headersSent) {
     return next(err);

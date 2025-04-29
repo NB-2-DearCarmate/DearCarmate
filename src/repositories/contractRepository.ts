@@ -123,7 +123,7 @@ const save = async (
 const getCarId = async (id: number) => {
   const car = await prisma.car.findUnique({ where: { id } });
   if (!car) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
 
   return car;
@@ -143,7 +143,7 @@ const updateCarStatus = async (carId: number) => {
 const getCustomerId = async (id: number) => {
   const customer = await prisma.customer.findUnique({ where: { id } });
   if (!customer) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("고객");
   }
 
   return customer;
@@ -152,7 +152,7 @@ const getCustomerId = async (id: number) => {
 const getUserId = async (id: number) => {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("유저");
   }
 
   return user;
@@ -161,7 +161,7 @@ const getUserId = async (id: number) => {
 const getModelId = async (id: number) => {
   const model = await prisma.models.findUnique({ where: { id } });
   if (!model) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("모델");
   }
 
   return model;
@@ -170,7 +170,7 @@ const getModelId = async (id: number) => {
 const getById = async (id: number) => {
   const contract = await prisma.contract.findUnique({ where: { id } });
   if (!contract) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("계약");
   }
 
   return contract;
