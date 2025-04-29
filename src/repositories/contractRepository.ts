@@ -37,6 +37,52 @@ const getContractList = async (
   };
 };
 
+const getCustomerList = async (companyId: number) => {
+  const customerList = await prisma.customer.findMany({
+    where: { companyId, deletedAt: null },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return customerList;
+};
+
+const getCarList = async (companyId: number) => {
+  const carList = await prisma.car.findMany({
+    where: { companyId },
+    select: {
+      id: true,
+      carNumber: true,
+      model: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const carListResult = carList.map((car) => ({
+    id: car.id,
+    name: `${car.model.name}(${car.carNumber})`,
+  }));
+
+  return carListResult;
+};
+
+const getUserList = async (companyId: number) => {
+  const userList = await prisma.user.findMany({
+    where: { companyId, deletedAt: null },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return userList;
+};
+
 const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) => {
@@ -112,7 +158,7 @@ const getById = async (id: number) => {
 const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
-    data
+    data,
   });
 
   return updatedContract;
@@ -149,4 +195,7 @@ export default {
   getUserId,
   completedCar,
   getModelId,
+  getUserList,
+  getCustomerList,
+  getCarList,
 };

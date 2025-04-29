@@ -27,6 +27,36 @@ const getContractList = async (
   return contracts;
 };
 
+// 고객 조회
+
+const getCustomerList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const customerList = await contractRepository.getCustomerList(companyId);
+  return customerList;
+};
+
+// 차량 조회
+
+const getCarList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const carList = await contractRepository.getCarList(companyId);
+  return carList;
+};
+
+// 유저 조회
+
+const getUserList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const userList = await contractRepository.getUserList(companyId);
+  return userList;
+};
+
 // 계약 생성
 const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
@@ -107,4 +137,7 @@ export default {
   updateCarStatus,
   complectedCar,
   getModelId,
+  getCustomerList,
+  getCarList,
+  getUserList,
 };

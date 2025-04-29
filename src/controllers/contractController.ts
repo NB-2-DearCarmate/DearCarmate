@@ -48,6 +48,48 @@ export const getContractList = async (req: Request, res: Response) => {
   res.status(200).send(contractByStatus);
 };
 
+// 고객 조회
+export const getCustomerList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const customerList = await contractService.getCustomerList(userId);
+
+  res.status(200).send(customerList);
+};
+
+// 차량 조회
+export const getCarList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const carList = await contractService.getCarList(userId);
+
+  res.status(200).send(carList);
+};
+
+// 유저 조회
+export const getUserList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const userList = await contractService.getUserList(userId);
+
+  res.status(200).send(userList);
+};
+
 //계약 생성
 export const createContract = async (req: Request, res: Response) => {
   const user = req.user;
