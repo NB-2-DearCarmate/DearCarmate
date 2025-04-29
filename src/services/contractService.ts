@@ -1,11 +1,12 @@
 import ForbiddenError from "../errors/ForbiddenError";
 import contractRepository from "../repositories/contractRepository";
-import { ContractType } from "../typings/contract";
 import {
-  CursorPaginationParams,
+  ContractList,
+  ContractType,
+  ContractStatus,
   CursorPaginationResultWithTotal,
-} from "../typings/pagination";
-import { ContractStatus } from "../typings/contract";
+  ContractWithDetails,
+} from "../typings/contract";
 
 type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
 type UpdateContract = Partial<CreateContract> & { userId: number };
@@ -13,18 +14,48 @@ type UpdateContract = Partial<CreateContract> & { userId: number };
 // 계약 조회
 const getContractList = async (
   userId: number,
-  { cursor, limit }: CursorPaginationParams,
+  { searchBy, keyword }: ContractList,
   status: ContractStatus
-): Promise<CursorPaginationResultWithTotal<ContractType>> => {
+): Promise<CursorPaginationResultWithTotal<ContractWithDetails>> => {
   const user = await contractRepository.getUserId(userId);
   const companyId = user.companyId;
 
   const contracts = await contractRepository.getContractList(
     companyId,
-    { cursor, limit },
+    { searchBy, keyword },
     status
   );
   return contracts;
+};
+
+// 고객 조회
+
+const getCustomerList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const customerList = await contractRepository.getCustomerList(companyId);
+  return customerList;
+};
+
+// 차량 조회
+
+const getCarList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const carList = await contractRepository.getCarList(companyId);
+  return carList;
+};
+
+// 유저 조회
+
+const getUserList = async (userId: number) => {
+  const user = await contractRepository.getUserId(userId);
+  const companyId = user.companyId;
+
+  const userList = await contractRepository.getUserList(companyId);
+  return userList;
 };
 
 // 계약 생성
@@ -107,4 +138,7 @@ export default {
   updateCarStatus,
   complectedCar,
   getModelId,
+  getCustomerList,
+  getCarList,
+  getUserList,
 };

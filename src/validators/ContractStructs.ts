@@ -8,7 +8,6 @@ import {
   coerce,
   array,
 } from "superstruct";
-import { CursorParamsStruct } from "./CommonStruct";
 import { CONTRACT_STATUS_VALUES } from "../typings/contract";
 
 // 미팅, 알람 정보
@@ -43,4 +42,9 @@ export const UpdateContractStruct = object({
 export const updateMeetings = optional(array(MeetingStruct));
 
 // 계약 목록 조회용
-export const ContractListStruct = CursorParamsStruct;
+export const searchByStruct = enums(["customerName", "userName"]);
+
+export const ContractListStruct = object({
+  searchBy: optional(searchByStruct),
+  keyword: optional(string()),
+});

@@ -27,7 +27,6 @@ export interface CursorPaginationParams {
 
 export interface CursorPaginationResult<T> {
   list: T[];
-  nextCursor: number | null;
 }
 
 export interface CursorPaginationResultWithTotal<T>
