@@ -14,8 +14,13 @@ paths:
     $ref: "./companies.swagger.yaml#/users"
   /companies/{companyId}:
     $ref: "./companies.swagger.yaml#/companyId"
+
   # 계약서
   /contractDocuments:
     $ref: "./contractDocument.swagger.yaml#/contractDocuments"
   /contractDocuments/draft:
     $ref: "./contractDocument.swagger.yaml#/draft"
+  /contractDocuments/upload:
+    $ref: "./contractDocument.swagger.yaml#/upload"
+  /contractDocuments/{contractDocumentId}/download:
+    $ref: "./contractDocument.swagger.yaml#/contractDocumentId/download"
