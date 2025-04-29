@@ -166,6 +166,7 @@ export const uploadCarsFromCSV = async (
             carNumber: row.carNumber,
             manufacturerId: Number(row.manufacturerId),
             modelId: Number(row.modelId),
+            companyId: Number(row.companyId),
             type: row.type,
             mileage: Number(row.mileage),
             price: Number(row.price),

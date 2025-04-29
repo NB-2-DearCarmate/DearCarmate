@@ -6,6 +6,7 @@ export type CreateCarDTO = {
   carNumber: string;
   manufacturerId: number;
   modelId: number;
+  companyId: number;
   type: "SEDAN" | "COMPACT" | "SUV";
   mileage: number;
   price: number;
@@ -20,6 +21,7 @@ export type CreateCarResponseDTO = {
   carNumber: string;
   manufacturerId: number;
   modelId: number;
+  companyId: number;
   type: "SEDAN" | "COMPACT" | "SUV";
   mileage: number;
   price: number;

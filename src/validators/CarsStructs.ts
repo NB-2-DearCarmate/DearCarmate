@@ -16,6 +16,7 @@ export const CarStruct = object({
   carNumber: nonempty(string()),
   manufacturerId: min(number(), 1),
   modelId: min(number(), 1),
+  companyId: min(number(), 1),
   type: union([literal("SEDAN"), literal("COMPACT"), literal("SUV")]),
   mileage: min(number(), 0),
   price: min(number(), 0),
