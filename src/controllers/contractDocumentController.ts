@@ -16,6 +16,11 @@ export const getAllContractDocumentListHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const user = req.user;
+    if (!user || !user.company || !user.company.id) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+    }
+    const companyId = user.company.companyCode;
     const {
       page = 1,
       pageSize = 10,
@@ -30,6 +35,7 @@ export const getAllContractDocumentListHandler = async (
       searchBy: searchBy as SearchByContractDraft,
       keyword: keyword as string | undefined,
       orderBy: orderBy as "recent" | "oldest",
+      companyId: user.company.id,
     });
     res.status(200).json(result);
   } catch (error) {
@@ -43,8 +49,12 @@ export const getContractDraftListHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const user = req.user;
+    if (!user || !user.company) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+    }
     const result: ContractDraftItemDto[] =
-      await contractDocumentService.contractDraftList();
+      await contractDocumentService.contractDraftList(user.company.id);
     res.status(200).json(result);
   } catch (error) {
     next(error);

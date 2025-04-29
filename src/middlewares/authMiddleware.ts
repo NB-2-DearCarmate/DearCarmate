@@ -38,6 +38,7 @@ const authMiddleware = async (
       email: user.email,
       isAdmin: user.isAdmin,
       company: {
+        id: user.company.id,
         companyCode: user.company?.companyCode || "",
       },
     };

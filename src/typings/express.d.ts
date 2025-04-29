@@ -8,6 +8,7 @@ export interface AuthenticatedUser {
   email: string;
   isAdmin: boolean;
   company: {
+    id: number;
     companyCode: string;
   };
 }
@@ -23,4 +24,3 @@ declare global {
     }
   }
 }
-

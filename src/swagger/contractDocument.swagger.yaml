@@ -1,4 +1,4 @@
-/contractDocuments:
+contractDocuments:
   get:
     summary: 계약서 업로드 시 계약 목록조회
     tags:
@@ -88,3 +88,31 @@
       description: 잘못된 요청입니다.
     "401":
       description: 로그인이 필요합니다.
+
+draft:
+  get:
+    summary: 계약서 추가 시 계약 목록 조회
+    tags:
+      - ContractDocuments
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 데이터 조회 성공
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  data:
+                    type: string
+                    example: "k9 - 홍길동 고객님"
+      "400":
+        description: 잘못된 요청입니다.
+      "401":
+        description: 로그인이 필요합니다.
