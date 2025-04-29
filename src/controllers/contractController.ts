@@ -18,6 +18,15 @@ import {
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
+  const { searchBy = "customerName", keyword = "" } = req.query as {
+    searchBy?: "customerName" | "userName";
+    keyword?: string;
+  };
+
+  if (!["customerName", "userName"].includes(searchBy)) {
+    res.status(400).send({ message: "searchBy 값이 올바르지 않습니다." });
+  }
+
   const user = req.user;
 
   if (!user) {
@@ -35,17 +44,82 @@ export const getContractList = async (req: Request, res: Response) => {
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
       userId,
-      { cursor: params.cursor, limit: params.limit },
+      { searchBy, keyword },
       status
     );
 
+    const contractResult = contracts.list.map((contract) => ({
+      id: contract.id,
+      status: contract.status,
+      contractPrice: contract.contractPrice,
+      resolutionDate: contract.resolutionDate,
+      car: {
+        id: contract.car.id,
+        model: contract.car.model.name,
+      },
+      customer: {
+        id: contract.customer.id,
+        name: contract.customer.name,
+      },
+      user: {
+        id: contract.user.id,
+        name: contract.user.name,
+      },
+      meetings: contract.meetings.map((meeting) => ({
+        date: meeting.date,
+        alarms: meeting.alarms.map((alarm) => alarm.alarmAt),
+      })),
+    }));
+
     contractByStatus[status] = {
       totalItemCount: contracts.totalContract,
-      data: contracts.list,
+      data: contractResult,
     };
   }
 
   res.status(200).send(contractByStatus);
+};
+
+// 고객 조회
+export const getCustomerList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const customerList = await contractService.getCustomerList(userId);
+
+  res.status(200).send(customerList);
+};
+
+// 차량 조회
+export const getCarList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const carList = await contractService.getCarList(userId);
+
+  res.status(200).send(carList);
+};
+
+// 유저 조회
+export const getUserList = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    res.status(400).send({ message: "로그인이 필요합니다" });
+  }
+
+  const userId = user.id;
+  const userList = await contractService.getUserList(userId);
+
+  res.status(200).send(userList);
 };
 
 //계약 생성

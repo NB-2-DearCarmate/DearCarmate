@@ -1,40 +1,107 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
-import { ContractType } from "../typings/contract";
-import { CursorPaginationParams } from "../typings/pagination";
-import { ContractStatus } from "../typings/contract";
+import { ContractType, ContractStatus } from "../typings/contract";
 
 const getContractList = async (
   companyId: number,
-  { cursor, limit }: CursorPaginationParams,
+  {
+    searchBy,
+    keyword,
+  }: { searchBy: "customerName" | "userName"; keyword: string },
   status: ContractStatus
 ) => {
+  const whereClause: any = {
+    user: { companyId },
+    status,
+  };
+
+  if (keyword && searchBy) {
+    if (searchBy === "customerName") {
+      whereClause.customer = {
+        name: {
+          contains: keyword,
+          mode: "insensitive",
+        },
+      };
+    } else if (searchBy === "userName") {
+      whereClause.user = {
+        name: {
+          contains: keyword,
+          mode: "insensitive",
+        },
+      };
+    }
+  }
   const contractWithCursor = await prisma.contract.findMany({
-    where: { user: { companyId }, status },
+    where: whereClause,
     include: {
-      car: true,
+      car: {
+        include: { model: true },
+      },
       customer: true,
       user: true,
       meetings: {
         include: { alarms: true },
       },
     },
-    cursor: cursor ? { id: cursor } : undefined,
-    take: limit + 1,
     orderBy: { createdAt: "desc" },
   });
-  const contracts = contractWithCursor.slice(0, limit);
-  const cursorContract = contractWithCursor[contractWithCursor.length - 1];
-  const nextCursor = cursorContract ? cursorContract.id : null;
+
+  const contracts = contractWithCursor.slice(0, 5);
   const totalContract = await prisma.contract.count({
     where: { user: { companyId }, status },
   });
 
   return {
     list: contracts,
-    nextCursor,
     totalContract,
   };
+};
+
+const getCustomerList = async (companyId: number) => {
+  const customerList = await prisma.customer.findMany({
+    where: { companyId, deletedAt: null },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return customerList;
+};
+
+const getCarList = async (companyId: number) => {
+  const carList = await prisma.car.findMany({
+    where: { companyId },
+    select: {
+      id: true,
+      carNumber: true,
+      model: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const carListResult = carList.map((car) => ({
+    id: car.id,
+    name: `${car.model.name}(${car.carNumber})`,
+  }));
+
+  return carListResult;
+};
+
+const getUserList = async (companyId: number) => {
+  const userList = await prisma.user.findMany({
+    where: { companyId, deletedAt: null },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return userList;
 };
 
 const save = async (
@@ -112,7 +179,7 @@ const getById = async (id: number) => {
 const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
-    data
+    data,
   });
 
   return updatedContract;
@@ -149,4 +216,7 @@ export default {
   getUserId,
   completedCar,
   getModelId,
+  getUserList,
+  getCustomerList,
+  getCarList,
 };
