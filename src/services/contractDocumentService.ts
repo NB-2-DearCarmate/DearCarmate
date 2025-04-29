@@ -10,9 +10,9 @@ import { SaveFileInfo } from "../typings/contrarctDocument";
 import BadRequestError from "../errors/BadRequestError";
 
 const contractDocumentList = async (
-  params: PaginationParams<SearchByContractDraft>
+  params: PaginationParams<SearchByContractDraft> & { companyId: number }
 ): Promise<PageContractDocumentItemDto> => {
-  const { page, pageSize, keyword } = params;
+  const { page, pageSize, keyword, companyId } = params;
   const { contracts } = await contractDocumentRepo.getAllcontractDocumentList(
     params
   );
@@ -56,8 +56,10 @@ const contractDocumentList = async (
   };
 };
 
-const contractDraftList = async (): Promise<ContractDraftItemDto[]> => {
-  const contracts = await contractDocumentRepo.getContractList();
+const contractDraftList = async (
+  companyId: number
+): Promise<ContractDraftItemDto[]> => {
+  const contracts = await contractDocumentRepo.getContractList(companyId);
 
   return contracts.map((c) => ({
     id: c.id,
