@@ -107,10 +107,26 @@ const getUserList = async (companyId: number) => {
 const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) => {
-  const { carId, customerId, userId, status, resolutionDate, contractPrice } =
-    data;
+  const {
+    carId,
+    customerId,
+    userId,
+    companyId,
+    status,
+    resolutionDate,
+    contractPrice,
+  } = data;
+
   const createContract = await prisma.contract.create({
-    data: { carId, customerId, userId, status, resolutionDate, contractPrice },
+    data: {
+      carId,
+      customerId,
+      userId,
+      companyId,
+      status,
+      resolutionDate,
+      contractPrice,
+    },
     select: {
       id: true,
       status: true,

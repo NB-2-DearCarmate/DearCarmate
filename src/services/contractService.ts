@@ -8,7 +8,10 @@ import {
   ContractWithDetails,
 } from "../typings/contract";
 
-type CreateContract = Omit<ContractType, "id" | "createdAt" | "updatedAt">;
+type CreateContract = Omit<
+  ContractType,
+  "id" | "createdAt" | "updatedAt" | "companyId"
+>;
 type UpdateContract = Partial<CreateContract> & { userId: number };
 
 // 계약 조회
@@ -62,10 +65,13 @@ const getUserList = async (userId: number) => {
 const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
   const updateCarStatus = await contractRepository.updateCarStatus(car.id);
+  const user = await contractRepository.getUserId(data.userId);
+  const companyId = user.companyId;
 
   const contractData = {
     ...data,
     contractPrice: car.price,
+    companyId,
   };
 
   const contract = await contractRepository.save(contractData);
@@ -107,7 +113,6 @@ const getUserId = async (userId: number) => {
   const user = await contractRepository.getUserId(userId);
   return user;
 };
-
 
 export default {
   getContractList,
