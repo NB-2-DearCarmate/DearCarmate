@@ -17,16 +17,22 @@ export const CustomerController = {
   },
 
   // 고객 전체 조회
-  getCustomers: async (_req: Request, res: Response, next: NextFunction) => {
+  getCustomers: async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
     try {
-      const page = parseInt(_req.query.page as string) || 1;
-      const limit = parseInt(_req.query.limit as string) || 10;
-      const search = (_req.query.search as string) || "";
-
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const search = (req.query.search as string) || "";
+      const companyId = req.user?.companyId;
+      console.log("요청한 회사 ID:", companyId);
+      if (!companyId) {
+          res.status(400).json({ message: "회사 ID가 없습니다." });
+          return;
+      }
       const customers = await CustomerService.getCustomers({
         page,
         limit,
         search,
+        companyId,
       });
       res.status(200).json(customers);
     } catch (err) {
@@ -34,13 +40,14 @@ export const CustomerController = {
     }
   },
 
-  patchCustomers: async (req: Request, res: Response, next: NextFunction) => {
+  patchCustomers: async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
     try {
       const customerId = parseInt(req.params.id);
       const updateData = req.body;
       const customer = await CustomerService.patchCustomers(
         customerId,
-        updateData
+        updateData,
+        
       );
       res.status(201).json(customer);
     } catch (err) {

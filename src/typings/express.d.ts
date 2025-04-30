@@ -7,6 +7,7 @@ export interface AuthenticatedUser {
   name: string;
   email: string;
   isAdmin: boolean;
+  companyId?: number; 
   company: {
     companyCode: string;
   };

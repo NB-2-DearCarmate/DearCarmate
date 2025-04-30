@@ -16,14 +16,17 @@ export const CustomerService = {
     page,
     limit,
     search,
+    companyId,
   }: {
     page: number;
     limit: number;
     search: string;
     memo?: string;
+    companyId: number;
   }) => {
     return prisma.customer.findMany({
       where: {
+        companyId,
         OR: [
           { name: { contains: search, mode: "insensitive" } },
           { email: { contains: search, mode: "insensitive" } },
