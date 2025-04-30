@@ -41,6 +41,7 @@ const authMiddleware = async (
       isAdmin: user.isAdmin,
       companyId: decoded.companyId,
       company: {
+        id: user.company.id,
         companyCode: user.company?.companyCode || "",
       },
     };

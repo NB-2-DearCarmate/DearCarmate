@@ -9,6 +9,7 @@ export interface CreateContractResponseDTO {
   };
   customer: {
     id: number;
+    name: string;
   };
   car: {
     id: number;

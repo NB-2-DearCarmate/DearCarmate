@@ -1,26 +1,31 @@
 import { StructError } from "superstruct";
 import BadRequestError from "../errors/BadRequestError";
-import { ErrorRequestHandler, RequestHandler } from "express";
+import { NextFunction, Request, Response } from "express";
 import NotFoundError from "../errors/NotFoundError";
 import ForbiddenError from "../errors/ForbiddenError";
 import UnauthorizedError from "../errors/UnauthorizedError";
 
-export const defaultNotFountHandler: RequestHandler = (req, res, next) => {
+export const defaultNotFountHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.status(404).send({ message: "해당 경로를 찾을 수 없습니다." });
 };
 
-export const globalErrorHandler: ErrorRequestHandler = (
-  err,
-  req,
-  res,
-  next
+export const globalErrorHandler = (
+  err: Error & { code?: string },
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   if (res.headersSent) {
     return next(err);
   }
 
   if (err instanceof StructError || err instanceof BadRequestError) {
-    res.status(400).send({ message: err.message });
+    console.warn("잘못된 요청 디테일:", err.message);
+    res.status(400).send({ message: "잘못된 요청입니다." });
   } else if (err instanceof SyntaxError && err.message.includes("JSON")) {
     console.error("JSON 파싱 오류:", err.message);
     res.status(400).send({ message: "유효하지 않은 JSON입니다." });

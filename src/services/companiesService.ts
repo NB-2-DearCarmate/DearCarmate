@@ -129,7 +129,7 @@ export const updatedCompany = async (
   data: UpdateCompany
 ): Promise<UpdateCompany> => {
   if (!id || id <= 0) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("회사");
   }
   if (!data.companyCode?.trim() || !data.companyName?.trim()) {
     throw new BadRequestError("필수 입력 값이 없습니다.");
@@ -142,7 +142,7 @@ export const updatedCompany = async (
 // 삭제
 export const deleteCompany = async (id: number): Promise<Company> => {
   if (!id || id <= 0) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("회사");
   }
 
   const deleteCompany = await companiesRepo.removeCompany(id);
