@@ -108,7 +108,6 @@ const getUserId = async (userId: number) => {
   return user;
 };
 
-
 export default {
   getContractList,
   create,

@@ -4,10 +4,8 @@ import { CarResponse } from "../typings/car";
 //차량 생성
 export type CreateCarDTO = {
   carNumber: string;
-  manufacturerId: number;
   modelId: number;
   companyId: number;
-  type: "SEDAN" | "COMPACT" | "SUV";
   mileage: number;
   price: number;
   accidentCount: number;
@@ -19,10 +17,8 @@ export type CreateCarDTO = {
 export type CreateCarResponseDTO = {
   id: number;
   carNumber: string;
-  manufacturerId: number;
   modelId: number;
   companyId: number;
-  type: "SEDAN" | "COMPACT" | "SUV";
   mileage: number;
   price: number;
   accidentCount: number;

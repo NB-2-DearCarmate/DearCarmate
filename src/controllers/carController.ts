@@ -77,17 +77,14 @@ export const getCarById = async (
   res.status(200).json(car);
 };
 
-// 전체 제조사와 그에 속한 모델들을 조회하는 컨트롤러
 export const getAllCarModels = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // 서비스에서 제조사와 모델 정보를 가져옴
   const manufacturersWithModels: GetAllCarModelsResponseDTO =
     await carService.getAllCarModels();
 
-  // 성공적으로 데이터를 가져오면 JSON 형태로 응답
   res.status(200).json(manufacturersWithModels);
 };
 
@@ -138,10 +135,8 @@ export const uploadCarsFromCSV = async (
       // 필드 매핑 등 데이터 가공 필요 (예: 문자열 -> 숫자)
       const cars: UploadCarDTO[] = results.map((row: Car) => ({
         carNumber: row.carNumber,
-        manufacturerId: Number(row.manufacturerId),
         modelId: Number(row.modelId),
         companyId: Number(row.companyId),
-        type: row.type,
         mileage: Number(row.mileage),
         price: Number(row.price),
         accidentCount: Number(row.accidentCount) || 0,
