@@ -1,0 +1,339 @@
+cars:
+  post:
+    summary: 차량 정보 등록
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CarCreateInput"
+    responses:
+      "201":
+        description: 차량 등록 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarResponse"
+      "400":
+        description: 잘못된 요청입니다.
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+
+  get:
+    summary: 차량 목록 조회
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: page
+        description: 현재 페이지 번호
+        schema:
+          type: integer
+          example: 1
+        required: false
+      - in: query
+        name: pageSize
+        description: 페이지당 아이템 수
+        schema:
+          type: integer
+          example: 10
+        required: false
+      - in: query
+        name: searchBy
+        description: 검색 기준
+        schema:
+          type: string
+          enum: [carNumber, model]
+          example: "model"
+      - in: query
+        name: keyword
+        description: 검색어
+        schema:
+          type: string
+          example: "K5"
+    responses:
+      "201":
+        description: 차량 목록 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarResponse"
+      "400":
+        description: 잘못된 요청입니다.
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+
+models:
+  get:
+    tags:
+      - Cars
+    summary: 차량 제조사 및 모델 조회
+    description: 등록된 모든 차량 제조사와 모델을 조회합니다.
+    security:
+      - bearerAuth: []
+    responses:
+      "201":
+        description: 제조사 및 모델 리스트 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarModelAPI"
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "500":
+        description: 서버 오류
+
+carId:
+  get:
+    summary: 차량 상세 조회
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: 차량 ID
+        required: true
+        schema:
+          type: integer
+          example: 1
+    responses:
+      "201":
+        description: 차량 상세 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarResponse"
+      "400":
+        description: 잘못된 요청입니다.
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "404":
+        description: 존재하지 않는 차량입니다.
+
+  patch:
+    summary: 차량 정보 수정
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: 차량 ID
+        required: true
+        schema:
+          type: integer
+          example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CarUpdateInput"
+    responses:
+      "201":
+        description: 수정 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarUpdateInput"
+      "400":
+        description: 잘못된 요청
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "404":
+        description: 존재하지 않는 차량입니다.
+
+  delete:
+    summary: 차량 삭제
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: 차량 ID
+        required: true
+        schema:
+          type: integer
+    responses:
+      "204":
+        description: 삭제 성공
+      "404":
+        description: 존재하지 않는 차량입니다.
+
+upload:
+  post:
+    summary: 차량 대용량 파일 업로드 (CSV)
+    tags:
+      - Cars
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file:
+                type: string
+                format: binary
+    responses:
+      "201":
+        description: 업로드 및 등록 성공
+      "400":
+        description: 잘못된 파일 형식 또는 요청
+
+components:
+  schemas:
+    CarCreateInput:
+      type: object
+      properties:
+        carNumber:
+          type: string
+          example: 14가1234
+        manufacturerId:
+          type: integer
+          example: 1
+        modelId:
+          type: integer
+          example: 2
+        companyId:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum: [SEDAN, SUV, TRUCK, VAN]
+          example: SEDAN
+        mileage:
+          type: integer
+          example: 150000
+        price:
+          type: integer
+          example: 10000000
+        accidentCount:
+          type: integer
+          example: 1
+        explanation:
+          type: string
+          example: 차량 정보
+          nullable: true
+        accidentDetails:
+          type: string
+          example: 차량 사고 정보
+          nullable: true
+      required:
+        - carNumber
+        - manufacturerId
+        - modelId
+        - companyId
+        - type
+        - mileage
+        - price
+        - accidentCount
+
+    CarUpdateInput:
+      type: object
+      properties:
+        carNumber:
+          type: string
+          example: 14가1234
+        manufacturerId:
+          type: integer
+          example: 1
+        modelId:
+          type: integer
+          example: 2
+        companyId:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum: [SEDAN, SUV, TRUCK, VAN]
+          example: SEDAN
+        mileage:
+          type: integer
+          example: 150000
+        price:
+          type: integer
+          example: 10000000
+        accidentCount:
+          type: integer
+          example: 1
+        explanation:
+          type: string
+          example: 차량 정보
+          nullable: true
+        accidentDetails:
+          type: string
+          example: 차량 사고 정보
+          nullable: true
+
+    CarResponse:
+      type: object
+      properties:
+        carNumber:
+          type: string
+          example: 14가1234
+        manufacturerId:
+          type: integer
+          example: 1
+        modelId:
+          type: integer
+          example: 2
+        companyId:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum: [SEDAN, SUV, TRUCK, VAN]
+          example: SEDAN
+        mileage:
+          type: integer
+          example: 150000
+        price:
+          type: integer
+          example: 10000000
+        accidentCount:
+          type: integer
+          example: 1
+        explanation:
+          type: string
+          example: 차량 정보
+          nullable: true
+        accidentDetails:
+          type: string
+          example: 차량 사고 정보
+          nullable: true
+        status:
+          type: string
+          enum: [POSSESSION, CONTRACT_PROCEEDING, CONTRACT_COMPLETED]
+          example: POSSESSION
+          nullable: true
+
+    CarModelAPI:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              manufacturer:
+                type: string
+                example: 기아
+              model:
+                type: array
+                items:
+                  type: string
+                example: ["K3", "K5", "K7", "K9", "K8"]
