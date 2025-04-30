@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import dashboardService from "../services/dashboardService";
 
-export const dashboardResult = async (req: Request, res: Response) => {
+export const dashboardController = async (req: Request, res: Response) => {
   const userId = req.user.id;
   if (!userId) {
     throw new UnauthorizedError();
@@ -16,7 +16,7 @@ export const dashboardResult = async (req: Request, res: Response) => {
   if (lastMonthSales === 0) {
     growthRate = monthlySales > 0 ? 1 : 0;
   } else {
-    growthRate = monthlySales / lastMonthSales;
+    growthRate = ((monthlySales - lastMonthSales) / lastMonthSales) * 100;
   }
 
   const proceedingContractsCount = await dashboardService.proceedingContracts(
@@ -38,5 +38,5 @@ export const dashboardResult = async (req: Request, res: Response) => {
     salesByCarType: salesByCarType,
   };
 
-  return result;
+  res.status(200).send(result);
 };
