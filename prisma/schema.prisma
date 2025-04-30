@@ -16,7 +16,6 @@ datasource db {
 model Car {
   id              Int            @id @default(autoincrement())
   carNumber       String         @unique
-  type            CarType
   mileage         Int
   price           Int
   explanation     String?
@@ -27,10 +26,8 @@ model Car {
   updatedAt       DateTime       @updatedAt
   modelId         Int
   model           Models         @relation(fields: [modelId], references: [id])
-  manufacturerId  Int
-  manufacturers   Manufacturers  @relation(fields: [manufacturerId], references: [id])
   companyId       Int
-  company         Company        @relation(fields: [companyId], references: [id])
+  company         Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   contracts Contract[]
 }
@@ -41,7 +38,6 @@ model Manufacturers {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cars   Car[]
   Models Models[]
 }
 
@@ -49,6 +45,7 @@ model Models {
   id        Int      @id @default(autoincrement())
   year      Int
   name      String
+  type      CarType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -72,8 +69,8 @@ model Customer {
   deletedAt     DateTime?
 
   contracts Contract[]
-  Company   Company?   @relation(fields: [companyId], references: [id])
-  companyId Int?
+  Company   Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId Int
 }
 
 model Contract {
@@ -81,6 +78,7 @@ model Contract {
   carId          Int
   customerId     Int
   userId         Int
+  companyId      Int
   status         ContractStatus
   contractPrice  Int
   resolutionDate DateTime?
@@ -89,6 +87,7 @@ model Contract {
   car            Car                @relation(fields: [carId], references: [id])
   customer       Customer           @relation(fields: [customerId], references: [id])
   user           User               @relation(fields: [userId], references: [id])
+  company        Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
   meetings       Meeting[]
   documents      ContractDocument[]
 }
@@ -128,7 +127,7 @@ model User {
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
 
-  company  Company    @relation(fields: [companyId], references: [id])
+  company  Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   Contract Contract[]
 }
 
@@ -142,6 +141,7 @@ model Company {
   customers Customer[]
   users     User[]
   Car       Car[]
+  Contract  Contract[]
 }
 
 model ContractDocument {
