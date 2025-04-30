@@ -44,10 +44,15 @@ export const CustomerController = {
     try {
       const customerId = parseInt(req.params.id);
       const updateData = req.body;
+      const companyId = req.user?.companyId;
+      if (!companyId) {
+        res.status(400).json({ message: "회사 ID가 없습니다." });
+        return;
+      }
       const customer = await CustomerService.patchCustomers(
         customerId,
         updateData,
-        
+        companyId,
       );
       res.status(201).json(customer);
     } catch (err) {
@@ -58,10 +63,23 @@ export const CustomerController = {
   deleteCustomers: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const customerId = parseInt(req.params.id);
-      const customer = await CustomerService.deleteCustomers(customerId);
-      res.status(201).json(customer);
+      const companyId = req.user?.companyId;
+  
+      if (!companyId) {
+        res.status(400).json({ message: "회사 ID가 없습니다." });
+        return;
+      }
+  
+      const deletedCustomer = await CustomerService.deleteCustomers(customerId, companyId);
+  
+      if (!deletedCustomer) {
+        res.status(403).json({ message: "삭제 권한이 없거나 고객이 존재하지 않습니다." });
+        return;
+      }
+  
+      res.status(200).json(deletedCustomer);
     } catch (err) {
-      res.status(500).json({ message: "고객 조회 중 오류 발생", error: err });
+      res.status(500).json({ message: "고객 삭제 중 오류 발생", error: err });
     }
   },
 
@@ -69,13 +87,27 @@ export const CustomerController = {
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ): Promise<void> => {
     try {
       const customerId = parseInt(req.params.id);
-      const customers = await CustomerService.finduniqueCustomers(customerId);
-      res.status(200).json(customers);
+      const companyId = req.user?.companyId;
+  
+      if (!companyId) {
+        res.status(400).json({ message: "회사 ID가 없습니다." });
+        return;
+      }
+  
+      const customer = await CustomerService.finduniqueCustomers(customerId, companyId);
+  
+      if (!customer) {
+        res.status(404).json({ message: "고객을 찾을 수 없습니다." });
+        return;
+      }
+  
+      res.status(200).json(customer);
     } catch (err) {
       res.status(500).json({ message: "고객 조회 중 오류 발생", error: err });
     }
   },
+ 
 };

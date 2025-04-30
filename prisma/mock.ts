@@ -234,7 +234,7 @@ export const customers = [
     contractCount: 5,
     createdAt: new Date("2020-05-10"),
     updatedAt: new Date("2023-03-10"),
-    companyId: null,
+    companyId: 3,
   },
 ];
 
