@@ -1,115 +1,116 @@
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Company, Manufacturers } from "@prisma/client";
 import {
   manufacturers,
   companies,
   users,
+  models,
   cars,
   customers,
   contracts,
   meetings,
-  models,
   alarms,
   contractDocuments,
 } from "./mock";
 
-console.log("Initializing Prisma Client...");
 const prisma = new PrismaClient();
-console.log("Prisma Client initialized.");
 
 async function main() {
   try {
-    console.log("Starting to clear database...");
+    console.log("데이터 초기화 중...");
     await prisma.contractDocument.deleteMany();
     await prisma.alarm.deleteMany();
     await prisma.meeting.deleteMany();
     await prisma.contract.deleteMany();
     await prisma.customer.deleteMany();
     await prisma.car.deleteMany();
+    await prisma.models.deleteMany();
     await prisma.user.deleteMany();
     await prisma.company.deleteMany();
-    console.log("Database cleared.");
+    await prisma.manufacturers.deleteMany();
 
-    console.log("Starting to seed database...");
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE 
+      "Manufacturers", "Company", "User", "Models", "Car", "Customer", 
+      "Contract", "Meeting", "Alarm", "ContractDocument" RESTART IDENTITY CASCADE;`);
 
-    await prisma.manufacturers.createMany({
-      data: manufacturers,
-      skipDuplicates: true,
-    });
-    console.log("Companies seeded.");
+    console.log("데이터 초기화 완료.");
 
-    await prisma.company.createMany({
-      data: companies,
-      skipDuplicates: true,
-    });
-    console.log("Companies seeded.");
+    console.log("시딩 시작");
+    const createdManufacturers: Manufacturers[] = [];
+    for (const manufacturer of manufacturers) {
+      const created = await prisma.manufacturers.create({ data: manufacturer });
+      createdManufacturers.push(created);
+    }
 
-    await prisma.models.createMany({
-      data: models,
-      skipDuplicates: true,
-    });
-    console.log("Cars seeded.");
+    const createdCompanies: Company[] = [];
+    for (const company of companies) {
+      const created = await prisma.company.create({ data: company });
+      createdCompanies.push(created);
+    }
 
     for (const user of users) {
+      const company = createdCompanies.find((c) => c.id === user.companyId);
+      if (!company) throw new Error("not found companyid");
       const hashedPassword = await bcrypt.hash(user.password, 10);
       await prisma.user.create({
         data: {
           ...user,
           password: hashedPassword,
+          companyId: company.id,
         },
       });
     }
 
-    await prisma.car.createMany({
-      data: cars,
-      skipDuplicates: true,
-    });
-    console.log("Cars seeded.");
+    for (const model of models) {
+      const manufacturer = createdManufacturers.find(
+        (m) => m.id === model.manufacturerId
+      );
+      if (!manufacturer) throw new Error("not found manufacturers");
+      await prisma.models.create({
+        data: {
+          ...model,
+          manufacturerId: manufacturer.id,
+        },
+      });
+    }
 
-    await prisma.customer.createMany({
-      data: customers,
-      skipDuplicates: true,
-    });
-    console.log("Customers seeded.");
+    for (const car of cars) {
+      await prisma.car.create({ data: car });
+    }
 
-    await prisma.contract.createMany({
-      data: contracts,
-      skipDuplicates: true,
-    });
-    console.log("Contracts seeded.");
+    for (const customer of customers) {
+      await prisma.customer.create({ data: customer });
+    }
 
-    await prisma.meeting.createMany({
-      data: meetings,
-      skipDuplicates: true,
-    });
-    console.log("Meetings seeded.");
+    for (const contract of contracts) {
+      await prisma.contract.create({ data: contract });
+    }
 
-    await prisma.alarm.createMany({
-      data: alarms,
-      skipDuplicates: true,
-    });
-    console.log("Alarms seeded.");
+    for (const meeting of meetings) {
+      await prisma.meeting.create({ data: meeting });
+    }
 
-    await prisma.contractDocument.createMany({
-      data: contractDocuments,
-      skipDuplicates: true,
-    });
-    console.log("Contract documents seeded.");
+    for (const alarm of alarms) {
+      await prisma.alarm.create({ data: alarm });
+    }
 
-    console.log("Database has been seeded successfully!");
+    for (const contractDocument of contractDocuments) {
+      await prisma.contractDocument.create({ data: contractDocument });
+    }
+
+    console.log("모든 시딩이 성공적으로 완료되었습니다!");
   } catch (error) {
-    console.error("Seeding failed:", error);
+    console.error("시딩실패:", error);
     throw error;
   }
 }
 
 main()
-  .catch((e) => {
-    console.error("Error during seeding:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    console.log("Disconnecting Prisma Client...");
+  .then(async () => {
     await prisma.$disconnect();
-    console.log("Prisma Client disconnected.");
+  })
+  .catch(async (e) => {
+    console.error("예외 발생:", e);
+    await prisma.$disconnect();
+    process.exit(1);
   });
