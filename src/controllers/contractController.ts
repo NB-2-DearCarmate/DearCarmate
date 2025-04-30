@@ -26,7 +26,7 @@ export const getContractList = async (req: Request, res: Response) => {
   };
 
   if (!["customerName", "userName"].includes(searchBy)) {
-    throw new BadRequestError("SearchBy 값을 확인해주세요.")
+    throw new BadRequestError("SearchBy 값을 확인해주세요.");
   }
 
   const user = req.user;

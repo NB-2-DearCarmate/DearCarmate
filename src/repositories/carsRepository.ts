@@ -75,7 +75,9 @@ async function getAllCarModels() {
   const manufacturers = await prisma.manufacturers.findMany({
     include: {
       Models: {
-        select: { name: true },
+        include: {
+          manufacturer: true,
+        },
       },
     },
   });
