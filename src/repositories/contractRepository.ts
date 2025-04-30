@@ -107,13 +107,45 @@ const getUserList = async (companyId: number) => {
 const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) => {
+  const { carId, customerId, userId, status, resolutionDate, contractPrice } =
+    data;
   const createContract = await prisma.contract.create({
-    data: {
-      carId: data.carId,
-      customerId: data.customerId,
-      userId: data.userId,
-      status: data.status,
-      contractPrice: data.contractPrice,
+    data: { carId, customerId, userId, status, resolutionDate, contractPrice },
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: { name: true },
+          },
+        },
+      },
     },
   });
 
@@ -123,7 +155,7 @@ const save = async (
 const getCarId = async (id: number) => {
   const car = await prisma.car.findUnique({ where: { id } });
   if (!car) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
 
   return car;
@@ -143,7 +175,7 @@ const updateCarStatus = async (carId: number) => {
 const getCustomerId = async (id: number) => {
   const customer = await prisma.customer.findUnique({ where: { id } });
   if (!customer) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("고객");
   }
 
   return customer;
@@ -152,7 +184,7 @@ const getCustomerId = async (id: number) => {
 const getUserId = async (id: number) => {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("유저");
   }
 
   return user;
@@ -161,7 +193,7 @@ const getUserId = async (id: number) => {
 const getModelId = async (id: number) => {
   const model = await prisma.models.findUnique({ where: { id } });
   if (!model) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("모델");
   }
 
   return model;
@@ -170,7 +202,7 @@ const getModelId = async (id: number) => {
 const getById = async (id: number) => {
   const contract = await prisma.contract.findUnique({ where: { id } });
   if (!contract) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("계약");
   }
 
   return contract;
@@ -180,6 +212,44 @@ const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
     data,
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return updatedContract;
@@ -206,8 +276,6 @@ const deleteById = async (id: number) => {
 
 export default {
   getContractList,
-  getCarId,
-  getCustomerId,
   save,
   getById,
   update,
@@ -216,7 +284,9 @@ export default {
   getUserId,
   completedCar,
   getModelId,
+  getCustomerId,
   getUserList,
   getCustomerList,
   getCarList,
+  getCarId,
 };

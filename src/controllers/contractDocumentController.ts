@@ -3,7 +3,10 @@ import { create } from "superstruct";
 import { STATIC_PATH } from "../lib/constance";
 import { QueryStruct } from "../validators/CompanyStructs";
 import { SearchByContractDraft } from "../typings/pagination";
-import { ContractDraftItemDto } from "../dto/contractDocument.dto";
+import {
+  ContractDraftItemDto,
+  ContractDocumentListDto,
+} from "../dto/contractDocument.dto";
 import { SaveFileInfo } from "../typings/contrarctDocument";
 import path from "path";
 import BadRequestError from "../errors/BadRequestError";
@@ -16,6 +19,11 @@ export const getAllContractDocumentListHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const user = req.user;
+    if (!user || !user.company || !user.company.id) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+    }
+    const companyId = user.company.id;
     const {
       page = 1,
       pageSize = 10,
@@ -24,13 +32,17 @@ export const getAllContractDocumentListHandler = async (
       searchBy,
     } = create(req.query, QueryStruct);
 
-    const result = await contractDocumentService.contractDocumentList({
+    const requestDto: ContractDocumentListDto = {
       page: Number(page),
       pageSize: Number(pageSize),
       searchBy: searchBy as SearchByContractDraft,
       keyword: keyword as string | undefined,
       orderBy: orderBy as "recent" | "oldest",
-    });
+      companyId,
+    };
+    const result = await contractDocumentService.contractDocumentList(
+      requestDto
+    );
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -43,8 +55,12 @@ export const getContractDraftListHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const user = req.user;
+    if (!user || !user.company) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+    }
     const result: ContractDraftItemDto[] =
-      await contractDocumentService.contractDraftList();
+      await contractDocumentService.contractDraftList(user.company.id);
     res.status(200).json(result);
   } catch (error) {
     next(error);

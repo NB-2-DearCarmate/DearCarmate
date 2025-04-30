@@ -1,3 +1,5 @@
+import { SearchByContract, SearchByContractDraft } from "../typings/pagination";
+
 export interface ContractDraftItemDto {
   id: number;
   data: string;
@@ -18,6 +20,15 @@ export interface ContractDocumentItemDto {
     id: number;
     fileName: string;
   }[];
+}
+
+export interface ContractDocumentListDto {
+  page: number;
+  pageSize: number;
+  keyword?: string;
+  orderBy: "recent" | "oldest";
+  searchBy: SearchByContractDraft;
+  companyId: number;
 }
 
 export interface PageContractDocumentItemDto {

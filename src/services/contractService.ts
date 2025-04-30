@@ -63,16 +63,13 @@ const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
   const updateCarStatus = await contractRepository.updateCarStatus(car.id);
 
-  const customer = await contractRepository.getCustomerId(data.customerId);
-  const model = await contractRepository.getModelId(car.modelId);
-
   const contractData = {
     ...data,
     contractPrice: car.price,
   };
 
   const contract = await contractRepository.save(contractData);
-  return { contract, customer, model };
+  return contract;
 };
 
 // 계약 수정
@@ -96,11 +93,6 @@ const deleteById = async (id: number, userId: number) => {
 };
 
 //외래키 참조
-const getCarId = async (carId: number) => {
-  const car = await contractRepository.getCarId(carId);
-  return car;
-};
-
 const updateCarStatus = async (carId: number) => {
   const createContract = await contractRepository.updateCarStatus(carId);
   return createContract;
@@ -111,33 +103,20 @@ const complectedCar = async (carId: number) => {
   return updatedStatus;
 };
 
-const getCustomerId = async (customerId: number) => {
-  const customer = await contractRepository.getCustomerId(customerId);
-  return customer;
-};
-
 const getUserId = async (userId: number) => {
   const user = await contractRepository.getUserId(userId);
   return user;
 };
 
-const getModelId = async (modelId: number) => {
-  const model = await contractRepository.getModelId(modelId);
-
-  return model;
-};
 
 export default {
   getContractList,
   create,
   update,
   deleteById,
-  getCarId,
-  getCustomerId,
   getUserId,
   updateCarStatus,
   complectedCar,
-  getModelId,
   getCustomerList,
   getCarList,
   getUserList,

@@ -10,8 +10,13 @@ const getAllcontractDocumentList = async ({
   pageSize,
   keyword,
   orderBy,
-}: PaginationParams<SearchByContractDraft>) => {
-  const where = {};
+  companyId,
+}: PaginationParams<SearchByContractDraft> & { companyId: number }) => {
+  const where = {
+    user: {
+      companyId: companyId,
+    },
+  };
   const contracts = await prisma.contract.findMany({
     where,
     skip: (page - 1) * pageSize,
@@ -31,8 +36,13 @@ const getAllcontractDocumentList = async ({
 };
 
 // 계약서 추가 화면에서 계약목록조회
-const getContractList = async () => {
+const getContractList = async (companyId: number) => {
   const contracts = await prisma.contract.findMany({
+    where: {
+      user: {
+        companyId: companyId,
+      },
+    },
     include: {
       customer: true,
       car: { include: { model: true } },

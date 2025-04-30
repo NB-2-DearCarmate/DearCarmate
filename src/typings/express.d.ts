@@ -9,6 +9,7 @@ export interface AuthenticatedUser {
   isAdmin: boolean;
   companyId?: number; 
   company: {
+    id: number;
     companyCode: string;
   };
 }
@@ -24,4 +25,3 @@ declare global {
     }
   }
 }
-

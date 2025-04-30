@@ -80,6 +80,7 @@ export const models = [
   {
     year: 2023,
     name: "K3",
+    type: CarType.SEDAN,
     manufacturerId: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -87,6 +88,7 @@ export const models = [
   {
     year: 2022,
     name: "K5",
+    type: CarType.SEDAN,
     manufacturerId: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -94,6 +96,7 @@ export const models = [
   {
     year: 2024,
     name: "K7",
+    type: CarType.SEDAN,
     manufacturerId: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -101,6 +104,7 @@ export const models = [
   {
     year: 2023,
     name: "K9",
+    type: CarType.SEDAN,
     manufacturerId: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -108,6 +112,7 @@ export const models = [
   {
     year: 2024,
     name: "K8",
+    type: CarType.SEDAN,
     manufacturerId: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -115,6 +120,7 @@ export const models = [
   {
     year: 2023,
     name: "그랜저",
+    type: CarType.SEDAN,
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -122,6 +128,7 @@ export const models = [
   {
     year: 2024,
     name: "아반떼",
+    type: CarType.SEDAN,
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -129,6 +136,7 @@ export const models = [
   {
     year: 2022,
     name: "소나타",
+    type: CarType.SEDAN,
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -136,6 +144,7 @@ export const models = [
   {
     year: 2023,
     name: "투싼",
+    type: CarType.SUV, 
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -143,6 +152,7 @@ export const models = [
   {
     year: 2024,
     name: "베뉴",
+    type: CarType.SUV,
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -152,7 +162,6 @@ export const models = [
 export const cars = [
   {
     carNumber: "111루 3456",
-    type: CarType.SEDAN,
     mileage: 35000,
     price: 22000000,
     explanation: "깨끗한 K5, 무사고 차량입니다.",
@@ -162,12 +171,10 @@ export const cars = [
     createdAt: new Date("2023-04-01"),
     updatedAt: new Date("2023-04-01"),
     modelId: 2,
-    manufacturerId: 1,
     companyId: 1,
   },
   {
     carNumber: "222가 4567",
-    type: CarType.SUV,
     mileage: 50000,
     price: 27000000,
     explanation: "견고하고 넓은 SUV, 가족용으로 적합합니다.",
@@ -177,12 +184,10 @@ export const cars = [
     createdAt: new Date("2023-05-15"),
     updatedAt: new Date("2023-05-15"),
     modelId: 9,
-    manufacturerId: 2,
     companyId: 2,
   },
   {
     carNumber: "222가 6457",
-    type: CarType.SEDAN,
     mileage: 50000,
     price: 27000000,
     explanation: "견고하고 넓은 , 가족용으로 적합합니다.",
@@ -192,7 +197,6 @@ export const cars = [
     createdAt: new Date("2023-05-15"),
     updatedAt: new Date("2023-05-15"),
     modelId: 4,
-    manufacturerId: 1,
     companyId: 3,
   },
 ];
@@ -243,6 +247,7 @@ export const contracts = [
     carId: 1,
     customerId: 1,
     userId: 1,
+    companyId: 1,
     status: ContractStatus.CARINSPECTION,
     contractPrice: 20000000,
     createdAt: new Date("2023-01-15"),
@@ -252,6 +257,7 @@ export const contracts = [
     carId: 2,
     customerId: 2,
     userId: 2,
+    companyId: 2,
     status: ContractStatus.PRICENEGOTIATION,
     contractPrice: 15000000,
     createdAt: new Date("2023-01-20"),
@@ -261,6 +267,7 @@ export const contracts = [
     carId: 3,
     customerId: 3,
     userId: 3,
+    companyId: 3,
     status: ContractStatus.CONTRACTSUCCESSFUL,
     contractPrice: 25000000,
     createdAt: new Date("2023-03-01"),
