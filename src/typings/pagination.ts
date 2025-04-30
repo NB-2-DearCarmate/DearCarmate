@@ -1,6 +1,7 @@
 export type SearchByCompany = "companyName" | "companyId";
 export type SearchByUser = "name" | "email";
 export type SearchByContract = "contractTitle" | "customerName";
+export type SearchByCompanyUsers = "name" | "email" | "companyName";
 export type SearchByCar = "carNumber" | "model";
 export type SearchByContractDraft =
   | "contractName"
