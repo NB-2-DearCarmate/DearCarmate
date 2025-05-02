@@ -84,6 +84,24 @@ export const CustomerService = {
   
     return customer;
   }, 
- 
+  bulkCreateCustomers: async (dataList: any[], companyId: number) => {
+    const customersToCreate = dataList.map((row) => ({
+      name: row.name,
+      email: row.email,
+      gender: row.gender as "MALE" | "FEMALE",
+      phoneNumber: row.phoneNumber,
+      ageGroup: row.ageGroup,
+      region: row.region,
+      memo: row.memo || "",
+      contractCount: 0,
+      companyId,
+    }));
+  
+    return await prisma.customer.createMany({
+      data: customersToCreate,
+      skipDuplicates: true, // 중복 이메일 무시
+    });
+  },
+  
 
 };

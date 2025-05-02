@@ -3,11 +3,18 @@ import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";
 import { CustomerQueryStruct } from "../validators/CustomerStructs";
 import { CustomerService } from "../services/customersService";
+import csv from "csv-parser";
+import fs from "fs"; 
+import multer from "multer"; 
+import path from "path"; 
+import { AuthenticatedUserRequest } from "../typings/express";
+
+const upload = multer({ dest: "uploads/" });
 
 // 고객 등록, 조회
 export const CustomerController = {
   // 고객 생성
-  createCustomer: async (req: Request, res: Response, next: NextFunction) => {
+  createCustomer: async (req: AuthenticatedUserRequest, res: Response, next: NextFunction) => {
     try {
       const customer = await CustomerService.createCustomer(req.body);
       res.status(201).json(customer);
@@ -17,7 +24,7 @@ export const CustomerController = {
   },
 
   // 고객 전체 조회
-  getCustomers: async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
+  getCustomers: async (req: AuthenticatedUserRequest, res: Response, next: NextFunction) : Promise<void> => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -40,7 +47,7 @@ export const CustomerController = {
     }
   },
 
-  patchCustomers: async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
+  patchCustomers: async (req: AuthenticatedUserRequest, res: Response, next: NextFunction) : Promise<void> => {
     try {
       const customerId = parseInt(req.params.id);
       const updateData = req.body;
@@ -60,7 +67,7 @@ export const CustomerController = {
     }
   },
 
-  deleteCustomers: async (req: Request, res: Response, next: NextFunction) => {
+  deleteCustomers: async (req: AuthenticatedUserRequest, res: Response, next: NextFunction) => {
     try {
       const customerId = parseInt(req.params.id);
       const companyId = req.user?.companyId;
@@ -84,7 +91,7 @@ export const CustomerController = {
   },
 
   finduniqueCustomers: async (
-    req: Request,
+    req: AuthenticatedUserRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -108,6 +115,36 @@ export const CustomerController = {
     } catch (err) {
       res.status(500).json({ message: "고객 조회 중 오류 발생", error: err });
     }
-  },
- 
-};
+  }, 
+
+  uploadCustomers: [
+    upload.single("file"),
+    async (req: AuthenticatedUserRequest & { file?: Express.Multer.File }, res: Response, next: NextFunction) => {
+      const companyId = req.user?.companyId;
+      if (!companyId) {
+        return res.status(400).json({ message: "회사 ID가 필요합니다." });
+      }
+      if (!req.file) {
+        return res.status(400).json({ message: "CSV 파일이 필요합니다." });
+      }
+  
+      const results: any[] = [];
+      const filePath = path.resolve(req.file.path);
+  
+      fs.createReadStream(filePath)
+        .pipe(csv())
+        .on("data", (data) => results.push(data))
+        .on("end", async () => {
+          try {
+            const result = await CustomerService.bulkCreateCustomers(results, companyId);
+            fs.unlinkSync(filePath); // 파일 삭제
+            res.status(201).json({ message: "고객 대량 등록 완료", count: result.count });
+          } catch (err) {
+            fs.unlinkSync(filePath); // 에러 시에도 삭제
+            next(err);
+          }
+        });
+    },
+  ], 
+  
+}; 
