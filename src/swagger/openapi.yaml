@@ -24,3 +24,11 @@ paths:
     $ref: "./contractDocument.swagger.yaml#/upload"
   /contractDocuments/{contractDocumentId}/download:
     $ref: "./contractDocument.swagger.yaml#/contractDocumentId/download"
+
+  # 차량
+  /cars:
+    $ref: "./car.swagger.yaml#/cars"
+  /cars/{carId}:
+    $ref: "./car.swagger.yaml#/carId"
+  /cars/upload:
+    $ref: "./car.swagger.yaml#/upload"

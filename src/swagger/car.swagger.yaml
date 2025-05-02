@@ -202,19 +202,12 @@ components:
         carNumber:
           type: string
           example: 14가1234
-        manufacturerId:
-          type: integer
-          example: 1
         modelId:
           type: integer
           example: 2
         companyId:
           type: integer
           example: 1
-        type:
-          type: string
-          enum: [SEDAN, SUV, TRUCK, VAN]
-          example: SEDAN
         mileage:
           type: integer
           example: 150000
@@ -234,10 +227,8 @@ components:
           nullable: true
       required:
         - carNumber
-        - manufacturerId
         - modelId
         - companyId
-        - type
         - mileage
         - price
         - accidentCount
@@ -248,19 +239,12 @@ components:
         carNumber:
           type: string
           example: 14가1234
-        manufacturerId:
-          type: integer
-          example: 1
         modelId:
           type: integer
           example: 2
         companyId:
           type: integer
           example: 1
-        type:
-          type: string
-          enum: [SEDAN, SUV, TRUCK, VAN]
-          example: SEDAN
         mileage:
           type: integer
           example: 150000
@@ -285,19 +269,12 @@ components:
         carNumber:
           type: string
           example: 14가1234
-        manufacturerId:
-          type: integer
-          example: 1
         modelId:
           type: integer
           example: 2
         companyId:
           type: integer
           example: 1
-        type:
-          type: string
-          enum: [SEDAN, SUV, TRUCK, VAN]
-          example: SEDAN
         mileage:
           type: integer
           example: 150000
