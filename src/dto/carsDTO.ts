@@ -1,4 +1,4 @@
-import { VehicleStatus } from "@prisma/client";
+import { CarStatus } from "@prisma/client";
 import { CarResponse } from "../typings/car";
 
 //차량 생성
@@ -11,7 +11,7 @@ export type CreateCarDTO = {
   accidentCount: number;
   explanation: string | null;
   accidentDetails: string | null;
-  status: VehicleStatus | null;
+  status: CarStatus | null;
 };
 
 export type CreateCarResponseDTO = {
@@ -24,7 +24,7 @@ export type CreateCarResponseDTO = {
   accidentCount: number;
   explanation: string | null;
   accidentDetails: string | null;
-  status: VehicleStatus | null;
+  status: CarStatus | null;
 };
 
 //차량 목록 조회
