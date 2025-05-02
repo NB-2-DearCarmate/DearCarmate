@@ -180,15 +180,17 @@ export const createContract = async (req: Request, res: Response) => {
 
 //계약 수정
 export const updateContract = async (req: Request, res: Response) => {
-  const { meetings, ...contractData } = req.body;
-  const user = req.user;
+  const {
+    meetings,
+    contractDocumentIdsToAdd,
+    contractDocumentIdsToRemove,
+    ...contractData
+  } = req.body;
 
-  if (!user) {
-    throw new UnauthorizedError();
-  }
+  const user = req.user;
+  if (!user) throw new UnauthorizedError();
 
   const userId = user.id;
-
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
   const parsedMeeting = create(meetings, updateMeetings);
@@ -199,12 +201,18 @@ export const updateContract = async (req: Request, res: Response) => {
   ) {
     throw new BadRequestError("계약 일자는 필수값입니다.");
   }
+
   const meetingResult = parsedMeeting
     ? await meetingService.updateMeetings(id, parsedMeeting)
     : [];
 
   const updatedContract = await contractService.update(id, userId, parsedData);
-
+  const updatedDocument = await contractService.updateContractDocuments(
+    id,
+    contractDocumentIdsToAdd,
+    contractDocumentIdsToRemove
+  );
+  
   if (updatedContract.status === "CONTRACTSUCCESSFUL") {
     await contractService.complectedCar(updatedContract.car.id);
   } else if (updatedContract.status === "CONTRACTFAILED") {

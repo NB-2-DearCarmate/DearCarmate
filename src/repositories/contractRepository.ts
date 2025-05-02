@@ -271,6 +271,44 @@ const update = async (id: number, data: Partial<ContractType>) => {
   return updatedContract;
 };
 
+const verifyDocumentsExist = async (documentIds: number[]) => {
+  const found = await prisma.contractDocument.findMany({
+    where: {
+      id: { in: documentIds },
+    },
+    select: { id: true },
+  });
+
+  const foundIds = new Set(found.map((doc) => doc.id));
+  const missingIds = documentIds.filter((id) => !foundIds.has(id));
+
+  if (missingIds.length > 0) {
+    throw new NotFoundError("계약서");
+  }
+};
+
+const addDocuments = async (contractId: number, documentIds: number[]) => {
+  return await prisma.contract.update({
+    where: { id: contractId },
+    data: {
+      documents: {
+        connect: documentIds.map((id) => ({ id })),
+      },
+    },
+  });
+};
+
+const removeDocuments = async (contractId: number, documentIds: number[]) => {
+  return await prisma.contract.update({
+    where: { id: contractId },
+    data: {
+      documents: {
+        disconnect: documentIds.map((id) => ({ id })),
+      },
+    },
+  });
+};
+
 const completedCar = async (carId: number) => {
   const updateStatus = await prisma.car.update({
     where: { id: carId },
@@ -317,4 +355,7 @@ export default {
   getCarList,
   getCarId,
   failedCar,
+  addDocuments,
+  removeDocuments,
+  verifyDocumentsExist,
 };

@@ -90,7 +90,28 @@ const update = async (id: number, userId: number, data: UpdateContract) => {
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 수정이 가능합니다.");
   }
+
   return await contractRepository.update(id, data);
+};
+
+// 계약서 업로드
+const updateContractDocuments = async (
+  contractId: number,
+  toAdd: number[] = [],
+  toRemove: number[] = []
+) => {
+  const getDocument = await contractRepository.verifyDocumentsExist([
+    ...toAdd,
+    ...toRemove,
+  ]);
+
+  if (toAdd?.length > 0) {
+    await contractRepository.addDocuments(contractId, toAdd);
+  }
+
+  if (toRemove?.length > 0) {
+    await contractRepository.removeDocuments(contractId, toRemove);
+  }
 };
 
 // 계약 삭제
@@ -100,6 +121,7 @@ const deleteById = async (id: number, userId: number) => {
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 삭제가 가능합니다.");
   }
+
   return await contractRepository.deleteById(id);
 };
 
@@ -135,5 +157,6 @@ export default {
   getCustomerList,
   getCarList,
   getUserList,
-  failedCar
+  failedCar,
+  updateContractDocuments,
 };
