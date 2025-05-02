@@ -1,3 +1,4 @@
+import BadRequestError from "../errors/BadRequestError";
 import ForbiddenError from "../errors/ForbiddenError";
 import contractRepository from "../repositories/contractRepository";
 import {
@@ -64,6 +65,10 @@ const getUserList = async (userId: number) => {
 // 계약 생성
 const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
+  if (car.status !== "POSSESSION") {
+    throw new BadRequestError("현재 계약 진행 중인 차량입니다.");
+  }
+
   const updateCarStatus = await contractRepository.updateCarStatus(car.id);
   const user = await contractRepository.getUserId(data.userId);
   const companyId = user.companyId;
