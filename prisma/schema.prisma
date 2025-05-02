@@ -14,20 +14,20 @@ datasource db {
 }
 
 model Car {
-  id              Int            @id @default(autoincrement())
-  carNumber       String         @unique
+  id              Int        @id @default(autoincrement())
+  carNumber       String     @unique
   mileage         Int
   price           Int
   explanation     String?
   accidentCount   Int
   accidentDetails String?
-  status          VehicleStatus?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  status          CarStatus?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
   modelId         Int
-  model           Models         @relation(fields: [modelId], references: [id])
+  model           Models     @relation(fields: [modelId], references: [id])
   companyId       Int
-  company         Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company         Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   contracts Contract[]
 }
@@ -74,7 +74,7 @@ model Customer {
 }
 
 model Contract {
-  id             Int                 @id @default(autoincrement())
+  id             Int                @id @default(autoincrement())
   carId          Int
   customerId     Int
   userId         Int
@@ -163,8 +163,8 @@ enum CarType {
 }
 
 enum GenderType {
-  MALE
-  FEMALE
+  male
+  female
 }
 
 enum AgeGroup {
@@ -198,16 +198,16 @@ enum Region {
   JEJU
 }
 
-enum VehicleStatus {
-  POSSESSION
-  CONTRACT_PROCEEDING
-  CONTRACT_COMPLETED
+enum CarStatus {
+  possession
+  contractProceeding
+  contractCompleted
 }
 
 enum ContractStatus {
-  CARINSPECTION
-  PRICENEGOTIATION
-  CONTRACTDRAFT
-  CONTRACTSUCCESSFUL
-  CONTRACTFAILED
+  carInspection
+  priceNegotiation
+  contractDraft
+  contractSuccessful
+  contractFailed
 }

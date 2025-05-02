@@ -196,7 +196,7 @@ export const updateContract = async (req: Request, res: Response) => {
   const parsedMeeting = create(meetings, updateMeetings);
 
   if (
-    parsedData.status === "CONTRACTSUCCESSFUL" &&
+    parsedData.status === "contractSuccessful" &&
     !parsedData.resolutionDate
   ) {
     throw new BadRequestError("계약 일자는 필수값입니다.");
@@ -213,9 +213,9 @@ export const updateContract = async (req: Request, res: Response) => {
     contractDocumentIdsToRemove
   );
   
-  if (updatedContract.status === "CONTRACTSUCCESSFUL") {
+  if (updatedContract.status === "contractSuccessful") {
     await contractService.complectedCar(updatedContract.car.id);
-  } else if (updatedContract.status === "CONTRACTFAILED") {
+  } else if (updatedContract.status === "contractFailed") {
     await contractService.failedCar(updatedContract.car.id);
   }
 

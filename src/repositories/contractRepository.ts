@@ -72,7 +72,7 @@ const getCustomerList = async (companyId: number) => {
 
 const getCarList = async (companyId: number) => {
   const carList = await prisma.car.findMany({
-    where: { companyId, status: "POSSESSION" },
+    where: { companyId, status: "possession" },
     select: {
       id: true,
       carNumber: true,
@@ -181,7 +181,7 @@ const updateCarStatus = async (carId: number) => {
   const createContract = await prisma.car.update({
     where: { id: carId },
     data: {
-      status: "CONTRACT_PROCEEDING",
+      status: "contractProceeding",
     },
   });
 
@@ -313,7 +313,7 @@ const completedCar = async (carId: number) => {
   const updateStatus = await prisma.car.update({
     where: { id: carId },
     data: {
-      status: "CONTRACT_COMPLETED",
+      status: "contractCompleted",
     },
   });
 
@@ -324,7 +324,7 @@ const failedCar = async (carId: number) => {
   const updateStatus = await prisma.car.update({
     where: { id: carId },
     data: {
-      status: "POSSESSION",
+      status: "possession",
     },
   });
 

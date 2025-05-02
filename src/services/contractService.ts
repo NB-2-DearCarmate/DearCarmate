@@ -65,7 +65,7 @@ const getUserList = async (userId: number) => {
 // 계약 생성
 const create = async (data: CreateContract) => {
   const car = await contractRepository.getCarId(data.carId);
-  if (car.status !== "POSSESSION") {
+  if (car.status !== "possession") {
     throw new BadRequestError("현재 계약 진행 중인 차량입니다.");
   }
 
