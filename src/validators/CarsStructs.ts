@@ -23,11 +23,11 @@ export const CarStruct = object({
   accidentDetails: nonempty(string()),
   status: defaulted(
     union([
-      literal("POSSESSION"),
-      literal("CONTRACT_PROCEEDING"),
-      literal("CONTRACT_COMPLETED"),
+      literal("possession"),
+      literal("contractProceeding"),
+      literal("contractCompleted"),
     ]),
-    "POSSESSION"
+    "possession"
   ),
 });
 export const CarQueryStruct = object({

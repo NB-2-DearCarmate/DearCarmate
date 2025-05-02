@@ -4,7 +4,7 @@ import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
-import { Customer } from "@prisma/client"; 
+import { Customer } from "@prisma/client";
 
 interface CustomerRecord {
   name: string;
@@ -15,7 +15,7 @@ interface CustomerRecord {
   email?: string;
   memo?: string;
   companyId: number; // 유저의 회사 ID (요구사항: 유저의 회사에 등록)
-}  
+}
 
 // 고객객
 export const CustomerService = {
@@ -48,15 +48,19 @@ export const CustomerService = {
       orderBy: { createdAt: "asc" },
     });
   },
-  patchCustomers: async (id: number, data: Partial<Customer>, companyId: number) => {
+  patchCustomers: async (
+    id: number,
+    data: Partial<Customer>,
+    companyId: number
+  ) => {
     const customer = await prisma.customer.findUnique({
       where: { id },
     });
-  
+
     if (!customer || customer.companyId !== companyId) {
       throw new Error("수정 권한이 없습니다.");
     }
-  
+
     return await CustomerRepository.update(id, data);
   },
 
@@ -64,11 +68,11 @@ export const CustomerService = {
     const customer = await prisma.customer.findUnique({
       where: { id },
     });
-  
+
     if (!customer || customer.companyId !== companyId) {
       return null;
     }
-  
+
     return await CustomerRepository.delete(id);
   },
 
@@ -76,19 +80,19 @@ export const CustomerService = {
     const customer = await prisma.customer.findUnique({
       where: { id },
     });
-  
+
     // 다른 회사 고객이면 null 반환
     if (!customer || customer.companyId !== companyId) {
       return null;
     }
-  
+
     return customer;
-  }, 
+  },
   bulkCreateCustomers: async (dataList: any[], companyId: number) => {
     const customersToCreate = dataList.map((row) => ({
       name: row.name,
       email: row.email,
-      gender: row.gender as "MALE" | "FEMALE",
+      gender: row.gender as "male" | "female",
       phoneNumber: row.phoneNumber,
       ageGroup: row.ageGroup,
       region: row.region,
@@ -96,12 +100,10 @@ export const CustomerService = {
       contractCount: 0,
       companyId,
     }));
-  
+
     return await prisma.customer.createMany({
       data: customersToCreate,
       skipDuplicates: true, // 중복 이메일 무시
     });
   },
-  
-
 };

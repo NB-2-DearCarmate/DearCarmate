@@ -23,7 +23,7 @@ const getMonthcompleted = async (companyId: number) => {
   const thisMonth = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "CONTRACTSUCCESSFUL",
+      status: "contractSuccessful",
       resolutionDate: {
         gte: startOfLastMonth,
         lt: startOfThisMonth,
@@ -49,7 +49,7 @@ const getLastCompleted = async (companyId: number) => {
   const lastMonth = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "CONTRACTSUCCESSFUL",
+      status: "contractSuccessful",
       resolutionDate: {
         gte: startOfLastMonth,
         lt: startOfThisMonth,
@@ -71,7 +71,7 @@ const proceedingContract = async (companyId: number) => {
   const contractCount = await prisma.contract.count({
     where: {
       companyId,
-      status: { in: ["CARINSPECTION", "CONTRACTDRAFT", "PRICENEGOTIATION"] },
+      status: { in: ["carInspection", "contractDraft", "priceNegotiation"] },
     },
   });
 
@@ -82,7 +82,7 @@ const completedContract = async (companyId: number) => {
   const cotractCount = await prisma.contract.count({
     where: {
       companyId,
-      status: "CONTRACTSUCCESSFUL",
+      status: "contractSuccessful",
     },
   });
 
@@ -93,7 +93,7 @@ const getCompletedCarType = async (companyId: number) => {
   const carType = await prisma.car.findMany({
     where: {
       companyId,
-      status: "CONTRACT_COMPLETED",
+      status: "contractCompleted",
     },
     select: {
       model: true,
@@ -119,7 +119,7 @@ const getCompletedCarType = async (companyId: number) => {
 
 const getSaleCarType = async (companyId: number) => {
   const carType = await prisma.car.findMany({
-    where: { companyId, status: "POSSESSION" },
+    where: { companyId, status: "possession" },
     select: { model: true },
   });
 

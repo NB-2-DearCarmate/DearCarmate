@@ -20,10 +20,14 @@ import BadRequestError from "../errors/BadRequestError";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
-  const { searchBy = "customerName", keyword = "" } = req.query as {
+  const { searchBy = "customerName", keyword = "김민수" } = req.query as {
     searchBy?: "customerName" | "userName";
     keyword?: string;
   };
+
+  if (!keyword || keyword.trim() === "") {
+    throw new Error("검색어를 입력해주세요.");
+  }
 
   if (!["customerName", "userName"].includes(searchBy)) {
     throw new BadRequestError("SearchBy 값을 확인해주세요.");
@@ -196,7 +200,7 @@ export const updateContract = async (req: Request, res: Response) => {
   const parsedMeeting = create(meetings, updateMeetings);
 
   if (
-    parsedData.status === "CONTRACTSUCCESSFUL" &&
+    parsedData.status === "contractSuccessful" &&
     !parsedData.resolutionDate
   ) {
     throw new BadRequestError("계약 일자는 필수값입니다.");
@@ -212,10 +216,10 @@ export const updateContract = async (req: Request, res: Response) => {
     contractDocumentIdsToAdd,
     contractDocumentIdsToRemove
   );
-  
-  if (updatedContract.status === "CONTRACTSUCCESSFUL") {
+
+  if (updatedContract.status === "contractSuccessful") {
     await contractService.complectedCar(updatedContract.car.id);
-  } else if (updatedContract.status === "CONTRACTFAILED") {
+  } else if (updatedContract.status === "contractFailed") {
     await contractService.failedCar(updatedContract.car.id);
   }
 

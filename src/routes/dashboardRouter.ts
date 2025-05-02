@@ -5,6 +5,6 @@ import { asyncHandler } from "../lib/asyncHandler";
 
 const dashboardRouter = Router();
 
-dashboardRouter.get("/", authMiddleware, asyncHandler(dashboardController));
+dashboardRouter.get("", authMiddleware, asyncHandler(dashboardController));
 
 export default dashboardRouter;

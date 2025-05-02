@@ -53,9 +53,9 @@ export const getCarList = async (
     page,
     pageSize,
     status: status as
-      | "POSSESSION"
-      | "CONTRACT_PROCEEDING"
-      | "CONTRACT_COMPLETED",
+      | "possession"
+      | "contract_proceeding"
+      | "contract_completed",
     orderBy: orderBy as "recent" | "oldest",
     searchBy: searchBy as SearchByCar,
     keyword: keyword as string,
