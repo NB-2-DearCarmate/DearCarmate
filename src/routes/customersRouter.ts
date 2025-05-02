@@ -1,12 +1,20 @@
 import { Router } from "express";
 import { CustomerController 
 } from "../controllers/customersController";
+import authMiddleware from "../middlewares/authMiddleware"; 
+import { RequestHandler } from 'express';
 
-const router = Router();
+const router = Router();  
 
-router.post("/", CustomerController.createCustomer);
-router.get("/", CustomerController.getCustomers);
-router.get("/:id", CustomerController.finduniqueCustomers);
-router.patch("/:id",CustomerController.patchCustomers);
-router.delete("/:id",CustomerController.deleteCustomers);
+ 
+router.post("/",authMiddleware, CustomerController.createCustomer);
+router.get("/",authMiddleware, CustomerController.getCustomers);
+router.get("/:id", authMiddleware,CustomerController.finduniqueCustomers);
+router.patch("/:id",authMiddleware,CustomerController.patchCustomers);
+router.delete("/:id",authMiddleware,CustomerController.deleteCustomers);
+router.post(
+  "/upload",
+  authMiddleware,
+  CustomerController.uploadCustomers as unknown as RequestHandler
+);
 export default router;

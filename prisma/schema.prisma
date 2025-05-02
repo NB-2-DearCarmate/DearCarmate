@@ -74,7 +74,7 @@ model Customer {
 }
 
 model Contract {
-  id             Int                @id @default(autoincrement())
+  id             Int                 @id @default(autoincrement())
   carId          Int
   customerId     Int
   userId         Int

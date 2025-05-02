@@ -2,7 +2,7 @@ import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination";
-import { Customer } from "@prisma/client";
+import { Customer } from "@prisma/client"; 
 
 export const CustomerRepository = {
   create: async (data: any) => {
@@ -30,5 +30,5 @@ export const CustomerRepository = {
     return prisma.customer.findUnique({
       where: { id },
     });
-  },
+  },  
 };
