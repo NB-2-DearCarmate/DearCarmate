@@ -4,10 +4,8 @@ export type CarType = "SEDAN" | "COMPACT" | "SUV";
 
 export interface Car {
   carNumber: string;
-  manufacturerId: number;
   modelId: number;
   companyId: number;
-  type: CarType;
   mileage: number;
   price: number;
   accidentCount: number;

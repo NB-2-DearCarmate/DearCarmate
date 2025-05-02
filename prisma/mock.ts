@@ -144,7 +144,7 @@ export const models = [
   {
     year: 2023,
     name: "투싼",
-    type: CarType.SUV, 
+    type: CarType.SUV,
     manufacturerId: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
