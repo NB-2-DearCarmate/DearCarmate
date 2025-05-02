@@ -282,6 +282,17 @@ const completedCar = async (carId: number) => {
   return updateStatus;
 };
 
+const failedCar = async (carId: number) => {
+  const updateStatus = await prisma.car.update({
+    where: { id: carId },
+    data: {
+      status: "POSSESSION",
+    },
+  });
+
+  return updateStatus;
+};
+
 const deleteById = async (id: number) => {
   const contract = await prisma.contract.delete({
     where: { id },
@@ -305,4 +316,5 @@ export default {
   getCustomerList,
   getCarList,
   getCarId,
+  failedCar,
 };

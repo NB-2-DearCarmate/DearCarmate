@@ -114,6 +114,11 @@ const complectedCar = async (carId: number) => {
   return updatedStatus;
 };
 
+const failedCar = async (carId: number) => {
+  const updatedStatus = await contractRepository.failedCar(carId);
+  return updatedStatus;
+};
+
 const getUserId = async (userId: number) => {
   const user = await contractRepository.getUserId(userId);
   return user;
@@ -130,4 +135,5 @@ export default {
   getCustomerList,
   getCarList,
   getUserList,
+  failedCar
 };

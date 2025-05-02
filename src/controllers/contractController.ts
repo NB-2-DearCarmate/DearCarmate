@@ -207,6 +207,8 @@ export const updateContract = async (req: Request, res: Response) => {
 
   if (updatedContract.status === "CONTRACTSUCCESSFUL") {
     await contractService.complectedCar(updatedContract.car.id);
+  } else if (updatedContract.status === "CONTRACTFAILED") {
+    await contractService.failedCar(updatedContract.car.id);
   }
 
   const updatedContractResult: UpdateContractResponseDTO = {
