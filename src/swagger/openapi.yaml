@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: DearCarmate 프로젝트 - API 문서
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3001
 
 paths:
   # 회사
@@ -24,3 +24,11 @@ paths:
     $ref: "./contractDocument.swagger.yaml#/upload"
   /contractDocuments/{contractDocumentId}/download:
     $ref: "./contractDocument.swagger.yaml#/contractDocumentId/download"
+
+  # 차량
+  /cars:
+    $ref: "./car.swagger.yaml#/cars"
+  /cars/{carId}:
+    $ref: "./car.swagger.yaml#/carId"
+  /cars/upload:
+    $ref: "./car.swagger.yaml#/upload"
