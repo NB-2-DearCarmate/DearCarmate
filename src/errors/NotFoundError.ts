@@ -1,6 +1,6 @@
 class NotFoundError extends Error {
-  constructor(id: number) {
-    super(`해당 ${id}를 찾을 수 없습니다.`);
+  constructor(entityName: string) {
+    super(`존재하지 않는 ${entityName}입니다.`);
     this.name = "NotFoundError";
   }
 }

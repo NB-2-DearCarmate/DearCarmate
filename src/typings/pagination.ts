@@ -1,6 +1,7 @@
 export type SearchByCompany = "companyName" | "companyId";
 export type SearchByUser = "name" | "email";
 export type SearchByContract = "contractTitle" | "customerName";
+export type SearchByCompanyUsers = "name" | "email" | "companyName";
 export type SearchByCar = "carNumber" | "model";
 export type SearchByContractDraft =
   | "contractName"
@@ -37,5 +38,5 @@ export interface CursorPaginationResultWithTotal<T>
 export interface UserWithCompany {}
 
 export type CarPaginationParams = PaginationParams<SearchByCar> & {
-  status?: "POSSESSION" | "CONTRACT_PROCEEDING" | "CONTRACT_COMPLETED";
+  status?: "possession" | "contract_proceeding" | "contract_completed";
 };

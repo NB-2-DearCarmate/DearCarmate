@@ -14,23 +14,20 @@ import {
 
 export const CarStruct = object({
   carNumber: nonempty(string()),
-  manufacturerId: min(number(), 1),
   modelId: min(number(), 1),
   companyId: min(number(), 1),
-  type: union([literal("SEDAN"), literal("COMPACT"), literal("SUV")]),
   mileage: min(number(), 0),
   price: min(number(), 0),
   accidentCount: min(number(), 0),
   explanation: nonempty(string()),
   accidentDetails: nonempty(string()),
-
   status: defaulted(
     union([
-      literal("POSSESSION"),
-      literal("CONTRACT_PROCEEDING"),
-      literal("CONTRACT_COMPLETED"),
+      literal("possession"),
+      literal("contractProceeding"),
+      literal("contractCompleted"),
     ]),
-    "POSSESSION"
+    "possession"
   ),
 });
 export const CarQueryStruct = object({

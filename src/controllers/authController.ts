@@ -39,7 +39,7 @@ export const login: RequestHandler<{}, any, LoginRequestBody> = async (
     return;
   }
 
-  const accessToken = generateAccessToken(user.id);
+  const accessToken = generateAccessToken(user.id, user.companyId);
   const refreshToken = generateRefreshToken(user.id);
 
   res.status(200).json({
@@ -90,7 +90,7 @@ export const refreshToken: RequestHandler<
       return;
     }
 
-    const newAccessToken = generateAccessToken(user.id);
+    const newAccessToken = generateAccessToken(user.id, user.companyId);
     const newRefreshToken = generateRefreshToken(user.id);
 
     res.status(200).json({

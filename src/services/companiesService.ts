@@ -1,6 +1,10 @@
 import companiesRepo from "../repositories/companiesRepository";
 import * as usersRepo from "../repositories/usersRepository";
-import { PaginationParams, SearchByCompany } from "../typings/pagination";
+import {
+  PaginationParams,
+  SearchByCompany,
+  SearchByCompanyUsers,
+} from "../typings/pagination";
 import { UserWhereInput } from "../typings/user";
 import { GetAllCompaniesResponse } from "../typings/company";
 import { Company } from "@prisma/client";
@@ -20,7 +24,7 @@ export const registerCompany = async (
   const newCompany = await companiesRepo.createCompany(data);
 
   if (!newCompany) {
-    throw new BadRequestError("회사생성 실패 했습니다.");
+    throw new BadRequestError("잘못된 요청입니다.");
   }
   const userCount = await companiesRepo.getUserCount(newCompany.id);
   return {
@@ -76,25 +80,21 @@ export const getUserByCompanies = async ({
   orderBy,
   searchBy,
   keyword,
-}: {
-  page: number;
-  pageSize: number;
-  orderBy: "recent" | "oldest";
-  searchBy?: "name" | "email" | "companyName";
-  keyword?: string;
-}) => {
+}: PaginationParams<SearchByCompanyUsers>) => {
   const where: UserWhereInput = {};
 
-  if (keyword && searchBy === "companyName") {
-    where.company = {
-      companyName: {
-        contains: keyword,
-      },
-    };
-  } else if (keyword && (searchBy === "name" || searchBy === "email")) {
-    where[searchBy] = {
-      contains: keyword,
-    };
+  if (keyword && searchBy) {
+    switch (searchBy) {
+      case "name":
+        where.name = { contains: keyword };
+        break;
+      case "email":
+        where.email = { contains: keyword };
+        break;
+      case "companyName":
+        where.company = { companyName: { contains: keyword } };
+        break;
+    }
   }
 
   const order = orderBy === "oldest" ? "asc" : "desc";
@@ -129,7 +129,7 @@ export const updatedCompany = async (
   data: UpdateCompany
 ): Promise<UpdateCompany> => {
   if (!id || id <= 0) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("회사");
   }
   if (!data.companyCode?.trim() || !data.companyName?.trim()) {
     throw new BadRequestError("필수 입력 값이 없습니다.");
@@ -142,7 +142,7 @@ export const updatedCompany = async (
 // 삭제
 export const deleteCompany = async (id: number): Promise<Company> => {
   if (!id || id <= 0) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("회사");
   }
 
   const deleteCompany = await companiesRepo.removeCompany(id);

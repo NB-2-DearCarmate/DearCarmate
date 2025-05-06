@@ -17,10 +17,11 @@ export type ContractList = {
 export const CONTRACT_STATUS_VALUES = Object.values(PrismaContractStatus);
 
 export const CONTRACT_STATUS_ORDER: ContractStatus[] = [
-  PrismaContractStatus.CARINSPECTION,
-  PrismaContractStatus.PRICENEGOTIATION,
-  PrismaContractStatus.CONTRACTSUCCESSFUL,
-  PrismaContractStatus.CONTRACTFAILED,
+  PrismaContractStatus.carInspection,
+  PrismaContractStatus.priceNegotiation,
+  PrismaContractStatus.contractDraft,
+  PrismaContractStatus.contractSuccessful,
+  PrismaContractStatus.contractFailed,
 ];
 
 export interface ContractWithDetails {

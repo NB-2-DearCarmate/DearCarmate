@@ -1,19 +1,17 @@
-import { VehicleStatus } from "@prisma/client";
+import { CarStatus } from "@prisma/client";
 
 export type CarType = "SEDAN" | "COMPACT" | "SUV";
 
 export interface Car {
   carNumber: string;
-  manufacturerId: number;
   modelId: number;
   companyId: number;
-  type: CarType;
   mileage: number;
   price: number;
   accidentCount: number;
   explanation?: string | null;
   accidentDetails?: string | null;
-  status?: VehicleStatus | null;
+  status?: CarStatus | null;
 }
 
 export interface CarResponse extends Car {

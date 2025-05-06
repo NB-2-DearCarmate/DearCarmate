@@ -15,6 +15,8 @@ import {
   MeetingDTO,
   UpdateContractResponseDTO,
 } from "../dto/contractDTO";
+import UnauthorizedError from "../errors/UnauthorizedError";
+import BadRequestError from "../errors/BadRequestError";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -24,13 +26,13 @@ export const getContractList = async (req: Request, res: Response) => {
   };
 
   if (!["customerName", "userName"].includes(searchBy)) {
-    res.status(400).send({ message: "searchBy 값이 올바르지 않습니다." });
+    throw new BadRequestError("SearchBy 값을 확인해주세요.");
   }
 
   const user = req.user;
 
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다." });
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;
@@ -85,7 +87,7 @@ export const getCustomerList = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다" });
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;
@@ -99,7 +101,7 @@ export const getCarList = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다" });
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;
@@ -113,7 +115,7 @@ export const getUserList = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다" });
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;
@@ -126,12 +128,10 @@ export const getUserList = async (req: Request, res: Response) => {
 export const createContract = async (req: Request, res: Response) => {
   const user = req.user;
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다." });
-    return;
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;
-  const userData = await contractService.getUserId(userId);
   const parsedData = create(req.body, ContractStruct);
 
   const contractData = {
@@ -144,9 +144,7 @@ export const createContract = async (req: Request, res: Response) => {
     meeting: parsedData.meetings,
   };
 
-  const { contract, customer, model } = await contractService.create(
-    contractData
-  );
+  const contract = await contractService.create(contractData);
   const contractId = contract.id;
 
   let meetingResult: MeetingDTO[] = [];
@@ -165,14 +163,15 @@ export const createContract = async (req: Request, res: Response) => {
     meetings: meetingResult,
     user: {
       id: userId,
-      name: userData.name,
+      name: contract.user.name,
     },
     customer: {
-      id: customer.id,
+      id: contract.customer.id,
+      name: contract.customer.name,
     },
     car: {
-      id: contract.carId,
-      model: model.name,
+      id: contract.car.id,
+      model: contract.car.model.name,
     },
   };
 
@@ -181,48 +180,44 @@ export const createContract = async (req: Request, res: Response) => {
 
 //계약 수정
 export const updateContract = async (req: Request, res: Response) => {
-  const { meetings, ...contractData } = req.body;
-  const user = req.user;
+  const {
+    meetings,
+    contractDocumentIdsToAdd,
+    contractDocumentIdsToRemove,
+    ...contractData
+  } = req.body;
 
-  if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다." });
-    return;
-  }
+  const user = req.user;
+  if (!user) throw new UnauthorizedError();
 
   const userId = user.id;
-
-  const userData = await contractService.getUserId(userId);
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
   const parsedMeeting = create(meetings, updateMeetings);
 
   if (
-    parsedData.status === "CONTRACTSUCCESSFUL" &&
+    parsedData.status === "contractSuccessful" &&
     !parsedData.resolutionDate
   ) {
-    throw new Error("계약일은 필수 입력 요소입니다.");
+    throw new BadRequestError("계약 일자는 필수값입니다.");
   }
-
-  if (userId !== parsedData.userId) {
-    res.status(400).send({ message: "userId 를 확인해주세요" });
-  }
-
-  const updatedContract = await contractService.update(id, userId, parsedData);
-
-  if (updatedContract.status === "CONTRACTSUCCESSFUL") {
-    await contractService.complectedCar(updatedContract.carId);
-  }
-
-  const [customer, car] = await Promise.all([
-    contractService.getCustomerId(updatedContract.customerId),
-    contractService.getCarId(updatedContract.carId),
-  ]);
-
-  const model = await contractService.getModelId(car.modelId);
 
   const meetingResult = parsedMeeting
     ? await meetingService.updateMeetings(id, parsedMeeting)
     : [];
+
+  const updatedContract = await contractService.update(id, userId, parsedData);
+  const updatedDocument = await contractService.updateContractDocuments(
+    id,
+    contractDocumentIdsToAdd,
+    contractDocumentIdsToRemove
+  );
+
+  if (updatedContract.status === "contractSuccessful") {
+    await contractService.complectedCar(updatedContract.car.id);
+  } else if (updatedContract.status === "contractFailed") {
+    await contractService.failedCar(updatedContract.car.id);
+  }
 
   const updatedContractResult: UpdateContractResponseDTO = {
     id: updatedContract.id,
@@ -232,15 +227,15 @@ export const updateContract = async (req: Request, res: Response) => {
     meetings: meetingResult,
     user: {
       id: userId,
-      name: userData.name,
+      name: updatedContract.user.name,
     },
     customer: {
-      id: customer.id,
-      name: customer.name,
+      id: updatedContract.customer.id,
+      name: updatedContract.customer.name,
     },
     car: {
-      id: car.id,
-      model: model.name,
+      id: updatedContract.car.id,
+      model: updatedContract.car.model.name,
     },
   };
 
@@ -252,7 +247,7 @@ export const deleteContract = async (req: Request, res: Response) => {
   const user = req.user;
 
   if (!user) {
-    res.status(400).send({ message: "로그인이 필요합니다." });
+    throw new UnauthorizedError();
   }
 
   const userId = user.id;

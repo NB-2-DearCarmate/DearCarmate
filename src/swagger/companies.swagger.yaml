@@ -1,4 +1,4 @@
-/companies:
+companies:
   post:
     summary: 회사 등록
     tags:
@@ -106,7 +106,7 @@
       "401":
         description: 인증 실패 - 관리자 권한 필요
 
-/companies/users:
+users:
   get:
     summary: 회사별 유저 조회
     tags:
@@ -182,6 +182,7 @@
       "401":
         description: 인증 실패 - 권한 필요
 
+companyId:
   patch:
     summary: 회사 정보 수정
     tags:
@@ -189,7 +190,7 @@
     security:
       - bearerAuth: []
     parameters:
-      - name: comapanyId
+      - name: companyId
         in: path
         description: 회사 ID
         required: true
@@ -212,23 +213,6 @@
     responses:
       "200":
         description: 회사 정보 수정 성공
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  example: 1
-                companyName:
-                  type: string
-                  example: "ABC 자동차"
-                companyCode:
-                  type: string
-                  example: "ABC001"
-                userCount:
-                  type: integer
-                  example: 3
       "400":
         description: 잘못된 요청입니다.
       "401":
@@ -236,7 +220,6 @@
       "404":
         description: 존재하지 않는 회사입니다.
 
-/companies/{companyId}:
   delete:
     summary: 회사 삭제
     tags:

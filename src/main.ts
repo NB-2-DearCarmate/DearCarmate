@@ -15,6 +15,8 @@ import UserController from "./routes/usersRouter";
 import contractDocumentRouter from "./routes/contractDocumentRouter";
 import contractRouter from "./routes/contractRouter";
 import login from "./routes/authRouter";
+import imageRouter from "./routes/imageRouter";
+import dashboardRouter from "./routes/dashboardRouter";
 
 const app = express();
 const swaggerSpec = YAML.load(path.join(__dirname, "../dist/openapi.yaml"));
@@ -32,6 +34,10 @@ app.use("/contracts", contractRouter);
 app.use("/customers", customer);
 app.use("/users", UserController);
 app.use("/contractDocuments", contractDocumentRouter);
+app.use("/uploads", express.static(path.resolve("uploads")));
+app.use("/images", imageRouter);
+app.use("/dashboard", dashboardRouter);
+
 app.use(defaultNotFountHandler);
 app.use(globalErrorHandler);
 login;

@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 import { Car, UpdateCar } from "../typings/car";
 import { CarPaginationParams } from "../typings/pagination";
-import { VehicleStatus, Prisma } from "@prisma/client";
+import { CarStatus, Prisma } from "@prisma/client";
 
 // Car 등록
 async function createCar(carData: Car) {
@@ -21,7 +21,7 @@ async function findByCarNumber(carNumber: string) {
 async function getCarList({
   page,
   pageSize,
-  status = VehicleStatus.POSSESSION,
+  status = CarStatus.possession,
   orderBy,
   searchBy,
   keyword,
@@ -29,7 +29,7 @@ async function getCarList({
   const where: Prisma.CarWhereInput = {};
 
   if (status) {
-    where.status = status as VehicleStatus;
+    where.status = status as CarStatus;
   }
 
   if (searchBy && keyword) {
@@ -75,7 +75,9 @@ async function getAllCarModels() {
   const manufacturers = await prisma.manufacturers.findMany({
     include: {
       Models: {
-        select: { name: true },
+        include: {
+          manufacturer: true,
+        },
       },
     },
   });

@@ -72,7 +72,7 @@ const getCustomerList = async (companyId: number) => {
 
 const getCarList = async (companyId: number) => {
   const carList = await prisma.car.findMany({
-    where: { companyId },
+    where: { companyId, status: "possession" },
     select: {
       id: true,
       carNumber: true,
@@ -107,13 +107,61 @@ const getUserList = async (companyId: number) => {
 const save = async (
   data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
 ) => {
+  const {
+    carId,
+    customerId,
+    userId,
+    companyId,
+    status,
+    resolutionDate,
+    contractPrice,
+  } = data;
+
   const createContract = await prisma.contract.create({
     data: {
-      carId: data.carId,
-      customerId: data.customerId,
-      userId: data.userId,
-      status: data.status,
-      contractPrice: data.contractPrice,
+      carId,
+      customerId,
+      userId,
+      companyId,
+      status,
+      resolutionDate,
+      contractPrice,
+    },
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: { name: true },
+          },
+        },
+      },
     },
   });
 
@@ -123,7 +171,7 @@ const save = async (
 const getCarId = async (id: number) => {
   const car = await prisma.car.findUnique({ where: { id } });
   if (!car) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("차량");
   }
 
   return car;
@@ -133,7 +181,7 @@ const updateCarStatus = async (carId: number) => {
   const createContract = await prisma.car.update({
     where: { id: carId },
     data: {
-      status: "CONTRACT_PROCEEDING",
+      status: "contractProceeding",
     },
   });
 
@@ -143,7 +191,7 @@ const updateCarStatus = async (carId: number) => {
 const getCustomerId = async (id: number) => {
   const customer = await prisma.customer.findUnique({ where: { id } });
   if (!customer) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("고객");
   }
 
   return customer;
@@ -152,7 +200,7 @@ const getCustomerId = async (id: number) => {
 const getUserId = async (id: number) => {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("유저");
   }
 
   return user;
@@ -161,7 +209,7 @@ const getUserId = async (id: number) => {
 const getModelId = async (id: number) => {
   const model = await prisma.models.findUnique({ where: { id } });
   if (!model) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("모델");
   }
 
   return model;
@@ -170,7 +218,7 @@ const getModelId = async (id: number) => {
 const getById = async (id: number) => {
   const contract = await prisma.contract.findUnique({ where: { id } });
   if (!contract) {
-    throw new NotFoundError(id);
+    throw new NotFoundError("계약");
   }
 
   return contract;
@@ -180,16 +228,103 @@ const update = async (id: number, data: Partial<ContractType>) => {
   const updatedContract = await prisma.contract.update({
     where: { id },
     data,
+    select: {
+      id: true,
+      status: true,
+      resolutionDate: true,
+      contractPrice: true,
+      meetings: {
+        select: {
+          date: true,
+          alarms: {
+            select: {
+              alarmAt: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      car: {
+        select: {
+          id: true,
+          model: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return updatedContract;
+};
+
+const verifyDocumentsExist = async (documentIds: number[]) => {
+  const found = await prisma.contractDocument.findMany({
+    where: {
+      id: { in: documentIds },
+    },
+    select: { id: true },
+  });
+
+  const foundIds = new Set(found.map((doc) => doc.id));
+  const missingIds = documentIds.filter((id) => !foundIds.has(id));
+
+  if (missingIds.length > 0) {
+    throw new NotFoundError("계약서");
+  }
+};
+
+const addDocuments = async (contractId: number, documentIds: number[]) => {
+  return await prisma.contract.update({
+    where: { id: contractId },
+    data: {
+      documents: {
+        connect: documentIds.map((id) => ({ id })),
+      },
+    },
+  });
+};
+
+const removeDocuments = async (contractId: number, documentIds: number[]) => {
+  return await prisma.contract.update({
+    where: { id: contractId },
+    data: {
+      documents: {
+        disconnect: documentIds.map((id) => ({ id })),
+      },
+    },
+  });
 };
 
 const completedCar = async (carId: number) => {
   const updateStatus = await prisma.car.update({
     where: { id: carId },
     data: {
-      status: "CONTRACT_COMPLETED",
+      status: "contractCompleted",
+    },
+  });
+
+  return updateStatus;
+};
+
+const failedCar = async (carId: number) => {
+  const updateStatus = await prisma.car.update({
+    where: { id: carId },
+    data: {
+      status: "possession",
     },
   });
 
@@ -206,8 +341,6 @@ const deleteById = async (id: number) => {
 
 export default {
   getContractList,
-  getCarId,
-  getCustomerId,
   save,
   getById,
   update,
@@ -216,7 +349,13 @@ export default {
   getUserId,
   completedCar,
   getModelId,
+  getCustomerId,
   getUserList,
   getCustomerList,
   getCarList,
+  getCarId,
+  failedCar,
+  addDocuments,
+  removeDocuments,
+  verifyDocumentsExist,
 };
