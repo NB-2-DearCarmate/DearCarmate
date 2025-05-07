@@ -30,6 +30,7 @@ export const CarStruct = object({
     "possession"
   ),
 });
+
 export const CarQueryStruct = object({
   page: coerce(number(), string(), (value) => Number(value)),
   pageSize: coerce(number(), string(), (value) => Number(value)),

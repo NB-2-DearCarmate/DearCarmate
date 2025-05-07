@@ -7,26 +7,26 @@ import {
   uploadContractDocumentsHandler,
 } from "../controllers/contractDocumentController";
 import authMiddleware from "../middlewares/authMiddleware";
+import { asyncHandler } from "../lib/asyncHandler";
 
 const router = Router();
 
 router.post(
   "/upload",
-  (req, res, next) => {
-    console.log("파일요청들어옴");
-    console.log("req.files:", req.files);
-    next();
-  },
   upload.array("contractDocument", 5),
   authMiddleware,
-  uploadContractDocumentsHandler
+  asyncHandler(uploadContractDocumentsHandler)
 );
-router.get("/", authMiddleware, getAllContractDocumentListHandler);
-router.get("/draft", authMiddleware, getContractDraftListHandler);
+router.get(
+  "/",
+  authMiddleware,
+  asyncHandler(getAllContractDocumentListHandler)
+);
+router.get("/draft", authMiddleware, asyncHandler(getContractDraftListHandler));
 router.get(
   "/:contractDocumentId/download",
   authMiddleware,
-  downloadContractDocHandler
+  asyncHandler(downloadContractDocHandler)
 );
 
 export default router;
