@@ -6,7 +6,7 @@ import { UpdateMyInfoStruct } from "../validators/UsersStructs";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import { create } from "superstruct";
 import { toUserKoResponse } from "../dto/toUserKoResponse";
-import { UserKoResponse } from "../dto/UserKoResponse";
+import { UserKoResponse } from "../dto/userKoResponse";
 import { Prisma } from "@prisma/client";
 
 const userService = new UserService();
