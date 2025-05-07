@@ -16,7 +16,11 @@ export const CustomerController = {
   // 고객 생성
   createCustomer: async (req: AuthenticatedUserRequest, res: Response, next: NextFunction) => {
     try {
-      const customer = await CustomerService.createCustomer(req.body);
+      const companyId = req.user?.companyId;
+      const customer = await CustomerService.createCustomer({
+        ...req.body,
+        companyId, 
+      })
       res.status(201).json(customer);
     } catch (err) {
       next(err);
@@ -28,7 +32,8 @@ export const CustomerController = {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
-      const search = (req.query.search as string) || "";
+      const search = (req.query.keyword as string) || "";
+      const searchBy = (req.query.searchBy as "name" | "email") || "name";
       const companyId = req.user?.companyId;
       console.log("요청한 회사 ID:", companyId);
       if (!companyId) {
@@ -39,6 +44,7 @@ export const CustomerController = {
         page,
         limit,
         search,
+        searchBy,
         companyId,
       });
       res.status(200).json(customers);
