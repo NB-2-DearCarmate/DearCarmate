@@ -5,6 +5,7 @@ import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { Customer } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 interface CustomerRecord {
   name: string;
@@ -15,6 +16,7 @@ interface CustomerRecord {
   email?: string;
   memo?: string;
   companyId: number; // 유저의 회사 ID (요구사항: 유저의 회사에 등록)
+  contractCount?: number;
 }
 
 // 고객객
@@ -26,28 +28,48 @@ export const CustomerService = {
   getCustomers: async ({
     page,
     limit,
-    search,
+    search = "",
     companyId,
+    searchBy = "name",
   }: {
     page: number;
     limit: number;
-    search: string;
+    search?: string;
     memo?: string;
     companyId: number;
-  }) => {
-    return prisma.customer.findMany({
-      where: {
-        companyId,
-        OR: [
-          { name: { contains: search, mode: "insensitive" } },
-          { email: { contains: search, mode: "insensitive" } },
-        ],
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: { createdAt: "asc" },
-    });
+    searchBy?: "name" | "email";
+  })  => {
+    const searchCondition =
+      searchBy === "name"
+        ? { name: { contains: search, mode: Prisma.QueryMode.insensitive } }
+        : { email: { contains: search, mode: Prisma.QueryMode.insensitive } };
+        const customers = await prisma.customer.findMany({
+          where: {
+            companyId,
+            ...searchCondition,
+          },
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: { createdAt: "asc" },
+        });
+      
+        const totalCount = await prisma.customer.count({
+          where: {
+            companyId,
+            ...searchCondition,
+          },
+        });
+      
+        const totalPages = Math.ceil(totalCount / limit);
+      
+    // ✅ 프론트가 기대하는 형식으로싸서 반환
+    return {
+      currentPage: page,
+      totalPages,
+      data: customers,
+    };
   },
+  
   patchCustomers: async (
     id: number,
     data: Partial<Customer>,
