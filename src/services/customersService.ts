@@ -61,8 +61,7 @@ export const CustomerService = {
         });
       
         const totalPages = Math.ceil(totalCount / limit);
-      
-    // ✅ 프론트가 기대하는 형식으로싸서 반환
+       
     return {
       currentPage: page,
       totalPages,
