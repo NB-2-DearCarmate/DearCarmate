@@ -75,6 +75,7 @@ export const CustomerRepository = {
     }));
   },
 
+  
   update: async (id: number, data: Partial<Customer>) => {
     const mappedAgeGroup = data.ageGroup ? ageGroupMap[data.ageGroup as string] : undefined;
     const mappedRegion = data.region ? regionMap[data.region as string] : undefined;
