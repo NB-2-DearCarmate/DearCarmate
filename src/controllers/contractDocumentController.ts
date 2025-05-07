@@ -48,7 +48,7 @@ export const getContractDraftListHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
+ 
     const user = req.user;
     if (!user || !user.company) {
       res.status(401).json({ message: "로그인이 필요합니다." });
@@ -56,9 +56,7 @@ export const getContractDraftListHandler = async (
     const result: ContractDraftItemDto[] =
       await contractDocumentService.contractDraftList(user.company.id);
     res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
+  
 };
 
 export const uploadContractDocumentsHandler = async (
