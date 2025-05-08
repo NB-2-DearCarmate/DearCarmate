@@ -46,7 +46,7 @@ const contractDocumentList = async (
       contractName: `${contract.car.model.name} - ${contract.customer.name}`,
       resolutionDate: contract.resolutionDate,
       documentsCount: contract.documents.length,
-      manager: contract.user.name,
+      userName: contract.user.name,
       carNumber: contract.car.carNumber,
       documents: contract.documents.map((document) => ({
         id: document.id,

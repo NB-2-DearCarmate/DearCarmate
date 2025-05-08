@@ -11,7 +11,6 @@ import { SaveFileInfo } from "../typings/contrarctDocument";
 import path from "path";
 import BadRequestError from "../errors/BadRequestError";
 import contractDocumentService from "../services/contractDocumentService";
-import NotFoundError from "../errors/NotFoundError";
 
 export const getAllContractDocumentListHandler = async (
   req: Request,
