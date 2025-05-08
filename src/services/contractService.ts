@@ -13,7 +13,7 @@ type CreateContract = Omit<
   ContractType,
   "id" | "createdAt" | "updatedAt" | "companyId"
 >;
-type UpdateContract = Partial<CreateContract> & { userId: number };
+type UpdateContract = Partial<CreateContract>;
 
 // 계약 조회
 const getContractList = async (
