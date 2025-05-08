@@ -93,7 +93,12 @@ export const getCustomerList = async (req: Request, res: Response) => {
   const userId = user.id;
   const customerList = await contractService.getCustomerList(userId);
 
-  res.status(200).send(customerList);
+  const result = customerList.map((customer) => ({
+    id: customer.id,
+    data: customer.name,
+  }));
+
+  res.status(200).send(result);
 };
 
 // 차량 조회
@@ -107,7 +112,12 @@ export const getCarList = async (req: Request, res: Response) => {
   const userId = user.id;
   const carList = await contractService.getCarList(userId);
 
-  res.status(200).send(carList);
+  const result = carList.map((car) => ({
+    id: car.id,
+    data: car.name,
+  }));
+
+  res.status(200).send(result);
 };
 
 // 유저 조회
@@ -121,7 +131,12 @@ export const getUserList = async (req: Request, res: Response) => {
   const userId = user.id;
   const userList = await contractService.getUserList(userId);
 
-  res.status(200).send(userList);
+  const result = userList.map((user) => ({
+    id: user.id,
+    data: user.name,
+  }));
+
+  res.status(200).send(result);
 };
 
 //계약 생성
@@ -138,7 +153,7 @@ export const createContract = async (req: Request, res: Response) => {
     carId: parsedData.carId,
     customerId: parsedData.customerId,
     userId,
-    status: "CARINSPECTION" as ContractStatus,
+    status: "carInspection" as ContractStatus,
     resolutionDate: null,
     contractPrice: 0,
     meeting: parsedData.meetings,
