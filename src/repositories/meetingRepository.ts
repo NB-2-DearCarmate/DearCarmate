@@ -70,10 +70,6 @@ const findAllByContractId = async (contractId: number) => {
     where: { contractId },
   });
 
-  if (meetings.length === 0) {
-    throw new NotFoundError("미팅");
-  }
-
   return meetings;
 };
 

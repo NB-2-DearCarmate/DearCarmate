@@ -4,7 +4,6 @@ import { isVaildMeetingDate } from "../utils/contractDate";
 import { MeetingDTO } from "../dto/contractDTO";
 
 // 시간 변환
-const parseDate = (str: string): Date => new Date(str.replace(" ", "T"));
 
 const getId = async (contractId: number) => {
   const meetingId = await meetingRepository.getId(contractId);
@@ -79,7 +78,6 @@ const updateMeetings = async (
 
   for (const existing of existingMeetings) {
     if (!requestedDates.includes(existing.date.getTime())) {
-      await alarmService.deleteByMeetingId(existing.id);
       await deleteById(existing.id);
     }
   }
@@ -99,11 +97,11 @@ const updateMeetings = async (
     }
 
     let meetingId: number;
+
     const existingMeeting = await getByDate(contractId, meetingDate);
 
     if (existingMeeting) {
       meetingId = existingMeeting.id;
-      await update(meetingId, meetingDate);
       await alarmService.deleteByMeetingId(meetingId);
     } else {
       const createdMeeting = await meetingRepository.save(
@@ -116,7 +114,6 @@ const updateMeetings = async (
     for (const alarmAt of alarmData) {
       alarms.push(alarmAt);
       await alarmService.create(meetingId, meetingDate, alarmAt);
-      
     }
 
     meetingResult.push({
