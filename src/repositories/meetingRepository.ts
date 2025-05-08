@@ -17,7 +17,7 @@ const update = async (id: number, meetingDate: Date) => {
 const getId = async (contractId: number) => {
   const meeting = await prisma.meeting.findFirst({ where: { contractId } });
   if (!meeting) {
-    throw new NotFoundError("계약");
+    throw new NotFoundError("미팅");
   }
 
   const meetingId = meeting.id;
@@ -71,7 +71,7 @@ const findAllByContractId = async (contractId: number) => {
   });
 
   if (meetings.length === 0) {
-    throw new NotFoundError("계약");
+    throw new NotFoundError("미팅");
   }
 
   return meetings;

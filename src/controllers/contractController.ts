@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { format } from 'date-fns';
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -68,9 +69,9 @@ export const getContractList = async (req: Request, res: Response) => {
         name: contract.user.name,
       },
       meetings: contract.meetings.map((meeting) => ({
-        date: meeting.date,
-        alarms: meeting.alarms.map((alarm) => alarm.alarmAt),
-      })),
+        date: format(new Date(meeting.date), 'yyyy-MM-dd'),
+        alarms: meeting.alarms.map((alarm) => format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")),
+      }))
     }));
 
     contractByStatus[status] = {
@@ -218,10 +219,9 @@ export const updateContract = async (req: Request, res: Response) => {
     : [];
 
   const updatedContract = await contractService.update(id, userId, parsedData);
-  const updatedDocument = await contractService.updateContractDocuments(
-    id,
-    contractDocuments
-  );
+  if (contractDocuments && contractDocuments.length > 0) {
+    await contractService.updateContractDocuments(id, contractDocuments);
+  }
 
   if (updatedContract.status === "contractSuccessful") {
     await contractService.complectedCar(updatedContract.car.id);

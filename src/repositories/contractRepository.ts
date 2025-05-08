@@ -218,7 +218,7 @@ const getModelId = async (id: number) => {
 const getById = async (id: number) => {
   const contract = await prisma.contract.findUnique({ where: { id } });
   if (!contract) {
-    throw new NotFoundError("계약");
+    throw new NotFoundError("미팅");
   }
 
   return contract;
