@@ -13,7 +13,7 @@ const router = Router();
 
 router.post(
   "/upload",
-  upload.array("contractDocument", 5),
+  upload.array("file", 5),
   authMiddleware,
   asyncHandler(uploadContractDocumentsHandler)
 );
