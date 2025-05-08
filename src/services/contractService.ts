@@ -122,6 +122,8 @@ const deleteById = async (id: number, userId: number) => {
     throw new ForbiddenError("담당자만 삭제가 가능합니다.");
   }
 
+  const carStatus = await contractRepository.carStatus(findContract.carId);
+
   return await contractRepository.deleteById(id);
 };
 

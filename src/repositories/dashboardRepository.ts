@@ -90,20 +90,24 @@ const completedContract = async (companyId: number) => {
 };
 
 const getCompletedCarType = async (companyId: number) => {
-  const carType = await prisma.car.findMany({
+  const carType = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "contractCompleted",
+      status: "contractSuccessful",
     },
     select: {
-      model: true,
+      car: {
+        select: {
+          model: true,
+        },
+      },
     },
   });
 
   const counts: Record<string, number> = {};
 
   carType.forEach((carType) => {
-    const type = carType.model?.name;
+    const type = carType.car.model.type;
     if (type) {
       counts[type] = (counts[type] || 0) + 1;
     }
@@ -118,23 +122,37 @@ const getCompletedCarType = async (companyId: number) => {
 };
 
 const getSaleCarType = async (companyId: number) => {
-  const carType = await prisma.car.findMany({
-    where: { companyId, status: "possession" },
-    select: { model: true },
+  const carType = await prisma.contract.findMany({
+    where: {
+      companyId,
+      status: "contractSuccessful",
+    },
+    select: {
+      contractPrice: true,
+      car: {
+        select: {
+          model: {
+            select: {
+              type: true,
+            },
+          },
+        },
+      },
+    },
   });
 
-  const counts: Record<string, number> = {};
+  const salesMap: Record<string, number> = {};
 
-  carType.forEach((carType) => {
-    const type = carType.model.name;
-    if (type) {
-      counts[type] = (counts[type] || 0) + 1;
-    }
-  });
+  for (const item of carType) {
+    const modelName = item.car.model.type;
+    const price = item.contractPrice ?? 0;
 
-  const result = Object.entries(counts).map(([type, count]) => ({
-    carType: type,
-    count,
+    salesMap[modelName] = (salesMap[modelName] || 0) + price;
+  }
+
+  const result = Object.entries(salesMap).map(([model, total]) => ({
+    carType: model,
+    count: total,
   }));
 
   return result;

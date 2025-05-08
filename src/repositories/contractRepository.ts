@@ -339,6 +339,17 @@ const deleteById = async (id: number) => {
   return contract;
 };
 
+const carStatus = async (id: number) => {
+  const update = await prisma.car.update({
+    where: { id },
+    data: {
+      status: "possession",
+    },
+  });
+
+  return update;
+};
+
 export default {
   getContractList,
   save,
@@ -358,4 +369,5 @@ export default {
   addDocuments,
   removeDocuments,
   verifyDocumentsExist,
+  carStatus,
 };
