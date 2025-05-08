@@ -61,30 +61,26 @@ export const uploadContractDocumentsHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const host = req.get("host");
-    const files = req.files as Express.Multer.File[];
+  const host = req.get("host");
+  const files = req.files as Express.Multer.File[];
 
-    if (!host) {
-      throw new BadRequestError("호스트가 필요합니다.");
-    }
-    if (!req.files || !Array.isArray(req.files)) {
-      throw new Error("파일이 없습니다.");
-    }
-
-    const file: SaveFileInfo[] = files.map((f) => ({
-      fileName: f.filename,
-      filePath: path.join(STATIC_PATH, f.filename),
-      fileSize: f.size,
-    }));
-
-    const contractDocumentId = await contractDocumentService.uploadContractFile(
-      file
-    );
-    res.status(200).json({ contractDocumentId: contractDocumentId });
-  } catch (error) {
-    next(error);
+  if (!host) {
+    throw new BadRequestError("호스트가 필요합니다.");
   }
+  if (!req.files || !Array.isArray(req.files)) {
+    throw new Error("파일이 없습니다.");
+  }
+
+  const file: SaveFileInfo[] = files.map((f) => ({
+    fileName: f.filename,
+    filePath: path.join(STATIC_PATH, f.filename),
+    fileSize: f.size,
+  }));
+
+  const contractDocumentId = await contractDocumentService.uploadContractFile(
+    file
+  );
+  res.status(200).json({ contractDocumentId: contractDocumentId });
 };
 
 export const downloadContractDocHandler = async (
@@ -92,24 +88,20 @@ export const downloadContractDocHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const { contractDocumentId } = req.params;
-    const numContractDoc = Number(contractDocumentId);
+  const { contractDocumentId } = req.params;
+  const numContractDoc = Number(contractDocumentId);
 
-    const file = await contractDocumentService.downloadContractFile(
-      numContractDoc
-    );
-    if (!file) {
-      throw new BadRequestError("파일을 찾을 수 없습나다");
-    }
-
-    res.set({
-      "Content-Type": "application/octet-stream",
-      "Content-Disposition": `attachment; filename="${file.fileName}"`,
-      "Content-Length": file.content.length,
-    });
-    res.send(file.content);
-  } catch (error) {
-    next(error);
+  const file = await contractDocumentService.downloadContractFile(
+    numContractDoc
+  );
+  if (!file) {
+    throw new BadRequestError("파일을 찾을 수 없습나다");
   }
+
+  res.set({
+    "Content-Type": "application/octet-stream",
+    "Content-Disposition": `attachment; filename="${file.fileName}"`,
+    "Content-Length": file.content.length,
+  });
+  res.send(file.content);
 };
