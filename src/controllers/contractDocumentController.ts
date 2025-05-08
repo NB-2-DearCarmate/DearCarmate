@@ -72,11 +72,6 @@ export const uploadContractDocumentsHandler = async (
       throw new Error("파일이 없습니다.");
     }
 
-    const contractId = req.body.contractId;
-    if (!contractId) {
-      throw new BadRequestError("contractId가 필요합니다");
-    }
-
     const file: SaveFileInfo[] = files.map((f) => ({
       fileName: f.filename,
       filePath: path.join(STATIC_PATH, f.filename),
