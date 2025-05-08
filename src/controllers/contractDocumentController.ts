@@ -81,7 +81,6 @@ export const uploadContractDocumentsHandler = async (
       fileName: f.filename,
       filePath: path.join(STATIC_PATH, f.filename),
       fileSize: f.size,
-      contractId: contractId,
     }));
 
     const contractDocumentId = await contractDocumentService.uploadContractFile(
