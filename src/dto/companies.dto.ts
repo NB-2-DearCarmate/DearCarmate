@@ -47,4 +47,5 @@ export type UpdateCompanyResponseDTO = {
   id?: number;
   companyName?: string;
   companyCode?: string;
+  userCount: number;
 };
