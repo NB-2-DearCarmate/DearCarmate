@@ -195,17 +195,13 @@ export const createContract = async (req: Request, res: Response) => {
 
 //계약 수정
 export const updateContract = async (req: Request, res: Response) => {
-  const {
-    meetings,
-    contractDocumentIdsToAdd,
-    contractDocumentIdsToRemove,
-    ...contractData
-  } = req.body;
+  const { meetings, contractDocuments, ...contractData } = req.body;
 
   const user = req.user;
   if (!user) throw new UnauthorizedError();
 
   const userId = user.id;
+
   const { id } = create(req.params, IdParamsStruct);
   const parsedData = create(contractData, UpdateContractStruct);
   const parsedMeeting = create(meetings, updateMeetings);
@@ -224,8 +220,7 @@ export const updateContract = async (req: Request, res: Response) => {
   const updatedContract = await contractService.update(id, userId, parsedData);
   const updatedDocument = await contractService.updateContractDocuments(
     id,
-    contractDocumentIdsToAdd,
-    contractDocumentIdsToRemove
+    contractDocuments
   );
 
   if (updatedContract.status === "contractSuccessful") {

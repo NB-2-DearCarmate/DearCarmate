@@ -29,14 +29,14 @@ export const ContractStruct = object({
 });
 
 export const UpdateContractStruct = object({
-  carId: integer(),
-  customerId: integer(),
-  contractPrice: integer(),
-  status: ContractStatusStruct,
+  carId: optional(integer()),
+  customerId: optional(integer()),
+  contractPrice: optional(integer()),
+  status: optional(ContractStatusStruct),
   resolutionDate: optional(
     coerce(date(), string(), (value) => new Date(value))
   ),
-  userId: integer(),
+  userId: optional(integer()),
 });
 
 export const updateMeetings = optional(array(MeetingStruct));

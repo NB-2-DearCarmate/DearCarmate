@@ -1,9 +1,7 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractType, ContractStatus } from "../typings/contract";
-import {
-  ContractStatus as PrismaContractStatus,
-} from "@prisma/client";
+import { ContractStatus as PrismaContractStatus } from "@prisma/client";
 const getContractList = async (
   companyId: number,
   {
@@ -289,23 +287,28 @@ const verifyDocumentsExist = async (documentIds: number[]) => {
   }
 };
 
-const addDocuments = async (contractId: number, documentIds: number[]) => {
-  return await prisma.contract.update({
+const updateContractDocuments = async (
+  contractId: number,
+  newDocumentIds: number[]
+) => {
+  const contract = await prisma.contract.findUnique({
     where: { id: contractId },
-    data: {
-      documents: {
-        connect: documentIds.map((id) => ({ id })),
-      },
-    },
+    select: { documents: { select: { id: true } } },
   });
-};
 
-const removeDocuments = async (contractId: number, documentIds: number[]) => {
+  if (!contract) throw new Error("Contract not found");
+
+  const currentIds = contract.documents.map((doc) => doc.id);
+
+  const toDisconnect = currentIds.filter((id) => !newDocumentIds.includes(id));
+  const toConnect = newDocumentIds.filter((id) => !currentIds.includes(id));
+
   return await prisma.contract.update({
     where: { id: contractId },
     data: {
       documents: {
-        disconnect: documentIds.map((id) => ({ id })),
+        disconnect: toDisconnect.map((id) => ({ id })),
+        connect: toConnect.map((id) => ({ id })),
       },
     },
   });
@@ -368,8 +371,7 @@ export default {
   getCarList,
   getCarId,
   failedCar,
-  addDocuments,
-  removeDocuments,
+  updateContractDocuments,
   verifyDocumentsExist,
   carStatus,
 };

@@ -6,9 +6,9 @@ import {
   ContractType,
   ContractStatus,
   CursorPaginationResultWithTotal,
-  ContractWithDetails, 
+  ContractWithDetails,
 } from "../typings/contract";
- 
+
 type CreateContract = Omit<
   ContractType,
   "id" | "createdAt" | "updatedAt" | "companyId"
@@ -97,21 +97,17 @@ const update = async (id: number, userId: number, data: UpdateContract) => {
 // 계약서 업로드
 const updateContractDocuments = async (
   contractId: number,
-  toAdd: number[] = [],
-  toRemove: number[] = []
+  data: { id: number; filename: string }[]
 ) => {
-  const getDocument = await contractRepository.verifyDocumentsExist([
-    ...toAdd,
-    ...toRemove,
-  ]);
+  const id = data.map((item) => item.id);
+  const getDocument = await contractRepository.verifyDocumentsExist(id);
 
-  if (toAdd?.length > 0) {
-    await contractRepository.addDocuments(contractId, toAdd);
-  }
+  const update = await contractRepository.updateContractDocuments(
+    contractId,
+    id
+  );
 
-  if (toRemove?.length > 0) {
-    await contractRepository.removeDocuments(contractId, toRemove);
-  }
+  return update;
 };
 
 // 계약 삭제
