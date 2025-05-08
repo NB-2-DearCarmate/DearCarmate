@@ -66,7 +66,7 @@ const companyFindUsers = async (
 export const patchCompany = async (
   id: number,
   data: UpdateCompany
-): Promise<Company> => {
+) => {
   const updatedCompany = await prisma.company.update({
     where: {
       id,

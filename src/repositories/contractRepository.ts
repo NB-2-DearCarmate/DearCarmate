@@ -1,7 +1,9 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import { ContractType, ContractStatus } from "../typings/contract";
-
+import {
+  ContractStatus as PrismaContractStatus,
+} from "@prisma/client";
 const getContractList = async (
   companyId: number,
   {
@@ -123,7 +125,7 @@ const save = async (
       customerId,
       userId,
       companyId,
-      status,
+      status: PrismaContractStatus.carInspection,
       resolutionDate,
       contractPrice,
     },

@@ -6,9 +6,9 @@ import {
   ContractType,
   ContractStatus,
   CursorPaginationResultWithTotal,
-  ContractWithDetails,
+  ContractWithDetails, 
 } from "../typings/contract";
-
+ 
 type CreateContract = Omit<
   ContractType,
   "id" | "createdAt" | "updatedAt" | "companyId"

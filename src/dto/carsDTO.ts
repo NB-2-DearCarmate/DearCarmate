@@ -1,31 +1,9 @@
-import { CarStatus } from "@prisma/client";
-import { CarResponse } from "../typings/car";
+import { CarResponse, CarRequest, CarData, UpdateCar } from "../typings/car";
 
 //차량 생성
-export type CreateCarDTO = {
-  carNumber: string;
-  modelId: number;
-  companyId: number;
-  mileage: number;
-  price: number;
-  accidentCount: number;
-  explanation: string | null;
-  accidentDetails: string | null;
-  status: CarStatus | null;
-};
+export type CreateCarDTO = CarRequest;
 
-export type CreateCarResponseDTO = {
-  id: number;
-  carNumber: string;
-  modelId: number;
-  companyId: number;
-  mileage: number;
-  price: number;
-  accidentCount: number;
-  explanation: string | null;
-  accidentDetails: string | null;
-  status: CarStatus | null;
-};
+export type CreateCarResponseDTO = CarResponse;
 
 //차량 목록 조회
 export type CarListResponseDTO = {
@@ -56,12 +34,12 @@ export type GetAllCarModelsResponseDTO = {
 };
 
 //차량 수정
-export type UpdateCarDTO = Partial<CreateCarDTO>;
+export type UpdateCarDTO = UpdateCar;
 
-export type UpdateCarResponseDTO = Partial<CreateCarDTO>;
+export type UpdateCarResponseDTO = CarResponse;
 
 //대용량 파일 업로드
-export type UploadCarDTO = CreateCarDTO;
+export type UploadCarDTO = CarRequest;
 
 export type UploadCarResponseDTO = {
   count: number;

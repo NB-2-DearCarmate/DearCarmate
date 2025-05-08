@@ -5,6 +5,8 @@ import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
 import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { Customer } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import { AgeGroup, Region } from "@prisma/client";
 
 interface CustomerRecord {
   name: string;
@@ -15,7 +17,39 @@ interface CustomerRecord {
   email?: string;
   memo?: string;
   companyId: number; // 유저의 회사 ID (요구사항: 유저의 회사에 등록)
+  contractCount?: number;
 }
+
+const ageGroupMap: Record<string, AgeGroup> = {
+  "10대": "AGE_10",
+  "20대": "AGE_20",
+  "30대": "AGE_30",
+  "40대": "AGE_40",
+  "50대": "AGE_50",
+  "60대": "AGE_60",
+  "70대": "AGE_70",
+  "80대": "AGE_80",
+};
+
+const regionMap: Record<string, Region> = {
+  "서울": "SEOUL",
+  "경기": "GYEONGGI",
+  "인천": "INCHEON",
+  "강원": "GANGWON",
+  "충북": "CHUNGBUK",
+  "충남": "CHUNGNAM",
+  "세종": "SEJONG",
+  "대전": "DAEJEON",
+  "전북": "JEONBUK",
+  "전남": "JEONNAM",
+  "광주": "GWANGJU",
+  "경북": "GYEONGBUK",
+  "경남": "GYEONGNAM",
+  "대구": "DAEGU",
+  "울산": "ULSAN",
+  "부산": "BUSAN",
+  "제주": "JEJU",
+};
 
 // 고객객
 export const CustomerService = {
@@ -26,28 +60,59 @@ export const CustomerService = {
   getCustomers: async ({
     page,
     limit,
-    search,
+    search = "",
     companyId,
+    searchBy = "name",
   }: {
     page: number;
     limit: number;
-    search: string;
+    search?: string;
     memo?: string;
     companyId: number;
-  }) => {
-    return prisma.customer.findMany({
-      where: {
-        companyId,
-        OR: [
-          { name: { contains: search, mode: "insensitive" } },
-          { email: { contains: search, mode: "insensitive" } },
-        ],
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: { createdAt: "asc" },
-    });
+    searchBy?: "name" | "email";
+  })  => {
+    const searchCondition =
+      searchBy === "name"
+        ? { name: { contains: search, mode: Prisma.QueryMode.insensitive } }
+        : { email: { contains: search, mode: Prisma.QueryMode.insensitive } };
+
+
+        const customers = await prisma.customer.findMany({
+          where: {
+            companyId,
+            ...searchCondition,
+          },
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: { createdAt: "asc" },
+        });
+      
+        const totalCount = await prisma.customer.count({
+          where: {
+            companyId,
+            ...searchCondition,
+          },
+        });
+      
+        const totalPages = Math.ceil(totalCount / limit);
+
+        const mappedCustomers = customers.map((customer) => ({
+          ...customer,
+          ageGroup:
+            Object.entries(ageGroupMap).find(([, value]) => value === customer.ageGroup)?.[0] ??
+            customer.ageGroup,
+          region:
+            Object.entries(regionMap).find(([, value]) => value === customer.region)?.[0] ??
+            customer.region,
+        }));
+       
+    return {
+      currentPage: page,
+      totalPages,
+      data: mappedCustomers,
+    };
   },
+  
   patchCustomers: async (
     id: number,
     data: Partial<Customer>,
@@ -89,21 +154,35 @@ export const CustomerService = {
     return customer;
   },
   bulkCreateCustomers: async (dataList: any[], companyId: number) => {
-    const customersToCreate = dataList.map((row) => ({
-      name: row.name,
-      email: row.email,
-      gender: row.gender as "male" | "female",
-      phoneNumber: row.phoneNumber,
-      ageGroup: row.ageGroup,
-      region: row.region,
-      memo: row.memo || "",
-      contractCount: 0,
-      companyId,
-    }));
-
+    const customersToCreate = dataList.map((row, index) => {
+      console.log(`[DEBUG] row ${index + 1}:`, row);
+      const ageGroupKey = row.ageGroup?.trim();
+      const regionKey = row.region?.trim();
+      console.log(`[DEBUG] 행 ${index + 1} - ageGroupKey: '${ageGroupKey}', regionKey: '${regionKey}'`);
+      console.log(`[DEBUG] 매핑 결과 - ageGroup: '${ageGroupMap[ageGroupKey]}', region: '${regionMap[regionKey]}'`);
+      const mappedAgeGroup = ageGroupMap[ageGroupKey];
+      const mappedRegion = regionMap[regionKey];
+  
+      if (!mappedAgeGroup || !mappedRegion) {
+        throw new Error(`행 ${index + 1}: 유효하지 않은 연령대 또는 지역입니다.`);
+      }
+  
+      return {
+        name: row.name,
+        email: row.email,
+        gender: row.gender as "male" | "female",
+        phoneNumber: row.phoneNumber,
+        ageGroup: mappedAgeGroup,
+        region: mappedRegion,
+        memo: row.memo || "",
+        contractCount: 0,
+        companyId,
+      };
+    });
+  
     return await prisma.customer.createMany({
       data: customersToCreate,
-      skipDuplicates: true, // 중복 이메일 무시
+      skipDuplicates: true,
     });
-  },
+  }
 };

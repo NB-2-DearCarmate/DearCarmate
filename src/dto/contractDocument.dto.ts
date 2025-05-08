@@ -14,7 +14,7 @@ export interface ContractDocumentItemDto {
   contractName: string;
   resolutionDate: Date | null;
   documentsCount: number;
-  manager: string;
+  userName: string;
   carNumber: string;
   documents: {
     id: number;

@@ -62,7 +62,6 @@ const uploadContractDocuments = async (
           fileName: file.fileName,
           filePath: file.fileName,
           fileSize: file.fileSize,
-          contractId: file.contractId,
         },
       })
     )
