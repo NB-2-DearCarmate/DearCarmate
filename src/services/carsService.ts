@@ -23,7 +23,6 @@ export const createCar = async (
 
   const model = await carRepository.findModel({
     name: carRequest.model,
-    year: carRequest.manufacturingYear,
     manufacturerName: carRequest.manufacturer,
   });
 
@@ -35,6 +34,7 @@ export const createCar = async (
     carNumber: carRequest.carNumber,
     modelId: model.id,
     companyId,
+    year: carRequest.manufacturingYear,
     mileage: carRequest.mileage,
     price: carRequest.price,
     accidentCount: carRequest.accidentCount,
@@ -102,7 +102,6 @@ async function updateCar(id: number, carRequest: UpdateCar) {
 
   const model = await carRepository.findModel({
     name: carRequest.model ?? existingCar.model.name,
-    year: carRequest.manufacturingYear ?? existingCar.model.year,
     manufacturerName:
       carRequest.manufacturer ?? existingCar.model.manufacturer.name,
   });
@@ -142,7 +141,6 @@ async function bulkCreateCarsService(carList: CarRequest[], companyId: number) {
   for (const car of carList) {
     const model = await carRepository.findModel({
       name: car.model,
-      year: car.manufacturingYear,
       manufacturerName: car.manufacturer,
     });
 
@@ -156,6 +154,7 @@ async function bulkCreateCarsService(carList: CarRequest[], companyId: number) {
       carNumber: car.carNumber,
       modelId: model.id,
       companyId,
+      year: car.manufacturingYear,
       mileage: car.mileage,
       price: car.price,
       accidentCount: car.accidentCount,

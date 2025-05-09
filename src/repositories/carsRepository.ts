@@ -17,6 +17,7 @@
 //   });
 // }
 
+<<<<<<< HEAD
 // // DB에서 Model정보 조회
 // async function findModel({
 //   name,
@@ -40,6 +41,28 @@
 //     },
 //   });
 // }
+=======
+// DB에서 Model정보 조회
+async function findModel({
+  name,
+  manufacturerName,
+}: {
+  name: string;
+  manufacturerName: string;
+}) {
+  return prisma.models.findFirst({
+    where: {
+      name,
+      manufacturer: {
+        name: manufacturerName,
+      },
+    },
+    include: {
+      manufacturer: true,
+    },
+  });
+}
+>>>>>>> 55b34332145977f2711654825ec6622d502c1caa
 
 // // carNumber 일치 비교
 // async function findByCarNumber(carNumber: string) {

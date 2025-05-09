@@ -20,6 +20,7 @@ export interface CarData {
   carNumber: string;
   modelId: number;
   companyId: number;
+  year: number;
   mileage: number;
   price: number;
   accidentCount: number;
