@@ -8,3 +8,4 @@ request
 uploads/*
 !uploads/README.md
 docUploads
+photos

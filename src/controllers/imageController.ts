@@ -38,7 +38,8 @@ const imageUpload = (req: Request, res: Response): void => {
 
   if (files && files.length > 0) {
     const filePaths = files.map((file) => `/photos/${file.filename}`);
-    res.status(200).json({ urls: filePaths });
+    res.status(200).json({ imageUrl: filePaths });
+    return;
   }
 
   res.status(400).send({ message: "업로드 된 파일이 없습니다." });
