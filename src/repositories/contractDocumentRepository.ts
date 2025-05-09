@@ -1,4 +1,4 @@
-import { Contract, ContractDocument } from "@prisma/client";
+import { ContractDocument } from "@prisma/client";
 import prisma from "../lib/prisma";
 import { SaveFileInfo } from "../typings/contrarctDocument";
 import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
