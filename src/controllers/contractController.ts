@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -9,13 +9,8 @@ import {
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
-import meetingService from "../services/meetingService";
 import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
-import {
-  CreateContractResponseDTO,
-  MeetingDTO,
-  UpdateContractResponseDTO,
-} from "../dto/contractDTO";
+import { CreateContractResponseDTO } from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
 
@@ -69,9 +64,11 @@ export const getContractList = async (req: Request, res: Response) => {
         name: contract.user.name,
       },
       meetings: contract.meetings.map((meeting) => ({
-        date: format(new Date(meeting.date), 'yyyy-MM-dd'),
-        alarms: meeting.alarms.map((alarm) => format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")),
-      }))
+        date: format(new Date(meeting.date), "yyyy-MM-dd"),
+        alarms: meeting.alarms.map((alarm) =>
+          format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
+        ),
+      })),
     }));
 
     contractByStatus[status] = {
@@ -157,37 +154,27 @@ export const createContract = async (req: Request, res: Response) => {
     status: "carInspection" as ContractStatus,
     resolutionDate: null,
     contractPrice: 0,
-    meeting: parsedData.meetings,
+    meetings: parsedData.meetings,
   };
 
-  const contract = await contractService.create(contractData);
-  const contractId = contract.id;
-
-  let meetingResult: MeetingDTO[] = [];
-
-  if (parsedData.meetings) {
-    meetingResult = await meetingService.createWithAlarms(
-      contractId,
-      parsedData.meetings
-    );
-  }
+  const createContract = await contractService.createContract(contractData);
 
   const contractResult: CreateContractResponseDTO = {
-    id: contract.id,
-    status: contract.status,
-    resolutionDate: contract.resolutionDate,
-    meetings: meetingResult,
+    id: createContract.contract.id,
+    status: createContract.contract.status,
+    resolutionDate: createContract.contract.resolutionDate,
+    meetings: createContract.meetings,
     user: {
       id: userId,
-      name: contract.user.name,
+      name: createContract.contract.user.name,
     },
     customer: {
-      id: contract.customer.id,
-      name: contract.customer.name,
+      id: createContract.contract.customer.id,
+      name: createContract.contract.customer.name,
     },
     car: {
-      id: contract.car.id,
-      model: contract.car.model.name,
+      id: createContract.contract.car.id,
+      model: createContract.contract.car.model.name,
     },
   };
 
@@ -213,43 +200,34 @@ export const updateContract = async (req: Request, res: Response) => {
   ) {
     throw new BadRequestError("계약 일자는 필수값입니다.");
   }
+  const updatedContract = await contractService.updateContract(
+    id,
+    userId,
+    contractDocuments,
+    parsedData,
+    parsedMeeting || []
+  );
 
-  const meetingResult = parsedMeeting
-    ? await meetingService.updateMeetings(id, parsedMeeting)
-    : [];
-
-  const updatedContract = await contractService.update(id, userId, parsedData);
-  if (contractDocuments && contractDocuments.length > 0) {
-    await contractService.updateContractDocuments(id, contractDocuments);
-  }
-
-  if (updatedContract.status === "contractSuccessful") {
-    await contractService.complectedCar(updatedContract.car.id);
-  } else if (updatedContract.status === "contractFailed") {
-    await contractService.failedCar(updatedContract.car.id);
-  }
-
-  const updatedContractResult: UpdateContractResponseDTO = {
-    id: updatedContract.id,
-    status: updatedContract.status,
-    resolutionDate: updatedContract.resolutionDate,
-    contractPrice: updatedContract.contractPrice,
-    meetings: meetingResult,
+  const result = {
+    id: updatedContract.updatedContract.id,
+    status: updatedContract.updatedContract.status,
+    resolutionDate: updatedContract.updatedContract.resolutionDate,
+    contractPrice: updatedContract.updatedContract.contractPrice,
+    meetings: updatedContract.meetingResult,
     user: {
       id: userId,
-      name: updatedContract.user.name,
+      name: updatedContract.updatedContract.user.name,
     },
     customer: {
-      id: updatedContract.customer.id,
-      name: updatedContract.customer.name,
+      id: updatedContract.updatedContract.customer.id,
+      name: updatedContract.updatedContract.customer.name,
     },
     car: {
-      id: updatedContract.car.id,
-      model: updatedContract.car.model.name,
+      id: updatedContract.updatedContract.car.id,
+      model: updatedContract.updatedContract.car.model.name,
     },
   };
-
-  res.status(200).send(updatedContractResult);
+  res.status(200).send(result);
 };
 
 //계약 삭제

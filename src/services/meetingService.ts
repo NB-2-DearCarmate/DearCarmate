@@ -2,9 +2,9 @@ import meetingRepository from "../repositories/meetingRepository";
 import alarmService from "./alarmService";
 import { isVaildMeetingDate } from "../utils/contractDate";
 import { MeetingDTO } from "../dto/contractDTO";
+import { transection } from "../typings/contract";
 
 // 시간 변환
-
 const getId = async (contractId: number) => {
   const meetingId = await meetingRepository.getId(contractId);
   return meetingId;
@@ -19,7 +19,8 @@ const update = async (meetingId: number, meetingDate: Date) => {
 
 const createWithAlarms = async (
   contractId: number,
-  meetings: MeetingDTO[]
+  meetings: MeetingDTO[],
+  tx: transection
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지만 등록 가능합니다.");
@@ -40,7 +41,8 @@ const createWithAlarms = async (
 
     const createdMeeting = await meetingRepository.save(
       contractId,
-      meetingDate
+      meetingDate,
+      tx
     );
     const meetingId = createdMeeting.id;
 
@@ -48,7 +50,7 @@ const createWithAlarms = async (
 
     if (meeting.alarms && Array.isArray(meeting.alarms)) {
       for (const alarmAt of meeting.alarms) {
-        await alarmService.create(meetingId, meetingDate, alarmAt);
+        await alarmService.create(meetingId, meetingDate, alarmAt, tx);
         alarms.push(alarmAt);
       }
     }
@@ -64,7 +66,8 @@ const createWithAlarms = async (
 
 const updateMeetings = async (
   contractId: number,
-  meetings: MeetingDTO[]
+  meetings: MeetingDTO[],
+  tx: transection
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
@@ -74,11 +77,11 @@ const updateMeetings = async (
 
   const requestedDates = meetings.map((m) => m.date.getTime());
 
-  const existingMeetings = await findAllByContractId(contractId);
+  const existingMeetings = await findAllByContractId(contractId, tx);
 
   for (const existing of existingMeetings) {
     if (!requestedDates.includes(existing.date.getTime())) {
-      await deleteById(existing.id);
+      await deleteById(existing.id, tx);
     }
   }
 
@@ -98,22 +101,23 @@ const updateMeetings = async (
 
     let meetingId: number;
 
-    const existingMeeting = await getByDate(contractId, meetingDate);
+    const existingMeeting = await getByDate(contractId, meetingDate, tx);
 
     if (existingMeeting) {
       meetingId = existingMeeting.id;
-      await alarmService.deleteByMeetingId(meetingId);
+      await alarmService.deleteByMeetingId(meetingId, tx);
     } else {
       const createdMeeting = await meetingRepository.save(
         contractId,
-        meetingDate
+        meetingDate,
+        tx
       );
       meetingId = createdMeeting.id;
     }
 
     for (const alarmAt of alarmData) {
       alarms.push(alarmAt);
-      await alarmService.create(meetingId, meetingDate, alarmAt);
+      await alarmService.create(meetingId, meetingDate, alarmAt, tx);
     }
 
     meetingResult.push({
@@ -125,17 +129,21 @@ const updateMeetings = async (
   return meetingResult;
 };
 
-const getByDate = async (contractId: number, meetingDate: Date) => {
-  return await meetingRepository.findOne(contractId, meetingDate);
+const getByDate = async (
+  contractId: number,
+  meetingDate: Date,
+  tx: transection
+) => {
+  return await meetingRepository.findOne(contractId, meetingDate, tx);
 };
 
-const findAllByContractId = async (contractId: number) => {
-  const meetings = await meetingRepository.findAllByContractId(contractId);
+const findAllByContractId = async (contractId: number, tx: transection) => {
+  const meetings = await meetingRepository.findAllByContractId(contractId, tx);
   return meetings;
 };
 
-const deleteById = async (meetingId: number) => {
-  return await meetingRepository.deleteById(meetingId);
+const deleteById = async (meetingId: number, tx: transection) => {
+  return await meetingRepository.deleteById(meetingId, tx);
 };
 export default {
   getId,

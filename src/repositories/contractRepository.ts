@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
-import { ContractType, ContractStatus } from "../typings/contract";
-import { ContractStatus as PrismaContractStatus } from "@prisma/client";
+import { ContractType, ContractStatus, transection } from "../typings/contract";
+import { ContractDTO } from "../dto/contractDTO";
 const getContractList = async (
   companyId: number,
   {
@@ -104,9 +104,7 @@ const getUserList = async (companyId: number) => {
   return userList;
 };
 
-const save = async (
-  data: Omit<ContractType, "id" | "createdAt" | "updatedAt">
-) => {
+const save = async (data: ContractDTO, tx: transection) => {
   const {
     carId,
     customerId,
@@ -117,13 +115,13 @@ const save = async (
     contractPrice,
   } = data;
 
-  const createContract = await prisma.contract.create({
+  const createContract = await tx.contract.create({
     data: {
       carId,
       customerId,
       userId,
       companyId,
-      status: PrismaContractStatus.carInspection,
+      status: "carInspection" as ContractStatus,
       resolutionDate,
       contractPrice,
     },
@@ -177,8 +175,8 @@ const getCarId = async (id: number) => {
   return car;
 };
 
-const updateCarStatus = async (carId: number) => {
-  const createContract = await prisma.car.update({
+const updateCarStatus = async (carId: number, tx: transection) => {
+  const createContract = await tx.car.update({
     where: { id: carId },
     data: {
       status: "contractProceeding",
@@ -224,8 +222,12 @@ const getById = async (id: number) => {
   return contract;
 };
 
-const update = async (id: number, data: Partial<ContractType>) => {
-  const updatedContract = await prisma.contract.update({
+const update = async (
+  id: number,
+  data: Partial<ContractType>,
+  tx: transection
+) => {
+  const updatedContract = await tx.contract.update({
     where: { id },
     data,
     select: {
@@ -271,8 +273,8 @@ const update = async (id: number, data: Partial<ContractType>) => {
   return updatedContract;
 };
 
-const verifyDocumentsExist = async (documentIds: number[]) => {
-  const found = await prisma.contractDocument.findMany({
+const verifyDocumentsExist = async (documentIds: number[], tx: transection) => {
+  const found = await tx.contractDocument.findMany({
     where: {
       id: { in: documentIds },
     },
@@ -289,9 +291,10 @@ const verifyDocumentsExist = async (documentIds: number[]) => {
 
 const updateContractDocuments = async (
   contractId: number,
-  newDocumentIds: number[]
+  newDocumentIds: number[],
+  tx: transection
 ) => {
-  const contract = await prisma.contract.findUnique({
+  const contract = await tx.contract.findUnique({
     where: { id: contractId },
     select: { documents: { select: { id: true } } },
   });
@@ -303,7 +306,7 @@ const updateContractDocuments = async (
   const toDisconnect = currentIds.filter((id) => !newDocumentIds.includes(id));
   const toConnect = newDocumentIds.filter((id) => !currentIds.includes(id));
 
-  return await prisma.contract.update({
+  return await tx.contract.update({
     where: { id: contractId },
     data: {
       documents: {
@@ -314,8 +317,8 @@ const updateContractDocuments = async (
   });
 };
 
-const completedCar = async (carId: number) => {
-  const updateStatus = await prisma.car.update({
+const completedCar = async (carId: number, tx: transection) => {
+  const updateStatus = await tx.car.update({
     where: { id: carId },
     data: {
       status: "contractCompleted",
@@ -325,8 +328,8 @@ const completedCar = async (carId: number) => {
   return updateStatus;
 };
 
-const failedCar = async (carId: number) => {
-  const updateStatus = await prisma.car.update({
+const failedCar = async (carId: number, tx: transection) => {
+  const updateStatus = await tx.car.update({
     where: { id: carId },
     data: {
       status: "possession",

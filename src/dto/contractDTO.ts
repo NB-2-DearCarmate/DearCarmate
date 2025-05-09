@@ -1,3 +1,37 @@
+import { ContractStatus } from "../typings/contract";
+
+export interface ContractDTO {
+  carId: number;
+  customerId: number;
+  userId: number;
+  companyId: number;
+  status: ContractStatus;
+  contractPrice: number;
+  resolutionDate: Date | null;
+}
+
+export interface CreateContractDTO {
+  carId: number;
+  customerId: number;
+  userId: number;
+  status: ContractStatus;
+  contractPrice: number;
+  resolutionDate: Date | null;
+  meetings?: {
+    date: Date;
+    alarms?: Date[];
+  }[];
+}
+
+export interface UpdateContractDTO {
+  carId: number;
+  customerId: number;
+  userId: number;
+  status: ContractStatus;
+  resolutionDate: Date;
+  meetings: MeetingDTO[];
+}
+
 export interface CreateContractResponseDTO {
   id: number;
   status: string;

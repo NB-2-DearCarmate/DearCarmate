@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
+import { transection } from "../typings/contract";
 
 const update = async (id: number, meetingDate: Date) => {
   const updatedMeeting = await prisma.meeting.updateMany({
@@ -37,8 +38,8 @@ const getById = async (id: number) => {
   return meeting;
 };
 
-async function save(contractId: number, meetingDate: Date) {
-  const meeting = await prisma.meeting.create({
+async function save(contractId: number, meetingDate: Date, tx: transection) {
+  const meeting = await tx.meeting.create({
     data: {
       contractId: contractId,
       date: meetingDate,
@@ -48,8 +49,12 @@ async function save(contractId: number, meetingDate: Date) {
   return meeting;
 }
 
-const findOne = async (contractId: number, meetingDate: Date) => {
-  const meeting = await prisma.meeting.findFirst({
+const findOne = async (
+  contractId: number,
+  meetingDate: Date,
+  tx: transection
+) => {
+  const meeting = await tx.meeting.findFirst({
     where: {
       contractId: contractId,
       date: meetingDate,
@@ -65,16 +70,16 @@ const deleteMany = async (contractId: number) => {
   });
 };
 
-const findAllByContractId = async (contractId: number) => {
-  const meetings = await prisma.meeting.findMany({
+const findAllByContractId = async (contractId: number, tx: transection) => {
+  const meetings = await tx.meeting.findMany({
     where: { contractId },
   });
 
   return meetings;
 };
 
-const deleteById = async (meetingId: number) => {
-  await prisma.meeting.delete({
+const deleteById = async (meetingId: number, tx: transection) => {
+  await tx.meeting.delete({
     where: { id: meetingId },
   });
 };
