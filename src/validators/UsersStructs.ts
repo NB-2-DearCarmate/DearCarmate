@@ -1,4 +1,4 @@
-import { object, string, optional, refine } from "superstruct";
+import { object, string, nullable, optional, refine } from "superstruct";
 
 const isPasswordMatch = refine(
   string(),
@@ -26,5 +26,5 @@ export const UpdateMyInfoStruct = object({
   currentPassword: string(),
   password: optional(string()),
   passwordConfirmation: optional(isPasswordMatch),
-  imageUrl: optional(string()),
+  imageUrl: optional(nullable(string())),
 });
