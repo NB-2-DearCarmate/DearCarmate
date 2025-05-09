@@ -80,7 +80,7 @@ export const uploadContractDocumentsHandler = async (
   const contractDocumentId = await contractDocumentService.uploadContractFile(
     file
   );
-  res.status(200).json({ contractDocumentId: contractDocumentId });
+  res.status(200).json({ id: contractDocumentId, fileName: file[0].fileName });
 };
 
 export const downloadContractDocHandler = async (
