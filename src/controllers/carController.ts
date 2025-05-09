@@ -6,7 +6,7 @@ import {
   UpdateCarStruct,
   CarQueryStruct,
 } from "../validators/CarsStructs";
-import { CarRequest } from "../tsypings/car";
+import { CarRequest } from "../typings/car";
 import {
   CreateCarDTO,
   CreateCarResponseDTO,
