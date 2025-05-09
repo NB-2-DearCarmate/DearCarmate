@@ -6,7 +6,7 @@ const imageRouter = express.Router();
 
 imageRouter.post(
   "/upload",
-  upload.array("photo", 10),
+  upload.array("file", 10),
   asyncHandler(imageUpload)
 );
 
