@@ -32,7 +32,6 @@ export const UpdateContractStruct = object({
   carId: optional(integer()),
   customerId: optional(integer()),
   contractPrice: optional(integer()),
-  contractDocumentId: optional(integer()),
   status: optional(ContractStatusStruct),
   resolutionDate: optional(
     coerce(date(), string(), (value) => new Date(value))

@@ -1,5 +1,7 @@
+import { CreateContractDTO, MeetingDTO } from "../dto/contractDTO";
 import BadRequestError from "../errors/BadRequestError";
 import ForbiddenError from "../errors/ForbiddenError";
+import prisma from "../lib/prisma";
 import contractRepository from "../repositories/contractRepository";
 import {
   ContractList,
@@ -7,7 +9,9 @@ import {
   ContractStatus,
   CursorPaginationResultWithTotal,
   ContractWithDetails,
+  transection,
 } from "../typings/contract";
+import meetingService from "./meetingService";
 
 type CreateContract = Omit<
   ContractType,
@@ -63,55 +67,94 @@ const getUserList = async (userId: number) => {
 };
 
 // 계약 생성
-const create = async (data: CreateContract) => {
+const createContract = async (data: CreateContractDTO) => {
+  const user = await contractRepository.getUserId(data.userId);
+  const companyId = user.companyId;
+
   const car = await contractRepository.getCarId(data.carId);
+
   if (car.status !== "possession") {
     throw new BadRequestError("현재 계약 진행 중인 차량입니다.");
   }
 
-  const updateCarStatus = await contractRepository.updateCarStatus(car.id);
-  const user = await contractRepository.getUserId(data.userId);
-  const companyId = user.companyId;
+  return await prisma.$transaction(async (tx) => {
+    const updateCarStatus = await contractRepository.updateCarStatus(
+      car.id,
+      tx
+    );
 
-  const contractData = {
-    ...data,
-    contractPrice: car.price,
-    companyId,
-  };
+    const contractData = {
+      ...data,
+      contractPrice: car.price,
+      companyId,
+    };
 
-  const contract = await contractRepository.save(contractData);
-  return contract;
+    const contract = await contractRepository.save(contractData, tx);
+
+    let meetings: MeetingDTO[] = [];
+    if (data.meetings) {
+      meetings = await meetingService.createWithAlarms(
+        contract.id,
+        data.meetings.map((meeting) => ({
+          date: meeting.date,
+          alarms: meeting.alarms || [],
+        })),
+        tx
+      );
+    }
+
+    return {
+      contract,
+      meetings,
+    };
+  });
 };
 
 // 계약 수정
-const update = async (id: number, userId: number, data: UpdateContract) => {
+const updateContract = async (
+  id: number,
+  userId: number,
+  contractDocuments: { id: number; filename: string }[],
+  data: UpdateContract,
+  meetings: MeetingDTO[]
+) => {
   const findContract = await contractRepository.getById(id);
 
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 수정이 가능합니다.");
   }
 
-  return await contractRepository.update(id, data);
-};
+  const update = await prisma.$transaction(async (tx) => {
+    let meetingResult: MeetingDTO[] = [];
+    if (meetings) {
+      meetingResult = await meetingService.updateMeetings(id, meetings, tx);
+    }
 
-// 계약서 업로드
-const updateContractDocuments = async (
-  contractId: number,
-  toAdd: number[] = [],
-  toRemove: number[] = []
-) => {
-  const getDocument = await contractRepository.verifyDocumentsExist([
-    ...toAdd,
-    ...toRemove,
-  ]);
+    const updatedContract = await contractRepository.update(id, data, tx);
 
-  if (toAdd?.length > 0) {
-    await contractRepository.addDocuments(contractId, toAdd);
-  }
+    if (contractDocuments && contractDocuments.length > 0) {
+      const documentId = contractDocuments.map((item) => item.id);
+      const getDocument = await contractRepository.verifyDocumentsExist(
+        documentId,
+        tx
+      );
 
-  if (toRemove?.length > 0) {
-    await contractRepository.removeDocuments(contractId, toRemove);
-  }
+      const contractDocumentUpdate =
+        await contractRepository.updateContractDocuments(id, documentId, tx);
+    }
+
+    if (updatedContract.status === "contractSuccessful") {
+      await contractRepository.completedCar(updatedContract.car.id, tx);
+    } else if (updatedContract.status === "contractFailed") {
+      await contractRepository.failedCar(updatedContract.car.id, tx);
+    }
+    return {
+      updatedContract,
+      meetingResult,
+    };
+  });
+
+  return update;
 };
 
 // 계약 삭제
@@ -122,25 +165,12 @@ const deleteById = async (id: number, userId: number) => {
     throw new ForbiddenError("담당자만 삭제가 가능합니다.");
   }
 
+  const carStatus = await contractRepository.carStatus(findContract.carId);
+
   return await contractRepository.deleteById(id);
 };
 
 //외래키 참조
-const updateCarStatus = async (carId: number) => {
-  const createContract = await contractRepository.updateCarStatus(carId);
-  return createContract;
-};
-
-const complectedCar = async (carId: number) => {
-  const updatedStatus = await contractRepository.completedCar(carId);
-  return updatedStatus;
-};
-
-const failedCar = async (carId: number) => {
-  const updatedStatus = await contractRepository.failedCar(carId);
-  return updatedStatus;
-};
-
 const getUserId = async (userId: number) => {
   const user = await contractRepository.getUserId(userId);
   return user;
@@ -148,15 +178,11 @@ const getUserId = async (userId: number) => {
 
 export default {
   getContractList,
-  create,
-  update,
+  createContract,
+  updateContract,
   deleteById,
   getUserId,
-  updateCarStatus,
-  complectedCar,
   getCustomerList,
   getCarList,
   getUserList,
-  failedCar,
-  updateContractDocuments,
 };

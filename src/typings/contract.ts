@@ -3,6 +3,7 @@ import {
   ContractStatus as PrismaContractStatus,
   Meeting,
   Alarm,
+  Prisma,
 } from "@prisma/client";
 
 export type ContractType = Contract;
@@ -23,6 +24,8 @@ export const CONTRACT_STATUS_ORDER: ContractStatus[] = [
   PrismaContractStatus.contractSuccessful,
   PrismaContractStatus.contractFailed,
 ];
+
+export type transection = Prisma.TransactionClient;
 
 export interface ContractWithDetails {
   id: number;
@@ -50,6 +53,7 @@ export interface ContractWithDetails {
   contractPrice: number;
   resolutionDate: Date | null;
 }
+
 
 export interface CursorPaginationResultWithTotal<T> {
   list: T[];
