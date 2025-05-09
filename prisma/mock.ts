@@ -5,7 +5,6 @@ import {
   AgeGroup,
   Region,
   ContractStatus,
-  CarYear,
 } from "@prisma/client";
 
 export const manufacturers = [
@@ -145,7 +144,6 @@ export const users = [
 ];
 export const models = [
   {
-    year: CarYear.Y2023,
     name: "K3",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -153,7 +151,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2022,
     name: "K5",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -161,7 +158,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2024,
     name: "K7",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -169,7 +165,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2023,
     name: "K9",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -177,7 +172,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2024,
     name: "K8",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -185,7 +179,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2023,
     name: "그랜저",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -193,7 +186,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2024,
     name: "아반떼",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -201,7 +193,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2022,
     name: "소나타",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -209,7 +200,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2023,
     name: "투싼",
     type: CarType.SUV,
     manufacturerId: 2,
@@ -217,7 +207,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2024,
     name: "베뉴",
     type: CarType.SUV,
     manufacturerId: 2,
@@ -225,7 +214,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2023,
     name: "렉스턴",
     type: CarType.SUV,
     manufacturerId: 3,
@@ -233,7 +221,6 @@ export const models = [
     updatedAt: new Date(),
   },
   {
-    year: CarYear.Y2024,
     name: "XM3",
     type: CarType.SUV,
     manufacturerId: 4,
