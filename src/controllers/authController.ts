@@ -6,13 +6,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwt";
-import {
-  LoginRequestBody,
-  LoginSuccessResponse,
-  ErrorResponse,
-  RefreshTokenRequestBody,
-  RefreshTokenSuccessResponse,
-} from "../typings/auth";
+import { LoginRequestBody, RefreshTokenRequestBody } from "../typings/auth";
 
 // 로그인
 export const login: RequestHandler<{}, any, LoginRequestBody> = async (
@@ -20,7 +14,6 @@ export const login: RequestHandler<{}, any, LoginRequestBody> = async (
   res
 ) => {
   const { email, password } = req.body;
-  console.log(email, password);
 
   if (!email || !password) {
     res.status(400).json({ message: "잘못된 요청입니다" });

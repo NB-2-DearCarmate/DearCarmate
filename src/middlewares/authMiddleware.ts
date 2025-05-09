@@ -19,15 +19,14 @@ const authMiddleware = async (
 
   try {
     const decoded = verifyAccessToken(token) as { userId: number, companyId: number }; 
-    console.log("디코딩된 토큰 내용:", decoded);
-    console.log("decoded.companyId 타입:", typeof decoded.companyId, decoded.companyId);
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       include: {
         company: true,
       },
     });
-    console.log("Prisma 반환 결과:", user);
+  
 
     if (!user) {
       res.status(401).json({ message: "유효하지 않은 사용자입니다." });

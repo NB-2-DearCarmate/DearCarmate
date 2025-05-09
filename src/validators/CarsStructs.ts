@@ -5,11 +5,8 @@ import {
   nonempty,
   min,
   partial,
-  union,
-  literal,
   optional,
   coerce,
-  defaulted,
 } from "superstruct";
 
 export const CarStruct = object({
