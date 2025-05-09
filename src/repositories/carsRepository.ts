@@ -49,12 +49,16 @@ async function findByCarNumber(carNumber: string) {
 async function getCarList({
   page,
   pageSize,
-  status = CarStatus.possession,
+  status,
   orderBy,
   searchBy,
   keyword,
+  companyId,
 }: CarPaginationParams) {
-  const where: Prisma.CarWhereInput = {};
+  const where: Prisma.CarWhereInput = {
+    deletedAt: null,
+    companyId,
+  };
 
   if (status) {
     where.status = status as CarStatus;
@@ -143,8 +147,9 @@ async function updateCar(id: number, updateData: Partial<CarData>) {
 
 // Car 삭제
 async function deleteCar(id: number) {
-  return prisma.car.delete({
+  return prisma.car.update({
     where: { id },
+    data: { deletedAt: new Date() },
   });
 }
 

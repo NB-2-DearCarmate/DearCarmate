@@ -57,6 +57,9 @@ export const getCarList = async (
     keyword,
   } = create(req.query, CarQueryStruct);
 
+  const user = req.user;
+  const companyId = user?.companyId;
+
   const carList: CarListResponseDTO = await carService.getCarList({
     page,
     pageSize,
@@ -67,6 +70,7 @@ export const getCarList = async (
     orderBy: orderBy as "recent" | "oldest",
     searchBy: searchBy as SearchByCar,
     keyword: keyword as string,
+    companyId,
   });
 
   res.status(200).json(carList);
@@ -127,9 +131,13 @@ export const deleteCar = async (
   res: Response,
   next: NextFunction
 ) => {
-  const carId: CarByIdDTO = { id: Number(req.params.id) };
-  await carService.deleteCar(carId.id);
-  res.status(204).send();
+  try {
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
+    await carService.deleteCar(carId.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
 };
 
 // CSV 업로드 및 차량 등록
@@ -151,26 +159,30 @@ export const uploadCarsFromCSV = async (
     .pipe(csv())
     .on("data", (data) => results.push(data))
     .on("end", async () => {
-      const cars: UploadCarDTO[] = results.map((row: CarRequest) => ({
-        carNumber: String(row.carNumber),
-        manufacturer: String(row.manufacturer),
-        model: String(row.model),
-        manufacturingYear: Number(row.manufacturingYear),
-        mileage: Number(row.mileage),
-        price: Number(row.price),
-        accidentCount: Number(row.accidentCount) || 0,
-        explanation: row.explanation,
-        accidentDetails: row.accidentDetails,
-      }));
+      try {
+        const cars: UploadCarDTO[] = results.map((row: CarRequest) => ({
+          carNumber: String(row.carNumber),
+          manufacturer: String(row.manufacturer),
+          model: String(row.model),
+          manufacturingYear: Number(row.manufacturingYear),
+          mileage: Number(row.mileage),
+          price: Number(row.price),
+          accidentCount: Number(row.accidentCount) || 0,
+          explanation: row.explanation,
+          accidentDetails: row.accidentDetails,
+        }));
 
-      if (companyId !== undefined) {
-        await carService.bulkCreateCarsService(cars, companyId);
-      } else {
-        throw new Error("회사의 ID가 없습니다.");
+        if (companyId !== undefined) {
+          await carService.bulkCreateCarsService(cars, companyId);
+        } else {
+          throw new Error("회사의 ID가 없습니다.");
+        }
+
+        const saved: UploadCarResponseDTO =
+          await carService.bulkCreateCarsService(cars, companyId);
+        res.status(201).json(saved);
+      } catch (err) {
+        next(err);
       }
-
-      const saved: UploadCarResponseDTO =
-        await carService.bulkCreateCarsService(cars, companyId);
-      res.status(201).json(saved);
     });
 };
