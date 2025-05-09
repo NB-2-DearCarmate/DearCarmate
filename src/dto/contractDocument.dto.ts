@@ -1,4 +1,4 @@
-import { SearchByContract, SearchByContractDraft } from "../typings/pagination";
+import { SearchByContractDraft } from "../typings/pagination";
 
 export interface ContractDraftItemDto {
   id: number;

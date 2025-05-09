@@ -1,9 +1,6 @@
 import { CustomerRepository } from "../repositories/customersRepositories";
-import BadRequestError from "../errors/BadRequestError";
-import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
-import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { Customer } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 import { AgeGroup, Region } from "@prisma/client";
@@ -155,11 +152,10 @@ export const CustomerService = {
   },
   bulkCreateCustomers: async (dataList: any[], companyId: number) => {
     const customersToCreate = dataList.map((row, index) => {
-      console.log(`[DEBUG] row ${index + 1}:`, row);
+      
       const ageGroupKey = row.ageGroup?.trim();
       const regionKey = row.region?.trim();
-      console.log(`[DEBUG] 행 ${index + 1} - ageGroupKey: '${ageGroupKey}', regionKey: '${regionKey}'`);
-      console.log(`[DEBUG] 매핑 결과 - ageGroup: '${ageGroupMap[ageGroupKey]}', region: '${regionMap[regionKey]}'`);
+      
       const mappedAgeGroup = ageGroupMap[ageGroupKey];
       const mappedRegion = regionMap[regionKey];
   

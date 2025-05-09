@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedUserRequest } from "../typings/express";
 
 export async function adminMiddleware(
@@ -6,7 +6,6 @@ export async function adminMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  console.log("middleware req.user", req.user);
   const user = req.user;
 
   //jwt토큰 인증한 유저가 isAdmin이 false인지

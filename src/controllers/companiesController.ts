@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+
 import { NextFunction, Request, Response } from "express";
 import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";

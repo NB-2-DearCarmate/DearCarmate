@@ -7,3 +7,4 @@ request
 /dist 
 uploads/*
 !uploads/README.md
+docUploads

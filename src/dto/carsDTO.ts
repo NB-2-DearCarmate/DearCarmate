@@ -1,4 +1,4 @@
-import { CarResponse, CarRequest, CarData, UpdateCar } from "../typings/car";
+import { CarResponse, CarRequest, UpdateCar } from "../typings/car";
 
 //차량 생성
 export type CreateCarDTO = CarRequest;
