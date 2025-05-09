@@ -7,7 +7,7 @@ export function mapToCarResponse(car: any): CarResponse {
     manufacturer: car.model.manufacturer.name,
     model: car.model.name,
     type: car.model.type,
-    manufacturingYear: car.model.year,
+    manufacturingYear: car.year,
     mileage: car.mileage,
     price: car.price,
     accidentCount: car.accidentCount,

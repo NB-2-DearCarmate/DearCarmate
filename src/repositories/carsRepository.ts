@@ -20,17 +20,14 @@ async function createCar(carData: CarData) {
 // DB에서 Model정보 조회
 async function findModel({
   name,
-  year,
   manufacturerName,
 }: {
   name: string;
-  year: number;
   manufacturerName: string;
 }) {
   return prisma.models.findFirst({
     where: {
       name,
-      year,
       manufacturer: {
         name: manufacturerName,
       },

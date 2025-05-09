@@ -144,7 +144,7 @@ carId:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CarUpdateInput"
+              $ref: "#/components/schemas/CarResponse"
       "400":
         description: 잘못된 요청
       "401":
@@ -202,12 +202,15 @@ components:
         carNumber:
           type: string
           example: 14가1234
-        modelId:
+        manufacturer:
+          type: string
+          example: 기아
+        model:
+          type: string
+          example: K5
+        manufacturingYear:
           type: integer
-          example: 2
-        companyId:
-          type: integer
-          example: 1
+          example: 2001
         mileage:
           type: integer
           example: 150000
@@ -239,12 +242,15 @@ components:
         carNumber:
           type: string
           example: 14가1234
-        modelId:
+        manufacturer:
+          type: string
+          example: 기아
+        model:
+          type: string
+          example: K5
+        manufacturingYear:
           type: integer
-          example: 2
-        companyId:
-          type: integer
-          example: 1
+          example: 2001
         mileage:
           type: integer
           example: 150000
@@ -266,15 +272,21 @@ components:
     CarResponse:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         carNumber:
           type: string
           example: 14가1234
-        modelId:
+        manufacturer:
+          type: string
+          example: 기아
+        model:
+          type: string
+          example: K5
+        manufacturingYear:
           type: integer
-          example: 2
-        companyId:
-          type: integer
-          example: 1
+          example: 2001
         mileage:
           type: integer
           example: 150000
