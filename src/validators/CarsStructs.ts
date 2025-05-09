@@ -4,19 +4,17 @@ import {
   number,
   nonempty,
   min,
+  max,
   partial,
-  union,
-  literal,
   optional,
   coerce,
-  defaulted,
 } from "superstruct";
 
 export const CarStruct = object({
   carNumber: nonempty(string()),
   manufacturer: nonempty(string()),
   model: nonempty(string()),
-  manufacturingYear: min(number(), 1950),
+  manufacturingYear: min(max(number(), 2025), 1975),
   mileage: min(number(), 0),
   price: min(number(), 0),
   accidentCount: min(number(), 0),
