@@ -20,6 +20,7 @@ export interface CarData {
   carNumber: string;
   modelId: number;
   companyId: number;
+  year: number;
   mileage: number;
   price: number;
   accidentCount: number;
@@ -50,16 +51,4 @@ export type CarList = {
   data: CarResponse[];
 };
 
-export interface CarUpdate {
-  carNumber?: string;
-  manufacturer?: string;
-  model?: string;
-  manufacturingYear?: number;
-  mileage?: number;
-  price?: number;
-  accidentCount?: number;
-  explanation?: string;
-  accidentDetails?: string;
-}
-
-export type UpdateCar = Partial<CarUpdate>;
+export type UpdateCar = Partial<CarRequest>;
