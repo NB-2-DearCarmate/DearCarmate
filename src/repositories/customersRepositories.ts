@@ -3,7 +3,7 @@ import NotFoundError from "../errors/NotFoundError";
 import { ContractType } from "../typings/contract";
 import { CursorPaginationParams } from "../typings/pagination"; 
 import { Customer, AgeGroup, Region } from "@prisma/client";
-
+import { Prisma } from "@prisma/client";
 
 
 const ageGroupMap: Record<string, AgeGroup> = {
@@ -76,26 +76,30 @@ export const CustomerRepository = {
   },
 
   
-  update: async (id: number, data: Partial<Customer>) => {
+  update: async (id: number, data: Partial<Customer>) => { 
     const mappedAgeGroup = data.ageGroup ? ageGroupMap[data.ageGroup as string] : undefined;
     const mappedRegion = data.region ? regionMap[data.region as string] : undefined;
   
     return prisma.customer.update({
       where: { id },
-      data: {
-        ...data,
+      data: {  
         ageGroup: mappedAgeGroup ?? data.ageGroup,
         region: mappedRegion ?? data.region,
+        ...data,
       },
     });
   },
 
   delete: async (id: number) => {
-    return prisma.customer.delete({
+    const softDeleteData: Prisma.CustomerUpdateInput = {
+      deletedAt: new Date(),
+    };
+
+    return prisma.customer.update({
       where: { id },
+      data: softDeleteData,
     });
   },
-
   findunique: async (id: number) => {
     return prisma.customer.findUnique({
       where: { id },
