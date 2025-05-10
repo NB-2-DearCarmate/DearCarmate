@@ -50,6 +50,7 @@ export const CustomerController = {
         companyId,
       });
       res.status(200).json(customers);
+      console.log(customers)
     } catch (err) {
       res.status(500).json({ message: "고객 조회 중 오류 발생", error: err });
     }

@@ -1,9 +1,6 @@
 import { CustomerRepository } from "../repositories/customersRepositories";
-import BadRequestError from "../errors/BadRequestError";
-import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/prisma";
 import { CreateCustomerInput } from "../typings/customer";
-import { PaginationParams, SearchByCompany } from "../typings/pagination";
 import { Customer } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 import { AgeGroup, Region } from "@prisma/client";
@@ -105,6 +102,7 @@ export const CustomerService = {
             Object.entries(regionMap).find(([, value]) => value === customer.region)?.[0] ??
             customer.region,
         }));
+        console.log("aoa", mappedCustomers);
        
     return {
       currentPage: page,
