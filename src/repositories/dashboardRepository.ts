@@ -102,7 +102,6 @@ const getSaleCarType = async (companyId: number) => {
     },
   });
 
-  console.log(carType);
   return carType;
 };
 

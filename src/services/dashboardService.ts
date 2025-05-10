@@ -32,20 +32,17 @@ const getDashboardData = async (companyId: number) => {
       dashboardRepository.getSaleCarType(companyId),
     ]);
 
-    console.log("Data retrieved from database successfully");
 
     const monthlySales = thisMonthContract.reduce(
       (sum, c) => sum + (c.contractPrice ?? 0),
       0
     );
 
-    console.log(monthlySales);
     const lastMonthSales = lastMonthContract.reduce(
       (sum, c) => sum + (c.contractPrice ?? 0),
       0
     );
 
-    console.log(lastMonthSales);
     const growthRate =
       lastMonthSales === 0
         ? monthlySales > 0
@@ -53,13 +50,11 @@ const getDashboardData = async (companyId: number) => {
           : 0
         : ((monthlySales - lastMonthSales) / lastMonthSales) * 100;
 
-    console.log(growthRate);
     const contractsByCarTypeMap: Record<string, number> = {};
     contractsByCarTypeRaw.forEach(({ car }) => {
       const type = car.model.type;
       contractsByCarTypeMap[type] = (contractsByCarTypeMap[type] || 0) + 1;
     });
-    console.log(contractsByCarTypeMap);
 
     const salesByCarTypeMap: Record<string, number> = {};
     salesByCarTypeRaw.forEach(({ contractPrice, car }) => {
@@ -67,7 +62,6 @@ const getDashboardData = async (companyId: number) => {
       salesByCarTypeMap[type] =
         (salesByCarTypeMap[type] || 0) + (contractPrice ?? 0);
     });
-    console.log(salesByCarTypeMap);
 
     return {
       monthlySales,

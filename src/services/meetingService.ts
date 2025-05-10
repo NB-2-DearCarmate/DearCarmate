@@ -145,6 +145,7 @@ const findAllByContractId = async (contractId: number, tx: transection) => {
 const deleteById = async (meetingId: number, tx: transection) => {
   return await meetingRepository.deleteById(meetingId, tx);
 };
+
 export default {
   getId,
   update,

@@ -116,10 +116,13 @@ const updateContract = async (
   userId: number,
   contractDocuments: { id: number; filename: string }[],
   data: UpdateContract,
-  meetings: MeetingDTO[]
+  meetings?: MeetingDTO[]
 ) => {
   const findContract = await contractRepository.getById(id);
 
+  if (findContract.status !== "priceNegotiation" && data.contractPrice) {
+    throw new BadRequestError("가격 협의 상태에서 가격 정정이 가능합니다.");
+  }
   if (userId !== findContract.userId) {
     throw new ForbiddenError("담당자만 수정이 가능합니다.");
   }
@@ -176,6 +179,11 @@ const getUserId = async (userId: number) => {
   return user;
 };
 
+const getMeetings = async (contractId: number) => {
+  const meetings = await contractRepository.getMeeting(contractId);
+  return meetings;
+};
+
 export default {
   getContractList,
   createContract,
@@ -185,4 +193,5 @@ export default {
   getCustomerList,
   getCarList,
   getUserList,
+  getMeetings,
 };
