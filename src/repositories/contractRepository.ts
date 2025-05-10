@@ -72,7 +72,7 @@ const getCustomerList = async (companyId: number) => {
 
 const getCarList = async (companyId: number) => {
   const carList = await prisma.car.findMany({
-    where: { companyId, status: "possession" },
+    where: { companyId, status: "possession", deletedAt: null },
     select: {
       id: true,
       carNumber: true,
