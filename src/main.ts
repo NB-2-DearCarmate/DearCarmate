@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(swaggerSpec));
+app.use("/photos", express.static(path.join(__dirname, "../public/photos")));
 
 app.use("/companies", companiesRouter);
 app.use("/cars", carsRouter);
@@ -45,3 +46,6 @@ login;
 app.listen(PORT, () => {
   console.log(`server starting ${PORT}`);
 });
+
+
+

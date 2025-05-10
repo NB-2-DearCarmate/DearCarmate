@@ -4,10 +4,6 @@ import { asyncHandler } from "../lib/asyncHandler";
 
 const imageRouter = express.Router();
 
-imageRouter.post(
-  "/upload",
-  upload.array("file", 10),
-  asyncHandler(imageUpload)
-);
+imageRouter.post("/upload", upload.single("file"), asyncHandler(imageUpload));
 
 export default imageRouter;
