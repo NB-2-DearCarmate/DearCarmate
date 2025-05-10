@@ -16,7 +16,7 @@ export const CreateUserStruct = object({
   phoneNumber: string(),
   password: string(),
   passwordConfirmation: isPasswordMatch,
-  company: string(),
+  companyName: string(),
   companyCode: string(),
 });
 
