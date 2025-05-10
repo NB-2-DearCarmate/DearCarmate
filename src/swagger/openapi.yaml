@@ -32,3 +32,11 @@ paths:
     $ref: "./car.swagger.yaml#/carId"
   /cars/upload:
     $ref: "./car.swagger.yaml#/upload"
+
+  # 유저
+  /users:
+    $ref: "./users.swagger.yaml#/users"
+  /users/me:
+    $ref: "./users.swagger.yaml#/usersMe"
+  /users/{userId}:
+    $ref: "./users.swagger.yaml#/usersById"
