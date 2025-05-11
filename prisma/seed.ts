@@ -5,7 +5,7 @@ import {
   companies,
   users,
   models,
-  cars,
+  // cars,
   customers,
   contracts,
   meetings,
@@ -17,6 +17,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   try {
+    console.log("데이터 초기화 중...");
     await prisma.contractDocument.deleteMany();
     await prisma.alarm.deleteMany();
     await prisma.meeting.deleteMany();
@@ -32,6 +33,9 @@ async function main() {
       "Manufacturers", "Company", "User", "Models", "Car", "Customer", 
       "Contract", "Meeting", "Alarm", "ContractDocument" RESTART IDENTITY CASCADE;`);
 
+    console.log("데이터 초기화 완료.");
+
+    console.log("시딩 시작");
     const createdManufacturers: Manufacturers[] = [];
     for (const manufacturer of manufacturers) {
       const created = await prisma.manufacturers.create({ data: manufacturer });
@@ -70,9 +74,9 @@ async function main() {
       });
     }
 
-    for (const car of cars) {
-      await prisma.car.create({ data: car });
-    }
+    // for (const car of cars) {
+    //   await prisma.car.create({ data: car });
+    // }
 
     for (const customer of customers) {
       await prisma.customer.create({ data: customer });
