@@ -2,6 +2,7 @@ import {
   coerce,
   integer,
   object,
+  number,
   string,
   defaulted,
   optional,
@@ -13,7 +14,10 @@ const integerString = coerce(integer(), string(), (value) => parseInt(value));
 
 export const IdParamsStruct = object({
   id: integerString,
-  userId: optional(integerString),
+});
+
+export const UserIdParamsStruct = object({
+  userId: integerString, // 유저 삭제 전용
 });
 
 //페이지네이션

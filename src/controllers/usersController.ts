@@ -7,7 +7,7 @@ import {
   UserResponse,
 } from "../dto/usersDTO";
 import { UpdateMyInfoStruct } from "../validators/UsersStructs";
-import { IdParamsStruct } from "../validators/CommonStruct";
+import { UserIdParamsStruct } from "../validators/CommonStruct";
 import { create } from "superstruct";
 
 const userService = new UserService();
@@ -75,8 +75,8 @@ export const deleteUserHandler = async (
     return;
   }
 
-  const { userId } = create(req.params, IdParamsStruct);
-
+  const { userId } = create(req.params, UserIdParamsStruct);
   await userService.deleteUserById(Number(userId));
+
   res.status(200).json({ message: "유저 삭제 성공" });
 };

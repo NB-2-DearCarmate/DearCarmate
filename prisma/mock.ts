@@ -144,6 +144,7 @@ export const users = [
 ];
 export const models = [
   {
+    year: 2023,
     name: "K3",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -151,6 +152,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2022,
     name: "K5",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -158,6 +160,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2024,
     name: "K7",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -165,6 +168,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2023,
     name: "K9",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -172,6 +176,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2024,
     name: "K8",
     type: CarType.SEDAN,
     manufacturerId: 1,
@@ -179,6 +184,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2023,
     name: "그랜저",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -186,6 +192,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2024,
     name: "아반떼",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -193,6 +200,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2022,
     name: "소나타",
     type: CarType.SEDAN,
     manufacturerId: 2,
@@ -200,6 +208,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2023,
     name: "투싼",
     type: CarType.SUV,
     manufacturerId: 2,
@@ -207,6 +216,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2024,
     name: "베뉴",
     type: CarType.SUV,
     manufacturerId: 2,
@@ -214,6 +224,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2023,
     name: "렉스턴",
     type: CarType.SUV,
     manufacturerId: 3,
@@ -221,6 +232,7 @@ export const models = [
     updatedAt: new Date(),
   },
   {
+    year: 2024,
     name: "XM3",
     type: CarType.SUV,
     manufacturerId: 4,
@@ -234,7 +246,6 @@ export const cars = [
     carNumber: "111루 3456",
     mileage: 35000,
     price: 22000000,
-    year: 2023,
     explanation: "깨끗한 K5, 무사고 차량입니다.",
     accidentCount: 0,
     accidentDetails: "무사고",
@@ -248,7 +259,6 @@ export const cars = [
     carNumber: "222가 4567",
     mileage: 50000,
     price: 27000000,
-    year: 2022,
     explanation: "견고하고 넓은 SUV, 가족용으로 적합합니다.",
     accidentCount: 1,
     accidentDetails: "후방 사고 있음",
@@ -262,7 +272,6 @@ export const cars = [
     carNumber: "222가 6457",
     mileage: 50000,
     price: 27000000,
-    year: 2024,
     explanation: "견고하고 넓은 , 가족용으로 적합합니다.",
     accidentCount: 1,
     accidentDetails: "후방 사고 있음",
@@ -276,7 +285,6 @@ export const cars = [
     carNumber: "223가 2859",
     mileage: 50000,
     price: 27000000,
-    year: 2025,
     explanation: "매우 견고하고 넓은 , 가족용으로 적합합니다.",
     accidentCount: 1,
     accidentDetails: "전방, 후방 사고 있음",
@@ -290,7 +298,6 @@ export const cars = [
     carNumber: "224가 2259",
     mileage: 50000,
     price: 27000000,
-    year: 2023,
     explanation: "상당히 견고하고 넓은 , 가족용으로 적합합니다.",
     accidentCount: 1,
     accidentDetails: "측면, 전방, 후방 사고 있음",
@@ -304,7 +311,6 @@ export const cars = [
     carNumber: "113보 2229",
     mileage: 50000,
     price: 27000000,
-    year: 2022,
     explanation: "그랜저!.",
     accidentCount: 0,
     accidentDetails: "무사고",
@@ -318,7 +324,6 @@ export const cars = [
     carNumber: "116루 8359",
     mileage: 50000,
     price: 27000000,
-    year: 2021,
     explanation: "투싼!",
     accidentCount: 0,
     accidentDetails: "무사고",
@@ -332,7 +337,6 @@ export const cars = [
     carNumber: "334나 4567",
     mileage: 60000,
     price: 18000000,
-    year: 2022,
     explanation: "렉스턴 4륜구동, 눈길에 강함",
     accidentCount: 1,
     accidentDetails: "우측 스크래치 있음",
@@ -346,7 +350,6 @@ export const cars = [
     carNumber: "331나 5467",
     mileage: 60000,
     price: 18000000,
-    year: 2024,
     explanation: "XM3 , 눈길에 강함",
     accidentCount: 1,
     accidentDetails: "우측 스크래치 있음",
@@ -360,7 +363,6 @@ export const cars = [
     carNumber: "113나 2137",
     mileage: 60000,
     price: 18000000,
-    year: 2024,
     explanation: "XM3 , 눈길에 강함",
     accidentCount: 1,
     accidentDetails: "우측 스크래치 있음",
@@ -374,7 +376,6 @@ export const cars = [
     carNumber: "129구 7637",
     mileage: 60000,
     price: 18000000,
-    year: 2023,
     explanation: "소나타 , 눈길에 강함",
     accidentCount: 1,
     accidentDetails: "우측 스크래치 있음",
