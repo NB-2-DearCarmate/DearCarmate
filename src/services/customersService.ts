@@ -47,8 +47,7 @@ const regionMap: Record<string, Region> = {
   "부산": "BUSAN",
   "제주": "JEJU",
 };
-
-// 고객객
+ 
 export const CustomerService = {
   createCustomer: async (data: CreateCustomerInput) => {
     return await CustomerRepository.create(data);
@@ -135,9 +134,7 @@ export const CustomerService = {
         ...data,
         ageGroup: mappedAgeGroup,
         region: mappedRegion,
-      });
-    
-      // ✅ 여기서 한글로 변환한 결과 리턴
+      }); 
       return {
         ...updated,
         ageGroup:
@@ -166,8 +163,7 @@ export const CustomerService = {
     const customer = await prisma.customer.findUnique({
       where: { id },
     });
-
-    // 다른 회사 고객이면 null 반환
+ 
     if (!customer || customer.companyId !== companyId) {
       return null;
     }
@@ -176,13 +172,11 @@ export const CustomerService = {
   },
   bulkCreateCustomers: async (dataList: any[], companyId: number) => {
     const customersToCreate = dataList.map((row, index) => {
-      
       const ageGroupKey = row.ageGroup?.trim();
       const regionKey = row.region?.trim();
-      
-      const mappedAgeGroup = ageGroupMap[ageGroupKey];
-      const mappedRegion = regionMap[regionKey];
   
+      const mappedAgeGroup = ageGroupMap[ageGroupKey];
+      const mappedRegion = regionMap[regionKey]; 
       if (!mappedAgeGroup || !mappedRegion) {
         throw new Error(`행 ${index + 1}: 유효하지 않은 연령대 또는 지역입니다.`);
       }
@@ -205,4 +199,5 @@ export const CustomerService = {
       skipDuplicates: true,
     });
   }
+  
 };
