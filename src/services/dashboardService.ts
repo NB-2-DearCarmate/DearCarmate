@@ -1,65 +1,84 @@
 import dashboardRepository from "../repositories/dashboardRepository";
+import prisma from "../lib/prisma";
 
-const getMonthly = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
+const getDashboardData = async (companyId: number) => {
+  return await prisma.$transaction(async (tx) => {
+    const now = new Date();
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-  const thisMonthContract = await dashboardRepository.getMonthcompleted(
-    companyId
-  );
-  return thisMonthContract;
-};
+    const [
+      thisMonthContract,
+      lastMonthContract,
+      proceedingContractsCount,
+      completedContractsCount,
+      contractsByCarTypeRaw,
+      salesByCarTypeRaw,
+    ] = await Promise.all([
+      dashboardRepository.getMonthcompleted(
+        companyId,
+        startOfThisMonth,
+        startOfNextMonth
+      ),
+      dashboardRepository.getLastCompleted(
+        companyId,
+        startOfLastMonth,
+        startOfThisMonth
+      ),
+      dashboardRepository.proceedingContract(companyId),
+      dashboardRepository.completedContract(companyId),
+      dashboardRepository.getCompletedCarType(companyId),
+      dashboardRepository.getSaleCarType(companyId),
+    ]);
 
-const getLastMonthly = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
 
-  const lastMonthContract = await dashboardRepository.getLastCompleted(
-    companyId
-  );
+    const monthlySales = thisMonthContract.reduce(
+      (sum, c) => sum + (c.contractPrice ?? 0),
+      0
+    );
 
-  return lastMonthContract;
-};
+    const lastMonthSales = lastMonthContract.reduce(
+      (sum, c) => sum + (c.contractPrice ?? 0),
+      0
+    );
 
-const proceedingContracts = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
+    const growthRate =
+      lastMonthSales === 0
+        ? monthlySales > 0
+          ? 1
+          : 0
+        : ((monthlySales - lastMonthSales) / lastMonthSales) * 100;
 
-  const proceedingContractCount = await dashboardRepository.proceedingContract(
-    companyId
-  );
+    const contractsByCarTypeMap: Record<string, number> = {};
+    contractsByCarTypeRaw.forEach(({ car }) => {
+      const type = car.model.type;
+      contractsByCarTypeMap[type] = (contractsByCarTypeMap[type] || 0) + 1;
+    });
 
-  return proceedingContractCount;
-};
+    const salesByCarTypeMap: Record<string, number> = {};
+    salesByCarTypeRaw.forEach(({ contractPrice, car }) => {
+      const type = car.model.type;
+      salesByCarTypeMap[type] =
+        (salesByCarTypeMap[type] || 0) + (contractPrice ?? 0);
+    });
 
-const completedContracts = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
-
-  const completedContractCount = await dashboardRepository.completedContract(
-    companyId
-  );
-
-  return completedContractCount;
-};
-
-const contractsByCarType = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
-
-  const completedCarType = await dashboardRepository.getCompletedCarType(
-    companyId
-  );
-  return completedCarType;
-};
-
-const salesByCarType = async (userId: number) => {
-  const companyId = await dashboardRepository.getCompanyIdByUser(userId);
-
-  const salesCarType = await dashboardRepository.getSaleCarType(companyId);
-  return salesCarType;
+    return {
+      monthlySales,
+      lastMonthSales,
+      growthRate,
+      proceedingContractsCount,
+      completedContractsCount,
+      contractsByCarType: Object.entries(contractsByCarTypeMap).map(
+        ([type, count]) => ({ carType: type, count })
+      ),
+      salesByCarType: Object.entries(salesByCarTypeMap).map(
+        ([type, count]) => ({ carType: type, count })
+      ),
+    };
+  });
 };
 
 export default {
-  getMonthly,
-  getLastMonthly,
-  proceedingContracts,
-  completedContracts,
-  contractsByCarType,
-  salesByCarType,
+  getDashboardData,
 };

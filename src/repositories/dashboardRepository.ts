@@ -1,32 +1,14 @@
-import NotFoundError from "../errors/NotFoundError";
 import prisma from "../lib/prisma";
+import { ContractStatus } from "../typings/contract";
 
-const getCompanyIdByUser = async (userId: number) => {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user) {
-    throw new NotFoundError("유저");
-  }
-
-  const companyId = user.companyId;
-
-  if (!companyId) {
-    throw new NotFoundError("회사");
-  }
-  return companyId;
-};
-
-const getMonthcompleted = async (companyId: number) => {
-  const now = new Date();
-  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const startOfThisMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-
+const getMonthcompleted = async (companyId: number, start: Date, end: Date) => {
   const thisMonth = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "contractSuccessful",
+      status: "contractSuccessful" as ContractStatus,
       resolutionDate: {
-        gte: startOfLastMonth,
-        lt: startOfThisMonth,
+        gte: start,
+        lt: end,
       },
     },
     select: {
@@ -34,25 +16,17 @@ const getMonthcompleted = async (companyId: number) => {
     },
   });
 
-  const totalPrice = thisMonth.reduce((sum, contract) => {
-    return sum + (contract.contractPrice ?? 0);
-  }, 0);
-
-  return totalPrice;
+  return thisMonth;
 };
 
-const getLastCompleted = async (companyId: number) => {
-  const now = new Date();
-  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
+const getLastCompleted = async (companyId: number, start: Date, end: Date) => {
   const lastMonth = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "contractSuccessful",
+      status: "contractSuccessful" as ContractStatus,
       resolutionDate: {
-        gte: startOfLastMonth,
-        lt: startOfThisMonth,
+        gte: start,
+        lt: end,
       },
     },
     select: {
@@ -60,18 +34,20 @@ const getLastCompleted = async (companyId: number) => {
     },
   });
 
-  const totalPrice = lastMonth.reduce((sum, contract) => {
-    return sum + (contract.contractPrice ?? 0);
-  }, 0);
-
-  return totalPrice;
+  return lastMonth;
 };
 
 const proceedingContract = async (companyId: number) => {
   const contractCount = await prisma.contract.count({
     where: {
       companyId,
-      status: { in: ["carInspection", "contractDraft", "priceNegotiation"] },
+      status: {
+        in: [
+          "carInspection",
+          "contractDraft",
+          "priceNegotiation" as ContractStatus,
+        ],
+      },
     },
   });
 
@@ -82,7 +58,7 @@ const completedContract = async (companyId: number) => {
   const cotractCount = await prisma.contract.count({
     where: {
       companyId,
-      status: "contractSuccessful",
+      status: "contractSuccessful" as ContractStatus,
     },
   });
 
@@ -93,7 +69,7 @@ const getCompletedCarType = async (companyId: number) => {
   const carType = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "contractSuccessful",
+      status: "contractSuccessful" as ContractStatus,
     },
     select: {
       car: {
@@ -103,29 +79,14 @@ const getCompletedCarType = async (companyId: number) => {
       },
     },
   });
-
-  const counts: Record<string, number> = {};
-
-  carType.forEach((carType) => {
-    const type = carType.car.model.type;
-    if (type) {
-      counts[type] = (counts[type] || 0) + 1;
-    }
-  });
-
-  const result = Object.entries(counts).map(([type, count]) => ({
-    carType: type,
-    count,
-  }));
-
-  return result;
+  return carType;
 };
 
 const getSaleCarType = async (companyId: number) => {
   const carType = await prisma.contract.findMany({
     where: {
       companyId,
-      status: "contractSuccessful",
+      status: "contractSuccessful" as ContractStatus,
     },
     select: {
       contractPrice: true,
@@ -141,25 +102,10 @@ const getSaleCarType = async (companyId: number) => {
     },
   });
 
-  const salesMap: Record<string, number> = {};
-
-  for (const item of carType) {
-    const modelName = item.car.model.type;
-    const price = item.contractPrice ?? 0;
-
-    salesMap[modelName] = (salesMap[modelName] || 0) + price;
-  }
-
-  const result = Object.entries(salesMap).map(([model, total]) => ({
-    carType: model,
-    count: total,
-  }));
-
-  return result;
+  return carType;
 };
 
 export default {
-  getCompanyIdByUser,
   getMonthcompleted,
   getLastCompleted,
   proceedingContract,

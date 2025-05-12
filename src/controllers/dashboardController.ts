@@ -1,42 +1,20 @@
 import { Request, Response } from "express";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import dashboardService from "../services/dashboardService";
+import NotFoundError from "../errors/NotFoundError";
 
 export const dashboardController = async (req: Request, res: Response) => {
   const userId = req.user.id;
+  const companyId = req.user.companyId;
   if (!userId) {
     throw new UnauthorizedError();
   }
 
-  const monthlySales = await dashboardService.getMonthly(userId);
-  const lastMonthSales = await dashboardService.getLastMonthly(userId);
-
-  let growthRate = 0;
-
-  if (lastMonthSales === 0) {
-    growthRate = monthlySales > 0 ? 1 : 0;
-  } else {
-    growthRate = ((monthlySales - lastMonthSales) / lastMonthSales) * 100;
+  if (!companyId) {
+    throw new NotFoundError("회사");
   }
 
-  const proceedingContractsCount = await dashboardService.proceedingContracts(
-    userId
-  );
-  const completedContractsCount = await dashboardService.completedContracts(
-    userId
-  );
-  const contractsByCarType = await dashboardService.contractsByCarType(userId);
-  const salesByCarType = await dashboardService.salesByCarType(userId);
+  const data = await dashboardService.getDashboardData(companyId);
 
-  const result = {
-    monthlySales: monthlySales,
-    lastMonthSales: lastMonthSales,
-    growthRate: growthRate,
-    proceedingContractsCount: proceedingContractsCount,
-    completedContractsCount: completedContractsCount,
-    contractsByCarType: contractsByCarType,
-    salesByCarType: salesByCarType,
-  };
-
-  res.status(200).send(result);
+  res.status(200).send(data);
 };

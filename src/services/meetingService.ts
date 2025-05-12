@@ -2,7 +2,7 @@ import meetingRepository from "../repositories/meetingRepository";
 import alarmService from "./alarmService";
 import { isVaildMeetingDate } from "../utils/contractDate";
 import { MeetingDTO } from "../dto/contractDTO";
-import { transection } from "../typings/contract";
+import { transaction } from "../typings/contract";
 
 // 시간 변환
 const getId = async (contractId: number) => {
@@ -20,7 +20,7 @@ const update = async (meetingId: number, meetingDate: Date) => {
 const createWithAlarms = async (
   contractId: number,
   meetings: MeetingDTO[],
-  tx: transection
+  tx: transaction
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지만 등록 가능합니다.");
@@ -67,7 +67,7 @@ const createWithAlarms = async (
 const updateMeetings = async (
   contractId: number,
   meetings: MeetingDTO[],
-  tx: transection
+  tx: transaction
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
@@ -132,19 +132,20 @@ const updateMeetings = async (
 const getByDate = async (
   contractId: number,
   meetingDate: Date,
-  tx: transection
+  tx: transaction
 ) => {
   return await meetingRepository.findOne(contractId, meetingDate, tx);
 };
 
-const findAllByContractId = async (contractId: number, tx: transection) => {
+const findAllByContractId = async (contractId: number, tx: transaction) => {
   const meetings = await meetingRepository.findAllByContractId(contractId, tx);
   return meetings;
 };
 
-const deleteById = async (meetingId: number, tx: transection) => {
+const deleteById = async (meetingId: number, tx: transaction) => {
   return await meetingRepository.deleteById(meetingId, tx);
 };
+
 export default {
   getId,
   update,
