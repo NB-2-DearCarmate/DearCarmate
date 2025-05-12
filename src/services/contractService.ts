@@ -9,7 +9,7 @@ import {
   ContractStatus,
   CursorPaginationResultWithTotal,
   ContractWithDetails,
-  transection,
+  transaction,
 } from "../typings/contract";
 import meetingService from "./meetingService";
 

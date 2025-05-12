@@ -25,7 +25,7 @@ export const CONTRACT_STATUS_ORDER: ContractStatus[] = [
   PrismaContractStatus.contractFailed,
 ];
 
-export type transection = Prisma.TransactionClient;
+export type transaction = Prisma.TransactionClient;
 
 export interface ContractWithDetails {
   id: number;
