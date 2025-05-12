@@ -78,6 +78,7 @@ export const CustomerService = {
           where: {
             companyId,
             ...searchCondition,
+            deletedAt: null,
           },
           skip: (page - 1) * limit,
           take: limit,
@@ -118,12 +119,35 @@ export const CustomerService = {
     const customer = await prisma.customer.findUnique({
       where: { id },
     });
-
+  
     if (!customer || customer.companyId !== companyId) {
       throw new Error("수정 권한이 없습니다.");
     }
-
-    return await CustomerRepository.update(id, data);
+  
+    const mappedAgeGroup = data.ageGroup
+      ? ageGroupMap[data.ageGroup as string] ?? data.ageGroup
+      : undefined;
+    const mappedRegion = data.region
+      ? regionMap[data.region as string] ?? data.region
+      : undefined;
+  
+      const updated = await CustomerRepository.update(id, {
+        ...data,
+        ageGroup: mappedAgeGroup,
+        region: mappedRegion,
+      });
+    
+      // ✅ 여기서 한글로 변환한 결과 리턴
+      return {
+        ...updated,
+        ageGroup:
+          Object.entries(ageGroupMap).find(([, value]) => value === updated.ageGroup)?.[0] ??
+          updated.ageGroup,
+        region:
+          Object.entries(regionMap).find(([, value]) => value === updated.region)?.[0] ??
+          updated.region,
+      };
+       
   },
 
   deleteCustomers: async (id: number, companyId: number) => {
