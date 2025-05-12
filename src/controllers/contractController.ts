@@ -9,7 +9,7 @@ import {
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
-import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
+import { ContractStatus } from "@prisma/client";
 import {
   ContractListDTO,
   CreateContractResponseDTO,
@@ -43,6 +43,14 @@ export const getContractList = async (req: Request, res: Response) => {
   }
 
   const params = create(req.query, ContractListStruct);
+
+  const CONTRACT_STATUS_ORDER: ContractStatus[] = [
+    ContractStatus.carInspection,
+    ContractStatus.priceNegotiation,
+    ContractStatus.contractDraft,
+    ContractStatus.contractSuccessful,
+    ContractStatus.contractFailed,
+  ];
 
   const contractByStatus = CONTRACT_STATUS_ORDER.reduce((acc, status) => {
     acc[status] = { totalItemCount: 0, data: [] };

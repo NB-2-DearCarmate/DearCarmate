@@ -1,3 +1,4 @@
+import { ContractStatus } from "@prisma/client";
 import {
   CreateContractDTO,
   MeetingDTO,
@@ -9,7 +10,6 @@ import prisma from "../lib/prisma";
 import contractRepository from "../repositories/contractRepository";
 import {
   ContractList,
-  ContractStatus,
   CursorPaginationResultWithTotal,
   ContractWithDetails,
 } from "../typings/contract";

@@ -1,14 +1,6 @@
-import { ContractStatus } from "../typings/contract";
+import { ContractStatus } from "@prisma/client";
 
-export interface ContractDTO {
-  carId: number;
-  customerId: number;
-  userId: number;
-  companyId: number;
-  status: ContractStatus;
-  contractPrice: number;
-  resolutionDate: Date | null;
-}
+
 
 export interface listDTO {
   id: number;

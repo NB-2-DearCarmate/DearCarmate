@@ -2,7 +2,7 @@ import meetingRepository from "../repositories/meetingRepository";
 import alarmService from "./alarmService";
 import { isVaildMeetingDate } from "../utils/contractDate";
 import { MeetingDTO } from "../dto/contractDTO";
-import { transaction } from "../typings/contract";
+import { Prisma } from "@prisma/client";
 import BadRequestError from "../errors/BadRequestError";
 
 // 시간 변환
@@ -21,7 +21,7 @@ const update = async (meetingId: number, meetingDate: Date) => {
 const createWithAlarms = async (
   contractId: number,
   meetings: MeetingDTO[],
-  tx: transaction
+  tx: Prisma.TransactionClient
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new BadRequestError("미팅은 최대 3개까지만 등록 가능합니다.");
@@ -68,7 +68,7 @@ const createWithAlarms = async (
 const updateMeetings = async (
   contractId: number,
   meetings: MeetingDTO[],
-  tx: transaction
+  tx: Prisma.TransactionClient
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
     throw new Error("미팅은 최대 3개까지 등록할 수 있습니다.");
@@ -133,17 +133,17 @@ const updateMeetings = async (
 const getByDate = async (
   contractId: number,
   meetingDate: Date,
-  tx: transaction
+  tx: Prisma.TransactionClient
 ) => {
   return await meetingRepository.findOne(contractId, meetingDate, tx);
 };
 
-const findAllByContractId = async (contractId: number, tx: transaction) => {
+const findAllByContractId = async (contractId: number, tx: Prisma.TransactionClient) => {
   const meetings = await meetingRepository.findAllByContractId(contractId, tx);
   return meetings;
 };
 
-const deleteById = async (meetingId: number, tx: transaction) => {
+const deleteById = async (meetingId: number, tx: Prisma.TransactionClient) => {
   return await meetingRepository.deleteById(meetingId, tx);
 };
 

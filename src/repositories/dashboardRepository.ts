@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma";
-import { ContractStatus } from "../typings/contract";
+import { ContractStatus } from "@prisma/client";
 
 const getMonthcompleted = async (companyId: number, start: Date, end: Date) => {
   const thisMonth = await prisma.contract.findMany({
