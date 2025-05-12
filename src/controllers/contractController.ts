@@ -18,6 +18,7 @@ import {
 } from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
+import NotFoundError from "../errors/NotFoundError";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -36,7 +37,11 @@ export const getContractList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+
   const params = create(req.query, ContractListStruct);
 
   const contractByStatus = CONTRACT_STATUS_ORDER.reduce((acc, status) => {
@@ -46,7 +51,7 @@ export const getContractList = async (req: Request, res: Response) => {
 
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
-      userId,
+      companyId,
       { searchBy, keyword },
       status
     );
@@ -95,8 +100,12 @@ export const getCustomerList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const customerList = await contractService.getCustomerList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+
+  const customerList = await contractService.getCustomerList(companyId);
 
   const result: listDTO[] = customerList.map((customer) => ({
     id: customer.id,
@@ -114,8 +123,11 @@ export const getCarList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const carList = await contractService.getCarList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+  const carList = await contractService.getCarList(companyId);
 
   const result: listDTO[] = carList.map((car) => ({
     id: car.id,
@@ -133,8 +145,11 @@ export const getUserList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const userList = await contractService.getUserList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+  const userList = await contractService.getUserList(companyId);
 
   const result: listDTO[] = userList.map((user) => ({
     id: user.id,
@@ -151,13 +166,17 @@ export const createContract = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사 ");
+  }
   const parsedData = create(req.body, ContractStruct);
 
   const contractData = {
     carId: parsedData.carId,
     customerId: parsedData.customerId,
-    userId,
+    userId: user.id,
+    companyId,
     status: "carInspection" as ContractStatus,
     resolutionDate: null,
     contractPrice: 0,
@@ -172,7 +191,7 @@ export const createContract = async (req: Request, res: Response) => {
     resolutionDate: createContract.contract.resolutionDate,
     meetings: createContract.meetings,
     user: {
-      id: userId,
+      id: user.id,
       name: createContract.contract.user.name,
     },
     customer: {
@@ -227,7 +246,8 @@ export const updateContract = async (req: Request, res: Response) => {
       date: format(new Date(meeting.date), "yyyy-MM-dd"),
       alarms: meeting.alarms.map((alarm) =>
         format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
-      )})),
+      ),
+    })),
     user: {
       id: userId,
       name: updatedContract.updatedContract.user.name,

@@ -42,6 +42,7 @@ export interface CreateContractDTO {
   carId: number;
   customerId: number;
   userId: number;
+  companyId: number;
   status: ContractStatus;
   contractPrice: number;
   resolutionDate: Date | null;

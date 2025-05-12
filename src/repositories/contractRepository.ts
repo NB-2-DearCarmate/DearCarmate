@@ -195,15 +195,6 @@ const getCustomerId = async (id: number) => {
   return customer;
 };
 
-const getUserId = async (id: number) => {
-  const user = await prisma.user.findUnique({ where: { id } });
-  if (!user) {
-    throw new NotFoundError("유저");
-  }
-
-  return user;
-};
-
 const getModelId = async (id: number) => {
   const model = await prisma.models.findUnique({ where: { id } });
   if (!model) {
@@ -373,7 +364,6 @@ export default {
   update,
   deleteById,
   updateCarStatus,
-  getUserId,
   completedCar,
   getModelId,
   getCustomerId,
