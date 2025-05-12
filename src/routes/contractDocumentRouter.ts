@@ -9,24 +9,28 @@ import {
 import authMiddleware from "../middlewares/authMiddleware";
 import { asyncHandler } from "../lib/asyncHandler";
 
-const router = Router();
+const contractDocumentRouter = Router();
 
-router.post(
+contractDocumentRouter.post(
   "/upload",
   upload.array("file", 5),
   authMiddleware,
   asyncHandler(uploadContractDocumentsHandler)
 );
-router.get(
+contractDocumentRouter.get(
   "/",
   authMiddleware,
   asyncHandler(getAllContractDocumentListHandler)
 );
-router.get("/draft", authMiddleware, asyncHandler(getContractDraftListHandler));
-router.get(
+contractDocumentRouter.get(
+  "/draft",
+  authMiddleware,
+  asyncHandler(getContractDraftListHandler)
+);
+contractDocumentRouter.get(
   "/:contractDocumentId/download",
   authMiddleware,
   asyncHandler(downloadContractDocHandler)
 );
 
-export default router;
+export default contractDocumentRouter;
