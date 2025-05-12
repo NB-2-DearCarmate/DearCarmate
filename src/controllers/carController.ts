@@ -29,17 +29,13 @@ export const createCar = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    const carRequest: CreateCarDTO = create(req.body, CarStruct);
+): Promise<void> => {
+  const carRequest: CreateCarDTO = create(req.body, CarStruct);
 
-    const newCar = await carService.createCar(carRequest, req.user.companyId);
-    const response: CreateCarResponseDTO = mapToCarResponse(newCar);
+  const newCar = await carService.createCar(carRequest, req.user.companyId);
+  const response: CreateCarResponseDTO = mapToCarResponse(newCar);
 
-    res.status(201).json(response);
-  } catch (err) {
-    next(err);
-  }
+  res.status(201).json(response);
 };
 
 // 차량 목록 조회
@@ -47,10 +43,10 @@ export const getCarList = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const {
     page = 1,
-    pageSize = 3,
+    pageSize = 10,
     status,
     orderBy,
     searchBy,
@@ -81,23 +77,19 @@ export const getCarById = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    const carId: CarByIdDTO = { id: Number(req.params.id) };
+): Promise<void> => {
+  const carId: CarByIdDTO = { id: Number(req.params.id) };
 
-    const car: GetCarByIdResponseDTO = await carService.getCarById(carId.id);
+  const car: GetCarByIdResponseDTO = await carService.getCarById(carId.id);
 
-    res.status(200).json(car);
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(car);
 };
 
 export const getAllCarModels = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const manufacturersWithModels: GetAllCarModelsResponseDTO =
     await carService.getAllCarModels();
 
@@ -109,20 +101,16 @@ export const updateCar = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    const carRequest: UpdateCarDTO = create(req.body, UpdateCarStruct);
+): Promise<void> => {
+  const carRequest: UpdateCarDTO = create(req.body, UpdateCarStruct);
 
-    const carId: number = Number(req.params.id);
+  const carId: number = Number(req.params.id);
 
-    const updatedCar = await carService.updateCar(carId, carRequest);
+  const updatedCar = await carService.updateCar(carId, carRequest);
 
-    const response: UpdateCarResponseDTO = mapToCarResponse(updatedCar);
+  const response: UpdateCarResponseDTO = mapToCarResponse(updatedCar);
 
-    res.status(200).json(response);
-  } catch (err) {
-    next(err);
-  }
+  res.status(200).json(response);
 };
 
 //차량 삭제
@@ -130,14 +118,10 @@ export const deleteCar = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    const carId: CarByIdDTO = { id: Number(req.params.id) };
-    await carService.deleteCar(carId.id);
-    res.status(204).send();
-  } catch (err) {
-    next(err);
-  }
+): Promise<void> => {
+  const carId: CarByIdDTO = { id: Number(req.params.id) };
+  await carService.deleteCar(carId.id);
+  res.status(204).send();
 };
 
 // CSV 업로드 및 차량 등록
@@ -145,7 +129,7 @@ export const uploadCarsFromCSV = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   if (!req.file) {
     res.status(400).json({ message: "CSV 파일이 없습니다." });
     return;
@@ -181,8 +165,8 @@ export const uploadCarsFromCSV = async (
         const saved: UploadCarResponseDTO =
           await carService.bulkCreateCarsService(cars, companyId);
         res.status(201).json(saved);
-      } catch (err) {
-        next(err);
+      } catch (error) {
+        next(error);
       }
     });
 };

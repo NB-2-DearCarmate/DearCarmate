@@ -8,7 +8,7 @@ export type CreateCarResponseDTO = CarResponse;
 //차량 목록 조회
 export type CarListResponseDTO = {
   currentPage: number;
-  totalPage: number;
+  totalPages: number;
   totalItemCount: number;
   data: CarResponse[];
 };
