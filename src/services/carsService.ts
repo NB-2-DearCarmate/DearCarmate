@@ -6,6 +6,7 @@ import { CarList, UpdateCar, CarResponse, CarData } from "../typings/car";
 import { mapToCarResponse } from "../utils/CarResponse";
 import { CarStatus } from "@prisma/client";
 import { CarRequest } from "../typings/car";
+import prisma from "../lib/prisma";
 
 // 차량 등록
 export const createCar = async (
@@ -54,7 +55,7 @@ async function getCarList(params: CarPaginationParams): Promise<CarList> {
 
   return {
     currentPage: result.currentPage,
-    totalPage: result.totalPage,
+    totalPages: result.totalPages,
     totalItemCount: result.totalItemCount,
     data: mappedData,
   };
@@ -136,39 +137,68 @@ async function bulkCreateCarsService(carList: CarRequest[], companyId: number) {
     throw new Error("등록할 차량 정보가 없습니다.");
   }
 
-  const processedCars: CarData[] = [];
+  for (const [i, car] of carList.entries()) {
+    if (
+      !car.carNumber?.trim() ||
+      !car.manufacturer?.trim() ||
+      !car.model?.trim() ||
+      !car.manufacturingYear ||
+      !car.mileage ||
+      !car.price
+    ) {
+      const missingFields = [];
+      if (!car.carNumber?.trim()) missingFields.push("carNumber");
+      if (!car.manufacturer?.trim()) missingFields.push("manufacturer");
+      if (!car.model?.trim()) missingFields.push("model");
+      if (!car.manufacturingYear) missingFields.push("manufacturingYear");
+      if (!car.mileage) missingFields.push("mileage");
+      if (!car.price) missingFields.push("price");
 
-  for (const car of carList) {
-    const model = await carRepository.findModel({
-      name: car.model,
-      manufacturerName: car.manufacturer,
-    });
-
-    if (!model) {
       throw new BadRequestError(
-        `모델 정보 없음: ${car.manufacturer} ${car.model} ${car.manufacturingYear}`
+        `CSV ${
+          i + 1
+        }번째 항목의 필수 값이 누락되었습니다. 누락된 필드: ${missingFields.join(
+          ", "
+        )}`
       );
     }
-
-    processedCars.push({
-      carNumber: car.carNumber,
-      modelId: model.id,
-      companyId,
-      year: car.manufacturingYear,
-      mileage: car.mileage,
-      price: car.price,
-      accidentCount: car.accidentCount,
-      explanation: car.explanation || null,
-      accidentDetails: car.accidentDetails || null,
-      status: "possession",
-    });
   }
 
-  await carRepository.bulkCreateCars(processedCars);
+  return await prisma.$transaction(async (tx) => {
+    const processedCars: CarData[] = [];
 
-  return {
-    count: processedCars.length,
-  };
+    for (const car of carList) {
+      const model = await carRepository.bulkFindModel(tx, {
+        name: car.model,
+        manufacturerName: car.manufacturer,
+      });
+
+      if (!model) {
+        throw new BadRequestError(
+          `모델 정보 없음: ${car.manufacturer} ${car.model} ${car.manufacturingYear}`
+        );
+      }
+
+      processedCars.push({
+        carNumber: car.carNumber,
+        modelId: model.id,
+        companyId,
+        year: car.manufacturingYear,
+        mileage: car.mileage,
+        price: car.price,
+        accidentCount: car.accidentCount || 0,
+        explanation: car.explanation || null,
+        accidentDetails: car.accidentDetails || null,
+        status: "possession",
+      });
+    }
+
+    await carRepository.bulkCreateCars(tx, processedCars);
+
+    return {
+      count: processedCars.length,
+    };
+  });
 }
 
 export default {
