@@ -12,6 +12,11 @@ export type RegitsterCompanyInput = Omit<
 
 export type UpdateCompany = Partial<Omit<Company, "updatedAt" | "createdAt">>;
 
+export type UpdateCompanyUserCount = Omit<
+  Company,
+  "updatedAt" | "createdAt"
+> & { userCount: number };
+
 export type CompanyList = {
   currentPage: number;
   totalPage: number;

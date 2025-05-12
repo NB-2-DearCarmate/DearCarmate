@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+
 import { NextFunction, Request, Response } from "express";
 import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";
@@ -23,14 +23,10 @@ export const createCompanyHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const data: CreateCompanyDTO = create(req.body, CreateCompanyStruct);
-    const newCompany: RegisterCompanyResponseDTO =
-      await companyService.registerCompany(data);
-    res.status(201).json(newCompany);
-  } catch (error) {
-    next(error);
-  }
+  const data: CreateCompanyDTO = create(req.body, CreateCompanyStruct);
+  const newCompany: RegisterCompanyResponseDTO =
+    await companyService.registerCompany(data);
+  res.status(201).json(newCompany);
 };
 
 // 회사 목록조회
@@ -39,27 +35,23 @@ export const getCompanyListHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const {
-      page = 1,
-      pageSize = 10,
-      orderBy,
-      searchBy,
-      keyword,
-    } = create(req.query, QueryStruct);
+  const {
+    page = 1,
+    pageSize = 10,
+    orderBy,
+    searchBy,
+    keyword,
+  } = create(req.query, QueryStruct);
 
-    const result = await companyService.getAllCompanies({
-      page: Number(page),
-      pageSize: Number(pageSize),
-      orderBy: orderBy as "recent" | "oldest",
-      searchBy: searchBy as SearchByCompany,
-      keyword: keyword as string | undefined,
-    });
+  const result = await companyService.getAllCompanies({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    orderBy: orderBy as "recent" | "oldest",
+    searchBy: searchBy as SearchByCompany,
+    keyword: keyword as string | undefined,
+  });
 
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(result);
 };
 
 // 회사 별 유저 목록조회
@@ -68,27 +60,23 @@ export const getUserByCompaniesHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const {
-      page = 1,
-      pageSize = 10,
-      orderBy,
-      keyword,
-      searchBy,
-    } = create(req.query, QueryStruct);
+  const {
+    page = 1,
+    pageSize = 10,
+    orderBy,
+    keyword,
+    searchBy,
+  } = create(req.query, QueryStruct);
 
-    const result = await companyService.getUserByCompanies({
-      page: Number(page),
-      pageSize: Number(pageSize),
-      orderBy: orderBy as "recent" | "oldest",
-      keyword: keyword as string,
-      searchBy: searchBy as "name" | "email" | "companyName",
-    });
+  const result = await companyService.getUserByCompanies({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    orderBy: orderBy as "recent" | "oldest",
+    keyword: keyword as string,
+    searchBy: searchBy as "name" | "email" | "companyName",
+  });
 
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(result);
 };
 
 // 회사정보 수정
@@ -97,15 +85,11 @@ export const updateCompanyHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const data = create(req.body, PatchCompanyStruct);
-    const id = Number(req.params.id);
-    const updatedData: UpdateCompanyResponseDTO =
-      await companyService.updatedCompany(id, data);
-    res.status(200).json(updatedData);
-  } catch (error) {
-    next(error);
-  }
+  const data = create(req.body, PatchCompanyStruct);
+  const id = Number(req.params.id);
+  const updatedData: UpdateCompanyResponseDTO =
+    await companyService.updatedCompany(id, data);
+  res.status(200).json(updatedData);
 };
 
 // 삭제
@@ -114,11 +98,7 @@ export const deleteCompanyHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    const id = Number(req.params.id);
-    await companyService.deleteCompany(id);
-    res.status(200).json({ message: "delete!" });
-  } catch (err) {
-    next(err);
-  }
+  const id = Number(req.params.id);
+  await companyService.deleteCompany(id);
+  res.status(200).json({ message: "delete!" });
 };

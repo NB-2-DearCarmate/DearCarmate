@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { create } from "superstruct";
-import { CarPaginationParams, SearchByCar } from "../typings/pagination";
+import { SearchByCar } from "../typings/pagination";
 import {
   CarStruct,
   UpdateCarStruct,
   CarQueryStruct,
 } from "../validators/CarsStructs";
-import { Car } from "../typings/car";
+import { CarRequest } from "../typings/car";
 import {
   CreateCarDTO,
   CreateCarResponseDTO,
@@ -19,19 +19,27 @@ import {
   UploadCarDTO,
   UploadCarResponseDTO,
 } from "../dto/carsDTO";
+import { mapToCarResponse } from "../utils/CarResponse";
 import carService from "../services/carsService";
 import csv from "csv-parser";
 import fs from "fs";
 
-//차량 등록
+// 차량 등록
 export const createCar = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const carData: CreateCarDTO = create(req.body, CarStruct);
-  const car: CreateCarResponseDTO = await carService.createCar(carData);
-  res.status(201).json(car);
+  try {
+    const carRequest: CreateCarDTO = create(req.body, CarStruct);
+
+    const newCar = await carService.createCar(carRequest, req.user.companyId);
+    const response: CreateCarResponseDTO = mapToCarResponse(newCar);
+
+    res.status(201).json(response);
+  } catch (err) {
+    next(err);
+  }
 };
 
 // 차량 목록 조회
@@ -49,6 +57,9 @@ export const getCarList = async (
     keyword,
   } = create(req.query, CarQueryStruct);
 
+  const user = req.user;
+  const companyId = user?.companyId;
+
   const carList: CarListResponseDTO = await carService.getCarList({
     page,
     pageSize,
@@ -59,6 +70,7 @@ export const getCarList = async (
     orderBy: orderBy as "recent" | "oldest",
     searchBy: searchBy as SearchByCar,
     keyword: keyword as string,
+    companyId,
   });
 
   res.status(200).json(carList);
@@ -70,11 +82,15 @@ export const getCarById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const carId: CarByIdDTO = { id: Number(req.params.id) };
+  try {
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
 
-  const car: GetCarByIdResponseDTO = await carService.getCarById(carId.id);
+    const car: GetCarByIdResponseDTO = await carService.getCarById(carId.id);
 
-  res.status(200).json(car);
+    res.status(200).json(car);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAllCarModels = async (
@@ -94,14 +110,19 @@ export const updateCar = async (
   res: Response,
   next: NextFunction
 ) => {
-  const carId: CarByIdDTO = { id: Number(req.params.id) };
-  const updateData: UpdateCarDTO = UpdateCarStruct.create(req.body);
+  try {
+    const carRequest: UpdateCarDTO = create(req.body, UpdateCarStruct);
 
-  const updatedCar: UpdateCarResponseDTO = await carService.updateCar(
-    carId.id,
-    updateData
-  );
-  res.status(200).json(updatedCar);
+    const carId: number = Number(req.params.id);
+
+    const updatedCar = await carService.updateCar(carId, carRequest);
+
+    const response: UpdateCarResponseDTO = mapToCarResponse(updatedCar);
+
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
 };
 
 //차량 삭제
@@ -110,9 +131,13 @@ export const deleteCar = async (
   res: Response,
   next: NextFunction
 ) => {
-  const carId: CarByIdDTO = { id: Number(req.params.id) };
-  await carService.deleteCar(carId.id);
-  res.status(204).send();
+  try {
+    const carId: CarByIdDTO = { id: Number(req.params.id) };
+    await carService.deleteCar(carId.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
 };
 
 // CSV 업로드 및 차량 등록
@@ -126,27 +151,38 @@ export const uploadCarsFromCSV = async (
     return;
   }
 
+  const companyId = req.user.companyId;
+
   const results: any[] = [];
 
   fs.createReadStream(req.file.path)
     .pipe(csv())
     .on("data", (data) => results.push(data))
     .on("end", async () => {
-      // 필드 매핑 등 데이터 가공 필요 (예: 문자열 -> 숫자)
-      const cars: UploadCarDTO[] = results.map((row: Car) => ({
-        carNumber: row.carNumber,
-        modelId: Number(row.modelId),
-        companyId: Number(row.companyId),
-        mileage: Number(row.mileage),
-        price: Number(row.price),
-        accidentCount: Number(row.accidentCount) || 0,
-        explanation: row.explanation || null,
-        accidentDetails: row.accidentDetails || null,
-        status: row.status || null,
-      }));
+      try {
+        const cars: UploadCarDTO[] = results.map((row: CarRequest) => ({
+          carNumber: String(row.carNumber),
+          manufacturer: String(row.manufacturer),
+          model: String(row.model),
+          manufacturingYear: Number(row.manufacturingYear),
+          mileage: Number(row.mileage),
+          price: Number(row.price),
+          accidentCount: Number(row.accidentCount) || 0,
+          explanation: row.explanation,
+          accidentDetails: row.accidentDetails,
+        }));
 
-      const saved: UploadCarResponseDTO =
-        await carService.bulkCreateCarsService(cars);
-      res.status(201).json(saved);
+        if (companyId !== undefined) {
+          await carService.bulkCreateCarsService(cars, companyId);
+        } else {
+          throw new Error("회사의 ID가 없습니다.");
+        }
+
+        const saved: UploadCarResponseDTO =
+          await carService.bulkCreateCarsService(cars, companyId);
+        res.status(201).json(saved);
+      } catch (err) {
+        next(err);
+      }
     });
 };

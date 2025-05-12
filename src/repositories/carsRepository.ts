@@ -1,12 +1,40 @@
 import prisma from "../lib/prisma";
-import { Car, UpdateCar } from "../typings/car";
+import { CarData } from "../typings/car";
 import { CarPaginationParams } from "../typings/pagination";
 import { CarStatus, Prisma } from "@prisma/client";
 
 // Car 등록
-async function createCar(carData: Car) {
+async function createCar(carData: CarData) {
   return prisma.car.create({
     data: carData,
+    include: {
+      model: {
+        include: {
+          manufacturer: true,
+        },
+      },
+    },
+  });
+}
+
+// DB에서 Model정보 조회
+async function findModel({
+  name,
+  manufacturerName,
+}: {
+  name: string;
+  manufacturerName: string;
+}) {
+  return prisma.models.findFirst({
+    where: {
+      name,
+      manufacturer: {
+        name: manufacturerName,
+      },
+    },
+    include: {
+      manufacturer: true,
+    },
   });
 }
 
@@ -21,12 +49,16 @@ async function findByCarNumber(carNumber: string) {
 async function getCarList({
   page,
   pageSize,
-  status = CarStatus.possession,
+  status,
   orderBy,
   searchBy,
   keyword,
+  companyId,
 }: CarPaginationParams) {
-  const where: Prisma.CarWhereInput = {};
+  const where: Prisma.CarWhereInput = {
+    deletedAt: null,
+    companyId,
+  };
 
   if (status) {
     where.status = status as CarStatus;
@@ -52,7 +84,11 @@ async function getCarList({
     skip: (page - 1) * pageSize,
     take: pageSize,
     include: {
-      model: true,
+      model: {
+        include: {
+          manufacturer: true,
+        },
+      },
     },
   });
 
@@ -66,7 +102,16 @@ async function getCarList({
 
 // Car ID로 정보 조회
 async function getCarById(id: number) {
-  const car = await prisma.car.findUnique({ where: { id } });
+  const car = await prisma.car.findUnique({
+    where: { id },
+    include: {
+      model: {
+        include: {
+          manufacturer: true,
+        },
+      },
+    },
+  });
   return car;
 }
 
@@ -86,22 +131,30 @@ async function getAllCarModels() {
 }
 
 // Car 수정
-async function updateCar(id: number, updateDate: UpdateCar) {
+async function updateCar(id: number, updateData: Partial<CarData>) {
   return prisma.car.update({
     where: { id },
-    data: updateDate,
+    data: updateData,
+    include: {
+      model: {
+        include: {
+          manufacturer: true,
+        },
+      },
+    },
   });
 }
 
 // Car 삭제
 async function deleteCar(id: number) {
-  return prisma.car.delete({
+  return prisma.car.update({
     where: { id },
+    data: { deletedAt: new Date() },
   });
 }
 
 // 대량 차량 등록
-async function bulkCreateCars(carList: Car[]) {
+async function bulkCreateCars(carList: CarData[]) {
   return prisma.car.createMany({
     data: carList,
     skipDuplicates: true,
@@ -117,4 +170,5 @@ export default {
   updateCar,
   deleteCar,
   bulkCreateCars,
+  findModel,
 };

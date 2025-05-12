@@ -38,5 +38,6 @@ export interface CursorPaginationResultWithTotal<T>
 export interface UserWithCompany {}
 
 export type CarPaginationParams = PaginationParams<SearchByCar> & {
+  companyId?: number;
   status?: "possession" | "contract_proceeding" | "contract_completed";
 };

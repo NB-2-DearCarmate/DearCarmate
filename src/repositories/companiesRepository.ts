@@ -1,5 +1,4 @@
 import prisma from "../lib/prisma";
-import { Prisma } from "@prisma/client";
 import { User } from "@prisma/client";
 import { Company } from "@prisma/client";
 import { UserWhereInput } from "../typings/user";
@@ -29,7 +28,7 @@ const findCompanies = async (
   order: "asc" | "desc",
   skip: number,
   take: number
-): Promise<Company[]> => { 
+): Promise<Company[]> => {
   return prisma.company.findMany({
     where,
     orderBy: { createdAt: order },
@@ -63,10 +62,7 @@ const companyFindUsers = async (
 };
 
 // 회사정보 수정
-export const patchCompany = async (
-  id: number,
-  data: UpdateCompany
-): Promise<Company> => {
+export const patchCompany = async (id: number, data: UpdateCompany) => {
   const updatedCompany = await prisma.company.update({
     where: {
       id,

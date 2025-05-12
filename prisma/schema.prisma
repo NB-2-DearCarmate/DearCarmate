@@ -18,12 +18,14 @@ model Car {
   carNumber       String     @unique
   mileage         Int
   price           Int
+  year            Int
   explanation     String?
   accidentCount   Int
   accidentDetails String?
   status          CarStatus?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?
   modelId         Int
   model           Models     @relation(fields: [modelId], references: [id])
   companyId       Int
@@ -43,7 +45,6 @@ model Manufacturers {
 
 model Models {
   id        Int      @id @default(autoincrement())
-  year      Int
   name      String
   type      CarType
   createdAt DateTime @default(now())
@@ -146,14 +147,14 @@ model Company {
 
 model ContractDocument {
   id         Int      @id @default(autoincrement())
-  contractId Int
+  contractId Int?
   fileName   String
   filePath   String
   fileSize   Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contract Contract? @relation(fields: [contractId], references: [id], onDelete: Cascade)
 }
 
 enum CarType {

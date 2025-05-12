@@ -1,4 +1,4 @@
-import { SearchByContract, SearchByContractDraft } from "../typings/pagination";
+import { SearchByContractDraft } from "../typings/pagination";
 
 export interface ContractDraftItemDto {
   id: number;
@@ -13,8 +13,8 @@ export interface ContractDocumentItemDto {
   id: number;
   contractName: string;
   resolutionDate: Date | null;
-  documentsCount: number;
-  manager: string;
+  documentCount: number;
+  userName: string;
   carNumber: string;
   documents: {
     id: number;

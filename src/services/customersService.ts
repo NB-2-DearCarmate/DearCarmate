@@ -176,11 +176,10 @@ export const CustomerService = {
   },
   bulkCreateCustomers: async (dataList: any[], companyId: number) => {
     const customersToCreate = dataList.map((row, index) => {
-      console.log(`[DEBUG] row ${index + 1}:`, row);
+      
       const ageGroupKey = row.ageGroup?.trim();
       const regionKey = row.region?.trim();
-      console.log(`[DEBUG] 행 ${index + 1} - ageGroupKey: '${ageGroupKey}', regionKey: '${regionKey}'`);
-      console.log(`[DEBUG] 매핑 결과 - ageGroup: '${ageGroupMap[ageGroupKey]}', region: '${regionMap[regionKey]}'`);
+      
       const mappedAgeGroup = ageGroupMap[ageGroupKey];
       const mappedRegion = regionMap[regionKey];
   

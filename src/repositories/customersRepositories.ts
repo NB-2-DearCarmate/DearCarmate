@@ -1,10 +1,7 @@
 import prisma from "../lib/prisma";
-import NotFoundError from "../errors/NotFoundError";
-import { ContractType } from "../typings/contract";
-import { CursorPaginationParams } from "../typings/pagination"; 
-import { Customer, AgeGroup, Region } from "@prisma/client";
+import { Customer, AgeGroup, Region } from "@prisma/client"; 
 import { Prisma } from "@prisma/client";
-
+ 
 
 const ageGroupMap: Record<string, AgeGroup> = {
   "10대": "AGE_10",
@@ -18,31 +15,28 @@ const ageGroupMap: Record<string, AgeGroup> = {
 };
 
 const regionMap: Record<string, Region> = {
-  "서울": "SEOUL",
-  "경기": "GYEONGGI",
-  "인천": "INCHEON",
-  "강원": "GANGWON",
-  "충북": "CHUNGBUK",
-  "충남": "CHUNGNAM",
-  "세종": "SEJONG",
-  "대전": "DAEJEON",
-  "전북": "JEONBUK",
-  "전남": "JEONNAM",
-  "광주": "GWANGJU",
-  "경북": "GYEONGBUK",
-  "경남": "GYEONGNAM",
-  "대구": "DAEGU",
-  "울산": "ULSAN",
-  "부산": "BUSAN",
-  "제주": "JEJU",
+  서울: "SEOUL",
+  경기: "GYEONGGI",
+  인천: "INCHEON",
+  강원: "GANGWON",
+  충북: "CHUNGBUK",
+  충남: "CHUNGNAM",
+  세종: "SEJONG",
+  대전: "DAEJEON",
+  전북: "JEONBUK",
+  전남: "JEONNAM",
+  광주: "GWANGJU",
+  경북: "GYEONGBUK",
+  경남: "GYEONGNAM",
+  대구: "DAEGU",
+  울산: "ULSAN",
+  부산: "BUSAN",
+  제주: "JEJU",
 };
-
 
 export const CustomerRepository = {
   create: async (data: any) => {
-    console.log("[CustomerRepository.create] 입력된 data:", data);
-
-    const mappedAgeGroup = ageGroupMap[data.ageGroup]; 
+    const mappedAgeGroup = ageGroupMap[data.ageGroup];
     const mappedRegion = regionMap[data.region];
     if (!mappedAgeGroup) {
       throw new Error(`유효하지 않은 ageGroup 값입니다: ${data.ageGroup}`);
@@ -51,13 +45,13 @@ export const CustomerRepository = {
     return prisma.customer.create({
       data: {
         ...data,
-        ageGroup: mappedAgeGroup,      
-        contractCount: 0,            
-        companyId: undefined,  
+        ageGroup: mappedAgeGroup,
+        contractCount: 0,
+        companyId: undefined,
         Company: {
-          connect: { id: data.companyId },  
+          connect: { id: data.companyId },
         },
-       region: mappedRegion,
+        region: mappedRegion,
       },
     });
   },
@@ -67,19 +61,19 @@ export const CustomerRepository = {
     return result.map((customer) => ({
       ...customer,
       ageGroup:
-        Object.entries(ageGroupMap).find(([, value]) => value === customer.ageGroup)?.[0] ??
-        customer.ageGroup,
+        Object.entries(ageGroupMap).find(
+          ([, value]) => value === customer.ageGroup
+        )?.[0] ?? customer.ageGroup,
       region:
-        Object.entries(regionMap).find(([, value]) => value === customer.region)?.[0] ??
-        customer.region,
+        Object.entries(regionMap).find(
+          ([, value]) => value === customer.region
+        )?.[0] ?? customer.region,
     }));
-  },
-
-  
+  }, 
   update: async (id: number, data: Partial<Customer>) => { 
     const mappedAgeGroup = data.ageGroup ? ageGroupMap[data.ageGroup as string] : undefined;
     const mappedRegion = data.region ? regionMap[data.region as string] : undefined;
-  
+   
     return prisma.customer.update({
       where: { id },
       data: {  
@@ -104,5 +98,5 @@ export const CustomerRepository = {
     return prisma.customer.findUnique({
       where: { id },
     });
-  },  
+  },
 };

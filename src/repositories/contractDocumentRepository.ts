@@ -1,4 +1,4 @@
-import { Contract, ContractDocument } from "@prisma/client";
+import { ContractDocument } from "@prisma/client";
 import prisma from "../lib/prisma";
 import { SaveFileInfo } from "../typings/contrarctDocument";
 import { PaginationParams, SearchByContractDraft } from "../typings/pagination";
@@ -62,7 +62,6 @@ const uploadContractDocuments = async (
           fileName: file.fileName,
           filePath: file.fileName,
           fileSize: file.fileSize,
-          contractId: file.contractId,
         },
       })
     )

@@ -11,6 +11,7 @@ import { Company } from "@prisma/client";
 import {
   RegisterCompany,
   UpdateCompany,
+  UpdateCompanyUserCount,
   RegitsterCompanyInput,
 } from "../typings/company";
 import NotFoundError from "../errors/NotFoundError";
@@ -127,7 +128,7 @@ export const getUserByCompanies = async ({
 export const updatedCompany = async (
   id: number,
   data: UpdateCompany
-): Promise<UpdateCompany> => {
+): Promise<UpdateCompanyUserCount> => {
   if (!id || id <= 0) {
     throw new NotFoundError("회사");
   }
@@ -135,8 +136,11 @@ export const updatedCompany = async (
     throw new BadRequestError("필수 입력 값이 없습니다.");
   }
   const newCompany = await companiesRepo.patchCompany(id, data);
+  const userCount = await companiesRepo.getUserCount(id);
 
-  return newCompany;
+  const { createdAt, updatedAt, ...rest } = newCompany;
+
+  return { ...rest, userCount };
 };
 
 // 삭제
