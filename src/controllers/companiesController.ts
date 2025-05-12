@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from "express";
 import { create } from "superstruct";
 import { SearchByCompany } from "../typings/pagination";
@@ -17,7 +16,6 @@ import {
 } from "../dto/companies.dto";
 import * as companyService from "../services/companiesService";
 
-// 회사 등록
 export const createCompanyHandler = async (
   req: Request,
   res: Response,
@@ -29,7 +27,6 @@ export const createCompanyHandler = async (
   res.status(201).json(newCompany);
 };
 
-// 회사 목록조회
 export const getCompanyListHandler = async (
   req: Request<GetCompanyListQueryDTO, GetCompanyListResponseDTO>,
   res: Response,
@@ -54,7 +51,6 @@ export const getCompanyListHandler = async (
   res.status(200).json(result);
 };
 
-// 회사 별 유저 목록조회
 export const getUserByCompaniesHandler = async (
   req: Request<GetCompanyListQueryDTO, GetCompanyByUserListDTO>,
   res: Response,
@@ -79,7 +75,6 @@ export const getUserByCompaniesHandler = async (
   res.status(200).json(result);
 };
 
-// 회사정보 수정
 export const updateCompanyHandler = async (
   req: Request,
   res: Response,
@@ -92,7 +87,6 @@ export const updateCompanyHandler = async (
   res.status(200).json(updatedData);
 };
 
-// 삭제
 export const deleteCompanyHandler = async (
   req: Request,
   res: Response,
