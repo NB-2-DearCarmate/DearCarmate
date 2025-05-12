@@ -68,7 +68,7 @@ export const getAllCompanies = async ({
 
   return {
     currentPage: page,
-    totalPage: Math.ceil(totalCount / pageSize),
+    totalPages: Math.ceil(totalCount / pageSize),
     totalItemCount: totalCount,
     data: companyUserCount,
   };
