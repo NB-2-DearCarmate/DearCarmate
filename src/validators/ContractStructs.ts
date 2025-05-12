@@ -8,7 +8,7 @@ import {
   coerce,
   array,
 } from "superstruct";
-import { CONTRACT_STATUS_VALUES } from "../typings/contract";
+import { ContractStatus } from "@prisma/client";
 
 // 미팅, 알람 정보
 
@@ -18,7 +18,7 @@ export const MeetingStruct = object({
 });
 
 // 계약 상태 (칸반용)
-export const ContractStatusStruct = enums(CONTRACT_STATUS_VALUES);
+export const ContractStatusStruct = enums(Object.values(ContractStatus));
 
 // 계약 등록/수정용 구조
 export const ContractStruct = object({

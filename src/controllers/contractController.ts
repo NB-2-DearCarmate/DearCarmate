@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { format } from "date-fns";
+import { ContractStatus } from "@prisma/client";
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -9,11 +9,15 @@ import {
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
-import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
-import { CreateContractResponseDTO } from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
-import meetingService from "../services/meetingService";
+import NotFoundError from "../errors/NotFoundError";
+import {
+  contractListFormat,
+  createContractFormat,
+  listFotmat,
+  updateContractFormat,
+} from "../utils/ContractRespnse";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -32,8 +36,20 @@ export const getContractList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+
   const params = create(req.query, ContractListStruct);
+
+  const CONTRACT_STATUS_ORDER: ContractStatus[] = [
+    ContractStatus.carInspection,
+    ContractStatus.priceNegotiation,
+    ContractStatus.contractDraft,
+    ContractStatus.contractSuccessful,
+    ContractStatus.contractFailed,
+  ];
 
   const contractByStatus = CONTRACT_STATUS_ORDER.reduce((acc, status) => {
     acc[status] = { totalItemCount: 0, data: [] };
@@ -42,35 +58,12 @@ export const getContractList = async (req: Request, res: Response) => {
 
   for (const status of CONTRACT_STATUS_ORDER) {
     const contracts = await contractService.getContractList(
-      userId,
+      companyId,
       { searchBy, keyword },
       status
     );
 
-    const contractResult = contracts.list.map((contract) => ({
-      id: contract.id,
-      status: contract.status,
-      contractPrice: contract.contractPrice,
-      resolutionDate: contract.resolutionDate,
-      car: {
-        id: contract.car.id,
-        model: contract.car.model.name,
-      },
-      customer: {
-        id: contract.customer.id,
-        name: contract.customer.name,
-      },
-      user: {
-        id: contract.user.id,
-        name: contract.user.name,
-      },
-      meetings: contract.meetings.map((meeting) => ({
-        date: format(new Date(meeting.date), "yyyy-MM-dd"),
-        alarms: meeting.alarms.map((alarm) =>
-          format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
-        ),
-      })),
-    }));
+    const contractResult = contractListFormat(contracts.list);
 
     contractByStatus[status] = {
       totalItemCount: contracts.totalContract,
@@ -89,13 +82,14 @@ export const getCustomerList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const customerList = await contractService.getCustomerList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
 
-  const result = customerList.map((customer) => ({
-    id: customer.id,
-    data: customer.name,
-  }));
+  const customerList = await contractService.getCustomerList(companyId);
+
+  const result = listFotmat(customerList);
 
   res.status(200).send(result);
 };
@@ -108,13 +102,13 @@ export const getCarList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const carList = await contractService.getCarList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+  const carList = await contractService.getCarList(companyId);
 
-  const result = carList.map((car) => ({
-    id: car.id,
-    data: car.name,
-  }));
+  const result = listFotmat(carList);
 
   res.status(200).send(result);
 };
@@ -127,13 +121,13 @@ export const getUserList = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
-  const userList = await contractService.getUserList(userId);
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
+  const userList = await contractService.getUserList(companyId);
 
-  const result = userList.map((user) => ({
-    id: user.id,
-    data: user.name,
-  }));
+  const result = listFotmat(userList);
 
   res.status(200).send(result);
 };
@@ -145,13 +139,17 @@ export const createContract = async (req: Request, res: Response) => {
     throw new UnauthorizedError();
   }
 
-  const userId = user.id;
+  const companyId = user.companyId;
+  if (!companyId) {
+    throw new NotFoundError("회사");
+  }
   const parsedData = create(req.body, ContractStruct);
 
   const contractData = {
     carId: parsedData.carId,
     customerId: parsedData.customerId,
-    userId,
+    userId: user.id,
+    companyId,
     status: "carInspection" as ContractStatus,
     resolutionDate: null,
     contractPrice: 0,
@@ -160,26 +158,9 @@ export const createContract = async (req: Request, res: Response) => {
 
   const createContract = await contractService.createContract(contractData);
 
-  const contractResult: CreateContractResponseDTO = {
-    id: createContract.contract.id,
-    status: createContract.contract.status,
-    resolutionDate: createContract.contract.resolutionDate,
-    meetings: createContract.meetings,
-    user: {
-      id: userId,
-      name: createContract.contract.user.name,
-    },
-    customer: {
-      id: createContract.contract.customer.id,
-      name: createContract.contract.customer.name,
-    },
-    car: {
-      id: createContract.contract.car.id,
-      model: createContract.contract.car.model.name,
-    },
-  };
+  const result = createContractFormat(createContract);
 
-  res.status(201).send(contractResult);
+  res.status(201).send(result);
 };
 
 //계약 수정
@@ -212,25 +193,7 @@ export const updateContract = async (req: Request, res: Response) => {
 
   const currentMeetings = await contractService.getMeetings(id);
 
-  const result = {
-    id: updatedContract.updatedContract.id,
-    status: updatedContract.updatedContract.status,
-    resolutionDate: updatedContract.updatedContract.resolutionDate,
-    contractPrice: updatedContract.updatedContract.contractPrice,
-    meetings: currentMeetings,
-    user: {
-      id: userId,
-      name: updatedContract.updatedContract.user.name,
-    },
-    customer: {
-      id: updatedContract.updatedContract.customer.id,
-      name: updatedContract.updatedContract.customer.name,
-    },
-    car: {
-      id: updatedContract.updatedContract.car.id,
-      model: updatedContract.updatedContract.car.model.name,
-    },
-  };
+  const result = updateContractFormat(updatedContract, currentMeetings);
   res.status(200).send(result);
 };
 

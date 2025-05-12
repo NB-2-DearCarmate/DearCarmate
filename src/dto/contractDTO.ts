@@ -1,6 +1,36 @@
-import { ContractStatus } from "../typings/contract";
+import { ContractStatus } from "@prisma/client";
 
-export interface ContractDTO {
+
+
+export interface listDTO {
+  id: number;
+  data: string;
+}
+
+export interface ContractListDTO {
+  id: number;
+  status: ContractStatus;
+  contractPrice: number;
+  resolutionDate: Date | null;
+  car: {
+    id: number;
+    model: string;
+  };
+  customer: {
+    id: number;
+    name: string;
+  };
+  user: {
+    id: number;
+    name: string;
+  };
+  meetings?: {
+    date: string;
+    alarms: string[];
+  }[];
+}
+
+export interface CreateContractDTO {
   carId: number;
   customerId: number;
   userId: number;
@@ -8,30 +38,8 @@ export interface ContractDTO {
   status: ContractStatus;
   contractPrice: number;
   resolutionDate: Date | null;
+  meetings?: MeetingDTO[];
 }
-
-export interface CreateContractDTO {
-  carId: number;
-  customerId: number;
-  userId: number;
-  status: ContractStatus;
-  contractPrice: number;
-  resolutionDate: Date | null;
-  meetings?: {
-    date: Date;
-    alarms?: Date[];
-  }[];
-}
-
-export interface UpdateContractDTO {
-  carId: number;
-  customerId: number;
-  userId: number;
-  status: ContractStatus;
-  resolutionDate: Date;
-  meetings: MeetingDTO[];
-}
-
 export interface CreateContractResponseDTO {
   id: number;
   status: string;
@@ -50,13 +58,24 @@ export interface CreateContractResponseDTO {
     model: string;
   };
 }
+export interface UpdateContractDTO {
+  carId?: number;
+  customerId?: number;
+  userId?: number;
+  status?: ContractStatus;
+  contractPrice?: number;
+  resolutionDate?: Date;
+}
 
 export interface UpdateContractResponseDTO {
   id: number;
   status: string;
   resolutionDate: Date | null;
   contractPrice: number;
-  meetings?: MeetingDTO[];
+  meetings?: {
+    date: string;
+    alarms: string[];
+  }[];
   user: {
     id: number;
     name: string;

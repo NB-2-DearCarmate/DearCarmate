@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 import NotFoundError from "../errors/NotFoundError";
-import { transaction } from "../typings/contract";
+import { Prisma } from "@prisma/client";
 
 const update = async (id: number, meetingDate: Date) => {
   const updatedMeeting = await prisma.meeting.updateMany({
@@ -38,7 +38,7 @@ const getById = async (id: number) => {
   return meeting;
 };
 
-async function save(contractId: number, meetingDate: Date, tx: transaction) {
+async function save(contractId: number, meetingDate: Date, tx: Prisma.TransactionClient) {
   const meeting = await tx.meeting.create({
     data: {
       contractId: contractId,
@@ -52,7 +52,7 @@ async function save(contractId: number, meetingDate: Date, tx: transaction) {
 const findOne = async (
   contractId: number,
   meetingDate: Date,
-  tx: transaction
+  tx: Prisma.TransactionClient
 ) => {
   const meeting = await tx.meeting.findFirst({
     where: {
@@ -70,7 +70,7 @@ const deleteMany = async (contractId: number) => {
   });
 };
 
-const findAllByContractId = async (contractId: number, tx: transaction) => {
+const findAllByContractId = async (contractId: number, tx: Prisma.TransactionClient) => {
   const meetings = await tx.meeting.findMany({
     where: { contractId },
   });
@@ -78,7 +78,7 @@ const findAllByContractId = async (contractId: number, tx: transaction) => {
   return meetings;
 };
 
-const deleteById = async (meetingId: number, tx: transaction) => {
+const deleteById = async (meetingId: number, tx: Prisma.TransactionClient) => {
   await tx.meeting.delete({
     where: { id: meetingId },
   });
