@@ -176,19 +176,7 @@ export const CustomerService = {
       const regionKey = row.region?.trim();
   
       const mappedAgeGroup = ageGroupMap[ageGroupKey];
-      const mappedRegion = regionMap[regionKey];
-  
-      // ✅ 디버깅용 로그
-      console.log(`🟡 [${index + 1}행]`);
-      console.log(`raw ageGroup: "${row.ageGroup}"`);
-      console.log(`trimmed ageGroupKey: "${ageGroupKey}"`);
-      console.log(`mappedAgeGroup:`, mappedAgeGroup);
-      console.log(`raw region: "${row.region}"`);
-      console.log(`trimmed regionKey: "${regionKey}"`);
-      console.log(`mappedRegion:`, mappedRegion);
-      console.log("----------------------------------");
-      console.log(Object.keys(row));
-      console.log("row 전체 내용:", row);
+      const mappedRegion = regionMap[regionKey]; 
       if (!mappedAgeGroup || !mappedRegion) {
         throw new Error(`행 ${index + 1}: 유효하지 않은 연령대 또는 지역입니다.`);
       }
