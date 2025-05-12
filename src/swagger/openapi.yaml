@@ -40,3 +40,9 @@ paths:
     $ref: "./users.swagger.yaml#/usersMe"
   /users/{userId}:
     $ref: "./users.swagger.yaml#/usersById"
+
+  # 고객
+  /customers:
+    $ref: "./customer.swagger.yaml#/customers"
+  /customers/{id}:
+    $ref: "./customer.swagger.yaml#/customers~1{id}"

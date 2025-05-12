@@ -7,9 +7,20 @@ import { AuthenticatedUserRequest } from "../typings/express";
 import * as XLSX from "xlsx";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
+import csv from "csv-parser";
 
-const upload = multer({ dest: "uploads/" });
+// ✅ 이 아래 코드로 수정해줘!
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
+  },
+});
 
+const upload = multer({ storage });
 // 고객 등록, 조회
 export const CustomerController = {
   // 고객 생성
@@ -137,32 +148,50 @@ export const CustomerController = {
       next: NextFunction
     ) => {
       const companyId = req.user?.companyId;
-
-      if (!companyId) {
-        throw new BadRequestError("회사 ID가 필요합니다.");
-      }
-
-      if (!req.file) {
-        throw new BadRequestError("Excel(.xlsx) 파일이 필요합니다.");
-      }
-
+      if (!companyId) return next(new BadRequestError("회사 ID가 필요합니다."));
+      if (!req.file) return next(new BadRequestError("CSV 파일이 필요합니다."));
+  
       const filePath = path.resolve(req.file.path);
-
+      const ext = path.extname(filePath).toLowerCase();
+  
+      if (ext !== ".csv") {
+        return next(new BadRequestError("CSV 파일만 허용됩니다."));
+      }
+  
       try {
-        const workbook = XLSX.readFile(filePath);
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const rows: any[] = XLSX.utils.sheet_to_json(worksheet);
-
-        const result = await CustomerService.bulkCreateCustomers(
-          rows,
-          companyId
-        );
-
+        const rows: any[] = [];
+  
+        await new Promise<void>((resolve, reject) => {
+          fs.createReadStream(filePath)
+            .pipe(
+              csv({
+                headers: [
+                  "name",
+                  "email",
+                  "gender",
+                  "phoneNumber",
+                  "ageGroup",
+                  "region",
+                  "memo",
+                ],
+                skipLines: 1, // ✅ 첫 줄(컬럼명) 무시
+                strict: true,
+                mapHeaders: ({ header }) => header?.trim(), // 혹시 모를 공백 제거
+              })
+            )
+            .on("data", (data) => {
+              rows.push(data);
+            })
+            .on("end", resolve)
+            .on("error", reject);
+        });
+  
+        const result = await CustomerService.bulkCreateCustomers(rows, companyId);
+  
         fs.unlinkSync(filePath);
         res.status(201).json({ message: "고객 등록 완료", count: result.count });
       } catch (err) {
-        fs.unlinkSync(filePath); // 실패해도 파일 정리
+        fs.unlinkSync(filePath);
         next(err);
       }
     },
