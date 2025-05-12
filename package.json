@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/main.js",
-    "dev": "nodemon --watch src src/main.ts",
-    "api-docs": "swagger-cli bundle ./src/swagger/openapi.yaml --outfile dist/openapi.yaml --type yaml",
-    "predev": "npm run api-docs",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:seed": "ts-node prisma/seed.ts"
-  },
+  "build": "tsc",
+  "postbuild": "npm run api-docs",
+  "start": "node dist/main.js",
+  "dev": "nodemon --watch src src/main.ts",
+  "api-docs": "swagger-cli bundle ./src/swagger/openapi.yaml --outfile dist/openapi.yaml --type yaml",
+  "predev": "npm run api-docs",
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "prisma:seed": "ts-node prisma/seed.ts"
+},
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
