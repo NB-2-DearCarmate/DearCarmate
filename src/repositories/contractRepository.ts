@@ -72,7 +72,7 @@ const getCustomerList = async (companyId: number) => {
 
 const getCarList = async (companyId: number) => {
   const carList = await prisma.car.findMany({
-    where: { companyId, status: "possession" },
+    where: { companyId, status: "possession", deletedAt: null },
     select: {
       id: true,
       carNumber: true,
@@ -358,6 +358,11 @@ const carStatus = async (id: number) => {
   return update;
 };
 
+const getMeeting = async (contractId: number) => {
+  const meeting = await prisma.meeting.findMany({ where: { contractId } });
+  return meeting;
+};
+
 export default {
   getContractList,
   save,
@@ -377,4 +382,5 @@ export default {
   updateContractDocuments,
   verifyDocumentsExist,
   carStatus,
+  getMeeting
 };

@@ -13,6 +13,7 @@ import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
 import { CreateContractResponseDTO } from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
+import meetingService from "../services/meetingService";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -200,20 +201,23 @@ export const updateContract = async (req: Request, res: Response) => {
   ) {
     throw new BadRequestError("계약 일자는 필수값입니다.");
   }
+
   const updatedContract = await contractService.updateContract(
     id,
     userId,
     contractDocuments,
     parsedData,
-    parsedMeeting || []
+    parsedMeeting
   );
+
+  const currentMeetings = await contractService.getMeetings(id);
 
   const result = {
     id: updatedContract.updatedContract.id,
     status: updatedContract.updatedContract.status,
     resolutionDate: updatedContract.updatedContract.resolutionDate,
     contractPrice: updatedContract.updatedContract.contractPrice,
-    meetings: updatedContract.meetingResult,
+    meetings: currentMeetings,
     user: {
       id: userId,
       name: updatedContract.updatedContract.user.name,
