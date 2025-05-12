@@ -10,10 +10,14 @@ import {
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
 import { ContractStatus, CONTRACT_STATUS_ORDER } from "../typings/contract";
-import { CreateContractResponseDTO } from "../dto/contractDTO";
+import {
+  ContractListDTO,
+  CreateContractResponseDTO,
+  listDTO,
+  UpdateContractResponseDTO,
+} from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
-import meetingService from "../services/meetingService";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -47,30 +51,32 @@ export const getContractList = async (req: Request, res: Response) => {
       status
     );
 
-    const contractResult = contracts.list.map((contract) => ({
-      id: contract.id,
-      status: contract.status,
-      contractPrice: contract.contractPrice,
-      resolutionDate: contract.resolutionDate,
-      car: {
-        id: contract.car.id,
-        model: contract.car.model.name,
-      },
-      customer: {
-        id: contract.customer.id,
-        name: contract.customer.name,
-      },
-      user: {
-        id: contract.user.id,
-        name: contract.user.name,
-      },
-      meetings: contract.meetings.map((meeting) => ({
-        date: format(new Date(meeting.date), "yyyy-MM-dd"),
-        alarms: meeting.alarms.map((alarm) =>
-          format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
-        ),
-      })),
-    }));
+    const contractResult: ContractListDTO[] = contracts.list.map(
+      (contract) => ({
+        id: contract.id,
+        status: contract.status,
+        contractPrice: contract.contractPrice,
+        resolutionDate: contract.resolutionDate,
+        car: {
+          id: contract.car.id,
+          model: contract.car.model.name,
+        },
+        customer: {
+          id: contract.customer.id,
+          name: contract.customer.name,
+        },
+        user: {
+          id: contract.user.id,
+          name: contract.user.name,
+        },
+        meetings: contract.meetings.map((meeting) => ({
+          date: format(new Date(meeting.date), "yyyy-MM-dd"),
+          alarms: meeting.alarms.map((alarm) =>
+            format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
+          ),
+        })),
+      })
+    );
 
     contractByStatus[status] = {
       totalItemCount: contracts.totalContract,
@@ -92,7 +98,7 @@ export const getCustomerList = async (req: Request, res: Response) => {
   const userId = user.id;
   const customerList = await contractService.getCustomerList(userId);
 
-  const result = customerList.map((customer) => ({
+  const result: listDTO[] = customerList.map((customer) => ({
     id: customer.id,
     data: customer.name,
   }));
@@ -111,7 +117,7 @@ export const getCarList = async (req: Request, res: Response) => {
   const userId = user.id;
   const carList = await contractService.getCarList(userId);
 
-  const result = carList.map((car) => ({
+  const result: listDTO[] = carList.map((car) => ({
     id: car.id,
     data: car.name,
   }));
@@ -130,7 +136,7 @@ export const getUserList = async (req: Request, res: Response) => {
   const userId = user.id;
   const userList = await contractService.getUserList(userId);
 
-  const result = userList.map((user) => ({
+  const result: listDTO[] = userList.map((user) => ({
     id: user.id,
     data: user.name,
   }));
@@ -212,7 +218,7 @@ export const updateContract = async (req: Request, res: Response) => {
 
   const currentMeetings = await contractService.getMeetings(id);
 
-  const result = {
+  const result: UpdateContractResponseDTO = {
     id: updatedContract.updatedContract.id,
     status: updatedContract.updatedContract.status,
     resolutionDate: updatedContract.updatedContract.resolutionDate,

@@ -10,6 +10,34 @@ export interface ContractDTO {
   resolutionDate: Date | null;
 }
 
+export interface listDTO {
+  id: number;
+  data: string;
+}
+
+export interface ContractListDTO {
+  id: number;
+  status: ContractStatus;
+  contractPrice: number;
+  resolutionDate: Date | null;
+  car: {
+    id: number;
+    model: string;
+  };
+  customer: {
+    id: number;
+    name: string;
+  };
+  user: {
+    id: number;
+    name: string;
+  };
+  meetings?: {
+    date: string;
+    alarms: string[];
+  }[];
+}
+
 export interface CreateContractDTO {
   carId: number;
   customerId: number;
@@ -22,16 +50,6 @@ export interface CreateContractDTO {
     alarms?: Date[];
   }[];
 }
-
-export interface UpdateContractDTO {
-  carId: number;
-  customerId: number;
-  userId: number;
-  status: ContractStatus;
-  resolutionDate: Date;
-  meetings: MeetingDTO[];
-}
-
 export interface CreateContractResponseDTO {
   id: number;
   status: string;
@@ -49,6 +67,14 @@ export interface CreateContractResponseDTO {
     id: number;
     model: string;
   };
+}
+export interface UpdateContractDTO {
+  carId?: number;
+  customerId?: number;
+  userId?: number;
+  status?: ContractStatus;
+  contractPrice?: number;
+  resolutionDate?: Date;
 }
 
 export interface UpdateContractResponseDTO {

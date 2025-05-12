@@ -1,23 +1,19 @@
-import { CreateContractDTO, MeetingDTO } from "../dto/contractDTO";
+import {
+  CreateContractDTO,
+  MeetingDTO,
+  UpdateContractDTO,
+} from "../dto/contractDTO";
 import BadRequestError from "../errors/BadRequestError";
 import ForbiddenError from "../errors/ForbiddenError";
 import prisma from "../lib/prisma";
 import contractRepository from "../repositories/contractRepository";
 import {
   ContractList,
-  ContractType,
   ContractStatus,
   CursorPaginationResultWithTotal,
   ContractWithDetails,
-  transaction,
 } from "../typings/contract";
 import meetingService from "./meetingService";
-
-type CreateContract = Omit<
-  ContractType,
-  "id" | "createdAt" | "updatedAt" | "companyId"
->;
-type UpdateContract = Partial<CreateContract>;
 
 // 계약 조회
 const getContractList = async (
@@ -115,7 +111,7 @@ const updateContract = async (
   id: number,
   userId: number,
   contractDocuments: { id: number; filename: string }[],
-  data: UpdateContract,
+  data: UpdateContractDTO,
   meetings?: MeetingDTO[]
 ) => {
   const findContract = await contractRepository.getById(id);
