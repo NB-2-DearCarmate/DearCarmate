@@ -94,7 +94,7 @@ async function getCarList({
 
   return {
     currentPage: page,
-    totalPage: Math.ceil(totalCount / pageSize),
+    totalPages: Math.ceil(totalCount / pageSize),
     totalItemCount: totalCount,
     data: cars,
   };
@@ -154,10 +154,27 @@ async function deleteCar(id: number) {
 }
 
 // 대량 차량 등록
-async function bulkCreateCars(carList: CarData[]) {
-  return prisma.car.createMany({
+async function bulkCreateCars(
+  tx: Prisma.TransactionClient,
+  carList: CarData[]
+) {
+  return tx.car.createMany({
     data: carList,
     skipDuplicates: true,
+  });
+}
+
+async function bulkFindModel(
+  tx: Prisma.TransactionClient,
+  options: { name: string; manufacturerName: string }
+) {
+  return tx.models.findFirst({
+    where: {
+      name: options.name,
+      manufacturer: {
+        name: options.manufacturerName,
+      },
+    },
   });
 }
 
@@ -171,4 +188,5 @@ export default {
   deleteCar,
   bulkCreateCars,
   findModel,
+  bulkFindModel,
 };
