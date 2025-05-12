@@ -81,7 +81,7 @@ const createContract = async (data: CreateContractDTO) => {
     }
 
     return {
-      contract,
+      ...contract,
       meetings,
     };
   });
@@ -129,7 +129,7 @@ const updateContract = async (
       await contractRepository.failedCar(updatedContract.car.id, tx);
     }
     return {
-      updatedContract,
+      ...updatedContract,
       meetingResult,
     };
   });

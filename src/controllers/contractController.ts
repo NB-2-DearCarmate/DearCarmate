@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { format } from "date-fns";
+import { ContractStatus } from "@prisma/client";
 import contractService from "../services/contractService";
 import {
   ContractStruct,
@@ -9,16 +9,15 @@ import {
 } from "../validators/ContractStructs";
 import { create } from "superstruct";
 import { IdParamsStruct } from "../validators/CommonStruct";
-import { ContractStatus } from "@prisma/client";
-import {
-  ContractListDTO,
-  CreateContractResponseDTO,
-  listDTO,
-  UpdateContractResponseDTO,
-} from "../dto/contractDTO";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
+import {
+  contractListFormat,
+  createContractFormat,
+  listFotmat,
+  updateContractFormat,
+} from "../utils/ContractRespnse";
 
 //계약 조회
 export const getContractList = async (req: Request, res: Response) => {
@@ -64,32 +63,7 @@ export const getContractList = async (req: Request, res: Response) => {
       status
     );
 
-    const contractResult: ContractListDTO[] = contracts.list.map(
-      (contract) => ({
-        id: contract.id,
-        status: contract.status,
-        contractPrice: contract.contractPrice,
-        resolutionDate: contract.resolutionDate,
-        car: {
-          id: contract.car.id,
-          model: contract.car.model.name,
-        },
-        customer: {
-          id: contract.customer.id,
-          name: contract.customer.name,
-        },
-        user: {
-          id: contract.user.id,
-          name: contract.user.name,
-        },
-        meetings: contract.meetings.map((meeting) => ({
-          date: format(new Date(meeting.date), "yyyy-MM-dd"),
-          alarms: meeting.alarms.map((alarm) =>
-            format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
-          ),
-        })),
-      })
-    );
+    const contractResult = contractListFormat(contracts.list);
 
     contractByStatus[status] = {
       totalItemCount: contracts.totalContract,
@@ -115,10 +89,7 @@ export const getCustomerList = async (req: Request, res: Response) => {
 
   const customerList = await contractService.getCustomerList(companyId);
 
-  const result: listDTO[] = customerList.map((customer) => ({
-    id: customer.id,
-    data: customer.name,
-  }));
+  const result = listFotmat(customerList);
 
   res.status(200).send(result);
 };
@@ -137,10 +108,7 @@ export const getCarList = async (req: Request, res: Response) => {
   }
   const carList = await contractService.getCarList(companyId);
 
-  const result: listDTO[] = carList.map((car) => ({
-    id: car.id,
-    data: car.name,
-  }));
+  const result = listFotmat(carList);
 
   res.status(200).send(result);
 };
@@ -159,10 +127,7 @@ export const getUserList = async (req: Request, res: Response) => {
   }
   const userList = await contractService.getUserList(companyId);
 
-  const result: listDTO[] = userList.map((user) => ({
-    id: user.id,
-    data: user.name,
-  }));
+  const result = listFotmat(userList);
 
   res.status(200).send(result);
 };
@@ -176,7 +141,7 @@ export const createContract = async (req: Request, res: Response) => {
 
   const companyId = user.companyId;
   if (!companyId) {
-    throw new NotFoundError("회사 ");
+    throw new NotFoundError("회사");
   }
   const parsedData = create(req.body, ContractStruct);
 
@@ -193,26 +158,9 @@ export const createContract = async (req: Request, res: Response) => {
 
   const createContract = await contractService.createContract(contractData);
 
-  const contractResult: CreateContractResponseDTO = {
-    id: createContract.contract.id,
-    status: createContract.contract.status,
-    resolutionDate: createContract.contract.resolutionDate,
-    meetings: createContract.meetings,
-    user: {
-      id: user.id,
-      name: createContract.contract.user.name,
-    },
-    customer: {
-      id: createContract.contract.customer.id,
-      name: createContract.contract.customer.name,
-    },
-    car: {
-      id: createContract.contract.car.id,
-      model: createContract.contract.car.model.name,
-    },
-  };
+  const result = createContractFormat(createContract);
 
-  res.status(201).send(contractResult);
+  res.status(201).send(result);
 };
 
 //계약 수정
@@ -245,30 +193,7 @@ export const updateContract = async (req: Request, res: Response) => {
 
   const currentMeetings = await contractService.getMeetings(id);
 
-  const result: UpdateContractResponseDTO = {
-    id: updatedContract.updatedContract.id,
-    status: updatedContract.updatedContract.status,
-    resolutionDate: updatedContract.updatedContract.resolutionDate,
-    contractPrice: updatedContract.updatedContract.contractPrice,
-    meetings: currentMeetings.map((meeting) => ({
-      date: format(new Date(meeting.date), "yyyy-MM-dd"),
-      alarms: meeting.alarms.map((alarm) =>
-        format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
-      ),
-    })),
-    user: {
-      id: userId,
-      name: updatedContract.updatedContract.user.name,
-    },
-    customer: {
-      id: updatedContract.updatedContract.customer.id,
-      name: updatedContract.updatedContract.customer.name,
-    },
-    car: {
-      id: updatedContract.updatedContract.car.id,
-      model: updatedContract.updatedContract.car.model.name,
-    },
-  };
+  const result = updateContractFormat(updatedContract, currentMeetings);
   res.status(200).send(result);
 };
 
