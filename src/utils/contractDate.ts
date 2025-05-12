@@ -1,7 +1,11 @@
+import BadRequestError from "../errors/BadRequestError";
+
 export function isVaildMeetingDate(date: Date): boolean {
   const now = new Date();
 
-  if (date <= now) return false;
+  if (date <= now) {
+    throw new BadRequestError("현 시간 이후로 미팅 설정이 가능합니다.");
+  }
 
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();

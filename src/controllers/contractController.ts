@@ -223,7 +223,11 @@ export const updateContract = async (req: Request, res: Response) => {
     status: updatedContract.updatedContract.status,
     resolutionDate: updatedContract.updatedContract.resolutionDate,
     contractPrice: updatedContract.updatedContract.contractPrice,
-    meetings: currentMeetings,
+    meetings: currentMeetings.map((meeting) => ({
+      date: format(new Date(meeting.date), "yyyy-MM-dd"),
+      alarms: meeting.alarms.map((alarm) =>
+        format(new Date(alarm.alarmAt), "yyyy-MM-dd'T'HH:mm:ss")
+      )})),
     user: {
       id: userId,
       name: updatedContract.updatedContract.user.name,

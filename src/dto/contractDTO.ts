@@ -45,10 +45,7 @@ export interface CreateContractDTO {
   status: ContractStatus;
   contractPrice: number;
   resolutionDate: Date | null;
-  meetings?: {
-    date: Date;
-    alarms?: Date[];
-  }[];
+  meetings?: MeetingDTO[];
 }
 export interface CreateContractResponseDTO {
   id: number;
@@ -82,7 +79,10 @@ export interface UpdateContractResponseDTO {
   status: string;
   resolutionDate: Date | null;
   contractPrice: number;
-  meetings?: MeetingDTO[];
+  meetings?: {
+    date: string;
+    alarms: string[];
+  }[];
   user: {
     id: number;
     name: string;

@@ -359,7 +359,10 @@ const carStatus = async (id: number) => {
 };
 
 const getMeeting = async (contractId: number) => {
-  const meeting = await prisma.meeting.findMany({ where: { contractId } });
+  const meeting = await prisma.meeting.findMany({
+    where: { contractId },
+    select: { date: true, alarms: { select: { alarmAt: true } } },
+  });
   return meeting;
 };
 
@@ -382,5 +385,5 @@ export default {
   updateContractDocuments,
   verifyDocumentsExist,
   carStatus,
-  getMeeting
+  getMeeting,
 };

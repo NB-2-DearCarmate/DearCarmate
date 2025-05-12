@@ -3,6 +3,7 @@ import alarmService from "./alarmService";
 import { isVaildMeetingDate } from "../utils/contractDate";
 import { MeetingDTO } from "../dto/contractDTO";
 import { transaction } from "../typings/contract";
+import BadRequestError from "../errors/BadRequestError";
 
 // 시간 변환
 const getId = async (contractId: number) => {
@@ -23,20 +24,20 @@ const createWithAlarms = async (
   tx: transaction
 ): Promise<MeetingDTO[]> => {
   if (meetings.length > 3) {
-    throw new Error("미팅은 최대 3개까지만 등록 가능합니다.");
+    throw new BadRequestError("미팅은 최대 3개까지만 등록 가능합니다.");
   }
 
   const meetingResult: MeetingDTO[] = [];
 
   for (const meeting of meetings) {
     if (meeting.alarms && meeting.alarms.length > 2) {
-      throw new Error("알람은 최대 2개까지만 등록 가능합니다.");
+      throw new BadRequestError("알람은 최대 2개까지만 등록 가능합니다.");
     }
 
     const meetingDate = meeting.date;
 
     if (!isVaildMeetingDate(meetingDate)) {
-      throw new Error("미팅일정은 30분 간격으로 설정 가능합니다.");
+      throw new BadRequestError("미팅일정은 30분 간격으로 설정 가능합니다.");
     }
 
     const createdMeeting = await meetingRepository.save(
