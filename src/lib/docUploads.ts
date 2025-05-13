@@ -8,8 +8,6 @@ if (!fs.existsSync(uploadDir)) {
   console.log("디렉터리 없음");
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("디렉토리 생성완료");
-} else {
-  console.log("디렉토리 존재함.");
 }
 
 const storage = multer.diskStorage({

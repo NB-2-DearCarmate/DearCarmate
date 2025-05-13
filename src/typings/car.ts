@@ -46,7 +46,7 @@ export interface CarResponse {
 
 export type CarList = {
   currentPage: number;
-  totalPage: number;
+  totalPages: number;
   totalItemCount: number;
   data: CarResponse[];
 };

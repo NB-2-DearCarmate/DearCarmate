@@ -19,7 +19,7 @@ export type UpdateCompanyUserCount = Omit<
 
 export type CompanyList = {
   currentPage: number;
-  totalPage: number;
+  totalPages: number;
   totalItemCount: number;
   data: RegisterCompany[];
 };
@@ -40,14 +40,14 @@ export type UserListItem = {
 
 export type CompanyByUserList = {
   currentPage: number;
-  totalPage: number;
+  totalPages: number;
   totalItemCount: number;
   data: UserListItem[];
 };
 
 export type GetAllCompaniesResponse = {
   currentPage: number;
-  totalPage: number;
+  totalPages: number;
   totalItemCount: number;
   data: {
     id: number;

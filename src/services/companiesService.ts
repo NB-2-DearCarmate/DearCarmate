@@ -17,8 +17,6 @@ import {
 import NotFoundError from "../errors/NotFoundError";
 import BadRequestError from "../errors/BadRequestError";
 
-// 일반유저x 관리자 전용 기능
-// 회사 등록
 export const registerCompany = async (
   data: RegitsterCompanyInput
 ): Promise<RegisterCompany> => {
@@ -34,7 +32,6 @@ export const registerCompany = async (
   };
 };
 
-// 목록조회
 export const getAllCompanies = async ({
   page,
   pageSize,
@@ -68,13 +65,12 @@ export const getAllCompanies = async ({
 
   return {
     currentPage: page,
-    totalPage: Math.ceil(totalCount / pageSize),
+    totalPages: Math.ceil(totalCount / pageSize),
     totalItemCount: totalCount,
     data: companyUserCount,
   };
 };
 
-// 회사 별 유저 리스트
 export const getUserByCompanies = async ({
   page,
   pageSize,
@@ -124,7 +120,6 @@ export const getUserByCompanies = async ({
   };
 };
 
-// 회사정보 수정
 export const updatedCompany = async (
   id: number,
   data: UpdateCompany
@@ -143,7 +138,6 @@ export const updatedCompany = async (
   return { ...rest, userCount };
 };
 
-// 삭제
 export const deleteCompany = async (id: number): Promise<Company> => {
   if (!id || id <= 0) {
     throw new NotFoundError("회사");

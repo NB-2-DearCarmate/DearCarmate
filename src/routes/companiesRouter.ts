@@ -10,37 +10,37 @@ import { adminMiddleware } from "../middlewares/adminAuthMiddleware";
 import { asyncHandler } from "../lib/asyncHandler";
 import authMiddleware from "../middlewares/authMiddleware";
 
-const router = Router();
+const companiesRouter = Router();
 
-router.post(
+companiesRouter.post(
   "/",
   authMiddleware,
   adminMiddleware,
   asyncHandler(createCompanyHandler)
 );
-router.get(
+companiesRouter.get(
   "/",
   authMiddleware,
   adminMiddleware,
   asyncHandler(getCompanyListHandler)
 );
-router.get(
+companiesRouter.get(
   "/users",
   authMiddleware,
   adminMiddleware,
   asyncHandler(getUserByCompaniesHandler)
 );
-router.patch(
+companiesRouter.patch(
   "/:id",
   authMiddleware,
   adminMiddleware,
   asyncHandler(updateCompanyHandler)
 );
-router.delete(
+companiesRouter.delete(
   "/:id",
   authMiddleware,
   adminMiddleware,
   asyncHandler(deleteCompanyHandler)
 );
 
-export default router;
+export default companiesRouter;

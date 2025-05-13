@@ -25,7 +25,7 @@ const contractDocumentList = async (
               return `${c.car.model.name}-${c.customer.name}`;
             case "carNumber":
               return c.car.carNumber;
-            case "managerName":
+            case "userName":
               return c.user.name;
             default:
               return "";

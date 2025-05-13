@@ -41,6 +41,12 @@ paths:
   /users/{userId}:
     $ref: "./users.swagger.yaml#/usersById"
 
+  # 고객
+  /customers:
+    $ref: "./customer.swagger.yaml#/customers"
+  /customers/{id}:
+    $ref: "./customer.swagger.yaml#/customers~1{id}"
+
   # 계약
   /contracts:
     $ref: "./contracts.swagger.yaml#/contracts"
