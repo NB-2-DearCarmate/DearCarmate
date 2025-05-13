@@ -41,14 +41,22 @@ paths:
   /users/{userId}:
     $ref: "./users.swagger.yaml#/usersById"
 
-  #계약
-  /contract:
+  # 계약
+  /contracts:
     $ref: "./contracts.swagger.yaml#/contracts"
-  /contract/car:
+  /contracts/car:
     $ref: "./contracts.swagger.yaml#/cars"
-  /contract/users:
+  /contracts/users:
     $ref: "./contracts.swagger.yaml#/users"
-  /contract/customers:
+  /contracts/customers:
     $ref: "./contracts.swagger.yaml#/customers"
-  /contract/{contractId}:
+  /contracts/{contractId}:
     $ref: "./contracts.swagger.yaml#/contractId"
+
+  # 대시보드
+  /dashboard:
+    $ref: "./dashboard.swagger.yaml#/dashboard"
+
+  # 이미지
+  /image:
+    $ref: "./image.swagger.yaml#/image"

@@ -1,0 +1,75 @@
+dashboard:
+  get:
+    summary: 대시보드 데이터 조회
+    description: 대시보드에 필요한 월별 판매 및 계약 정보 조회
+    responses:
+      "200":
+        description: 성공적으로 대시보드 데이터 조회
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dashboard"
+      "400":
+        description: 잘못된 요청
+      "500":
+        description: 서버 오류
+
+components:
+  schemas:
+    Dashboard:
+      type: object
+      required:
+        - monthlySales
+        - lastMonthSales
+        - growthRate
+        - proceedingContractsCount
+        - completedContractsCount
+        - contractsByCarType
+        - salesByCarType
+      properties:
+        monthlySales:
+          type: number
+          format: float
+          example: 1200000
+        lastMonthSales:
+          type: number
+          format: float
+          example: 1100000
+        growthRate:
+          type: number
+          format: float
+          example: 0.09
+        proceedingContractsCount:
+          type: integer
+          example: 15
+        completedContractsCount:
+          type: integer
+          example: 30
+        contractsByCarType:
+          type: array
+          items:
+            type: object
+            required:
+              - carType
+              - count
+            properties:
+              carType:
+                type: string
+                example: "SUV"
+              count:
+                type: integer
+                example: 5
+        salesByCarType:
+          type: array
+          items:
+            type: object
+            required:
+              - carType
+              - count
+            properties:
+              carType:
+                type: string
+                example: "Sedan"
+              count:
+                type: integer
+                example: 10
