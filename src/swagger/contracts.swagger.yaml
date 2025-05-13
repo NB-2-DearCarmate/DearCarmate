@@ -1,0 +1,551 @@
+contracts:
+  post:
+    summary: 계약 생성하기
+    tags:
+      - Contracts
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ContractCreateInput"
+    responses:
+    "201":
+      description: 계약 등록 성공
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ContractCreateResponse"
+    "400":
+      description: 잘못된 요청입니다.
+    "401":
+      description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+
+  get:
+    summary: 계약 목록 조회
+    tags:
+      - Contracts
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: searchBy
+        description: 검색 기준
+        schema:
+          type: string
+          enum: [carNumber, model]
+          example: "customerName"
+        required: false
+      - in: query
+        name: page
+        description: keyword
+        schema:
+          type: string
+          example: "홍길동"
+        required: false
+    responses:
+      "200":
+        description: 고객 목록 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractListByStatusResponse"
+      "400":
+        description: 잘못된 요청입니다.
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+
+cars:
+  get:
+    tags:
+      - Cars
+    summary: 차량 조회
+    description: 계약 가능한 모든 차량을 조회 합니다.
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 차량 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarListAPI"
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "500":
+        description: 서버 오류
+
+users:
+  get:
+    tags:
+      - users
+    summary: 사용자 조회
+    description: 현재 근무하는 모든 임직원을 조회합니다.
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 사용자 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserListAPI"
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "500":
+        description: 서버 오류
+
+customers:
+  get:
+    tags:
+      - customers
+    summary: 고객 조회
+    description: 계약을 희망하는 등록된 모든 고객을 조회합니다.
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: 고객 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerListAPI"
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "500":
+        description: 서버 오류
+
+contractId:
+  patch:
+    summary: 계약 정보 수정
+    tags:
+      - Contracts
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: 계약Id
+        required: true
+        schema:
+          type: integer
+          example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ContractUpdateInput"
+    responses:
+      "201":
+        description: 수정 성공
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractUpdateResponse"
+      "400":
+        description: 잘못된 요청
+      "401":
+        description: 인증 실패 (토큰 없음 또는 유효하지 않음)
+      "404":
+        description: 존재하지 않는 계약입니다.
+
+  delete:
+    summary: 계약 삭제
+    tags:
+      - Contracts
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: 계약 ID
+        required: true
+        schema:
+          type: integer
+    responses:
+      "204":
+        description: 삭제 성공
+      "404":
+        description: 존재하지 않는 계약입니다.
+
+components:
+  schemas:
+    ContractCreateInput:
+      type: object
+      required:
+        - userId
+        - carId
+        - customerId
+        - companyId
+        - status
+        - contractPrice
+        - meetings
+      properties:
+        userId:
+          type: integer
+          example: 1
+        carId:
+          type: integer
+          example: 5
+        customerId:
+          type: integer
+          example: 10
+        companyId:
+          type: integer
+          example: 3
+        status:
+          type: string
+          enum:
+            [
+              carInspection,
+              priceNegotiation,
+              contractDraft,
+              contractSuccessful,
+              contractFailed,
+            ]
+          example: PENDING
+        contractPrice:
+          type: number
+          example: 12000000
+        resolutionDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-06-01T00:00:00.000Z"
+        meetings:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                example: "2025-05-15"
+              alarms:
+                type: array
+                items:
+                  type: string
+                  format: date-time
+                example: ["2025-05-14T09:00:00Z", "2025-05-15T08:00:00Z"]
+
+    ContractCreateResponse:
+      type: object
+      required:
+        - id
+        - status
+        - resolutionDate
+        - user
+        - customer
+        - car
+      properties:
+        id:
+          type: integer
+          example: 100
+        status:
+          type: string
+          enum:
+            [
+              carInspection,
+              priceNegotiation,
+              contractDraft,
+              contractSuccessful,
+              contractFailed,
+            ]
+          example: contractDraft
+        resolutionDate:
+          type: string
+          format: date-time
+          example: "2025-06-01T00:00:00.000Z"
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: "홍길동"
+        customer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            name:
+              type: string
+              example: "고객 이름"
+        car:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 5
+            model:
+              type: string
+              example: "K5"
+        meetings:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                example: "2025-05-15"
+              alarms:
+                type: array
+                items:
+                  type: string
+                  format: date-time
+                example: ["2025-05-14T09:00:00Z"]
+
+    ContractListItem:
+      type: object
+      required:
+        - id
+        - status
+        - contractPrice
+        - resolutionDate
+        - car
+        - customer
+        - user
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          enum:
+            [
+              carInspection,
+              priceNegotiation,
+              contractDraft,
+              contractSuccessful,
+              contractFailed,
+            ]
+          example: contractDraft
+        contractPrice:
+          type: number
+          example: 12000000
+        resolutionDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-06-01T00:00:00Z"
+        car:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 5
+            model:
+              type: string
+              example: "K5"
+        customer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            name:
+              type: string
+              example: "홍길동"
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 3
+            name:
+              type: string
+              example: "임직원A"
+        meetings:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                example: "2025-05-15"
+              alarms:
+                type: array
+                items:
+                  type: string
+                  format: date-time
+                example: ["2025-05-14T09:00:00Z"]
+
+    ContractListGroup:
+      type: object
+      properties:
+        totalItemCount:
+          type: integer
+          example: 3
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContractListItem"
+
+    ContractListByStatusResponse:
+      type: object
+      properties:
+        carInspection:
+          $ref: "#/components/schemas/ContractListGroup"
+        priceNegotiation:
+          $ref: "#/components/schemas/ContractListGroup"
+        contractDraft:
+          $ref: "#/components/schemas/ContractListGroup"
+        contractSuccessful:
+          $ref: "#/components/schemas/ContractListGroup"
+        contractFailed:
+          $ref: "#/components/schemas/ContractListGroup"
+
+    UserListAPI:
+      type: object
+      required:
+        - id
+        - data
+      properties:
+        id:
+          type: integer
+          example: 1
+        data:
+          type: string
+          example: "홍길동"
+
+    CarListAPI:
+      type: object
+      required:
+        - id
+        - data
+      properties:
+        id:
+          type: integer
+          example: 5
+        data:
+          type: string
+          example: "레이(01더 0101)"
+
+    CustomerListAPI:
+      type: object
+      required:
+        - id
+        - data
+      properties:
+        id:
+          type: integer
+          example: 4
+        data:
+          type: string
+          example: "김기람"
+
+    ContractUpdateInput:
+      type: object
+      properties:
+        carId:
+          type: integer
+          example: 5
+        customerId:
+          type: integer
+          example: 10
+        userId:
+          type: integer
+          example: 3
+        status:
+          type: string
+          enum:
+            [
+              carInspection,
+              priceNegotiation,
+              contractDraft,
+              contractSuccessful,
+              contractFailed,
+            ]
+          example: contractDraft
+        contractPrice:
+          type: number
+          example: 13000000
+        resolutionDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-06-10T00:00:00Z"
+
+    ContractUpdateResponse:
+      type: object
+      required:
+        - id
+        - status
+        - resolutionDate
+        - contractPrice
+        - user
+        - customer
+        - car
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          enum:
+            [
+              carInspection,
+              priceNegotiation,
+              contractDraft,
+              contractSuccessful,
+              contractFailed,
+            ]
+          example: contractDraft
+        resolutionDate:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-06-10T00:00:00Z"
+        contractPrice:
+          type: number
+          example: 13000000
+        meetings:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                example: "2025-05-20"
+              alarms:
+                type: array
+                items:
+                  type: string
+                  format: date-time
+                example: ["2025-05-19T09:00:00Z"]
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 3
+            name:
+              type: string
+              example: "담당자A"
+        customer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            name:
+              type: string
+              example: "홍길동"
+        car:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 5
+            model:
+              type: string
+              example: "K5"

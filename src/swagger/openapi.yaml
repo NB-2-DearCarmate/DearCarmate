@@ -40,3 +40,15 @@ paths:
     $ref: "./users.swagger.yaml#/usersMe"
   /users/{userId}:
     $ref: "./users.swagger.yaml#/usersById"
+
+  #계약
+  /contract:
+    $ref: "./contracts.swagger.yaml#/contracts"
+  /contract/car:
+    $ref: "./contracts.swagger.yaml#/cars"
+  /contract/users:
+    $ref: "./contracts.swagger.yaml#/users"
+  /contract/customers:
+    $ref: "./contracts.swagger.yaml#/customers"
+  /contract/{contractId}:
+    $ref: "./contracts.swagger.yaml#/contractId"
