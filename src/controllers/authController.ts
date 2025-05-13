@@ -7,6 +7,9 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt";
 import { LoginRequestBody, RefreshTokenRequestBody } from "../typings/auth";
+import BadRequestError from "../errors/BadRequestError";
+import UnauthorizedError from "../errors/UnauthorizedError";
+
 
 // 로그인
 export const login: RequestHandler<{}, any, LoginRequestBody> = async (
@@ -16,8 +19,7 @@ export const login: RequestHandler<{}, any, LoginRequestBody> = async (
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({ message: "잘못된 요청입니다" });
-    return;
+    throw new BadRequestError("이메일과 비밀번호를 입력해주세요.");
   }
 
   const user = await prisma.user.findUnique({
@@ -67,30 +69,23 @@ export const refreshToken: RequestHandler<
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
-    res.status(400).json({ message: "잘못된 요청입니다" });
-    return;
+    throw new BadRequestError("잘못된 요청입니다-need refreshToken");
   }
 
-  try {
-    const decoded = verifyRefreshToken(refreshToken);
+  const decoded = verifyRefreshToken(refreshToken);
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.userId },
+  });
 
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-    });
-
-    if (!user) {
-      res.status(400).json({ message: "잘못된 요청입니다" });
-      return;
-    }
-
-    const newAccessToken = generateAccessToken(user.id, user.companyId);
-    const newRefreshToken = generateRefreshToken(user.id);
-
-    res.status(200).json({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    });
-  } catch (error) {
-    res.status(400).json({ message: "잘못된 요청입니다" });
+  if (!user) {
+    throw new BadRequestError("유효하지 않은 사용자입니다.");
   }
-};
+
+  const newAccessToken = generateAccessToken(user.id, user.companyId);
+  const newRefreshToken = generateRefreshToken(user.id);
+
+  res.status(200).json({
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+  });
+}; 

@@ -10,17 +10,17 @@ import {
 import { adminMiddleware } from "../middlewares/adminAuthMiddleware";
 import { asyncHandler } from "../lib/asyncHandler";
 
-const router = Router();
+const userRouter = Router();
 
-router.post("/", asyncHandler(createUserHandler));
-router.get("/me", authMiddleware, asyncHandler(getMyInfoHandler));
-router.patch("/me", authMiddleware, asyncHandler(updateMyInfoHandler));
-router.delete("/me", authMiddleware, asyncHandler(deleteMyAccountHandler));
-router.delete(
+userRouter.post("/", asyncHandler(createUserHandler));
+userRouter.get("/me", authMiddleware, asyncHandler(getMyInfoHandler));
+userRouter.patch("/me", authMiddleware, asyncHandler(updateMyInfoHandler));
+userRouter.delete("/me", authMiddleware, asyncHandler(deleteMyAccountHandler));
+userRouter.delete(
   "/:userId",
   authMiddleware,
   adminMiddleware,
   asyncHandler(deleteUserHandler)
 );
 
-export default router;
+export default userRouter;

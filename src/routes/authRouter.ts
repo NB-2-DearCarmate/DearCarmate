@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { login, logout, refreshToken } from "../controllers/authController";
 
-const router = Router();
+const atuhRouter = Router();
 
-router.post("/login", login);
-router.post("/logout", logout);
-router.post("/refresh", refreshToken);
+atuhRouter.post("/login", login);
+atuhRouter.post("/logout", logout);
+atuhRouter.post("/refresh", refreshToken);
 
-export default router;
+export default atuhRouter;
