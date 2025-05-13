@@ -1,6 +1,8 @@
 dashboard:
   get:
     summary: 대시보드 데이터 조회
+    tags:
+      - Dashboard
     description: 대시보드에 필요한 월별 판매 및 계약 정보 조회
     responses:
       "200":

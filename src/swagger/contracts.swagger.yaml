@@ -60,7 +60,7 @@ contracts:
 cars:
   get:
     tags:
-      - Cars
+      - Get list
     summary: 차량 조회
     description: 계약 가능한 모든 차량을 조회 합니다.
     security:
@@ -80,7 +80,7 @@ cars:
 users:
   get:
     tags:
-      - users
+      - Get list
     summary: 사용자 조회
     description: 현재 근무하는 모든 임직원을 조회합니다.
     security:
@@ -100,7 +100,7 @@ users:
 customers:
   get:
     tags:
-      - customers
+      - Get list
     summary: 고객 조회
     description: 계약을 희망하는 등록된 모든 고객을 조회합니다.
     security:
