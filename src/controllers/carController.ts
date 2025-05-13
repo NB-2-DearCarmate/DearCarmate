@@ -23,6 +23,7 @@ import { mapToCarResponse } from "../utils/CarResponse";
 import carService from "../services/carsService";
 import csv from "csv-parser";
 import fs from "fs";
+import BadRequestError from "../errors/BadRequestError";
 
 // 차량 등록
 export const createCar = async (
@@ -131,8 +132,7 @@ export const uploadCarsFromCSV = async (
   next: NextFunction
 ): Promise<void> => {
   if (!req.file) {
-    res.status(400).json({ message: "CSV 파일이 없습니다." });
-    return;
+    throw new BadRequestError("CSV 파일이 없습니다.");
   }
 
   const companyId = req.user.companyId;

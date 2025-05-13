@@ -17,6 +17,7 @@ import contractRouter from "./routes/contractRouter";
 import login from "./routes/authRouter";
 import imageRouter from "./routes/imageRouter";
 import dashboardRouter from "./routes/dashboardRouter";
+import 'express-async-errors';
 
 const app = express();
 const swaggerSpec = YAML.load(path.join(__dirname, "../dist/openapi.yaml"));

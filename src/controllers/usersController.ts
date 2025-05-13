@@ -9,6 +9,8 @@ import {
 import { UpdateMyInfoStruct } from "../validators/UsersStructs";
 import { UserIdParamsStruct } from "../validators/CommonStruct";
 import { create } from "superstruct";
+import UnauthorizedError from "../errors/UnauthorizedError";
+import ForbiddenError from "../errors/ForbiddenError";
 
 const userService = new UserService();
 
@@ -27,8 +29,7 @@ export const getMyInfoHandler = async (
   res: Response<UserResponse | { message: string }>
 ): Promise<void> => {
   if (!req.user) {
-    res.status(401).json({ message: "로그인이 필요합니다" });
-    return;
+    throw new UnauthorizedError();
   }
 
   const user = await userService.getMyInfo(Number(req.user.id));
@@ -41,8 +42,7 @@ export const updateMyInfoHandler = async (
   res: Response<UserResponse | { message: string }>
 ): Promise<void> => {
   if (!req.user) {
-    res.status(401).json({ message: "로그인이 필요합니다" });
-    return;
+    throw new UnauthorizedError();
   }
 
   const data = create(req.body, UpdateMyInfoStruct) as UpdateMyInfoRequest;
@@ -57,8 +57,7 @@ export const deleteMyAccountHandler = async (
   res: Response<{ message: string }>
 ): Promise<void> => {
   if (!req.user) {
-    res.status(401).json({ message: "로그인이 필요합니다" });
-    return;
+    throw new UnauthorizedError();
   }
 
   await userService.deleteMyAccount(Number(req.user.id));
@@ -71,8 +70,7 @@ export const deleteUserHandler = async (
   res: Response<{ message: string }>
 ): Promise<void> => {
   if (!req.user || !req.user.isAdmin) {
-    res.status(403).json({ message: "관리자 권한이 필요합니다" });
-    return;
+    throw new ForbiddenError("관리자 권한이 필요합니다.");
   }
 
   const { userId } = create(req.params, UserIdParamsStruct);

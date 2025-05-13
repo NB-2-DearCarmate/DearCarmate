@@ -11,6 +11,7 @@ import { SaveFileInfo } from "../typings/contrarctDocument";
 import path from "path";
 import BadRequestError from "../errors/BadRequestError";
 import contractDocumentService from "../services/contractDocumentService";
+import UnauthorizedError from "../errors/UnauthorizedError";
 
 export const getAllContractDocumentListHandler = async (
   req: Request,
@@ -19,7 +20,7 @@ export const getAllContractDocumentListHandler = async (
 ): Promise<void> => {
   const user = req.user;
   if (!user || !user.company || !user.company.id) {
-    res.status(401).json({ message: "로그인이 필요합니다." });
+    throw new UnauthorizedError();
   }
   const companyId = user.company.id;
   const {
@@ -49,7 +50,7 @@ export const getContractDraftListHandler = async (
 ): Promise<void> => {
   const user = req.user;
   if (!user || !user.company) {
-    res.status(401).json({ message: "로그인이 필요합니다." });
+    throw new UnauthorizedError();
   }
   const result: ContractDraftItemDto[] =
     await contractDocumentService.contractDraftList(user.company.id);
